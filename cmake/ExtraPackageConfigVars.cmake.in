@@ -1,0 +1,36 @@
+set(NAME "BlockFactory")
+
+foreach(comp (BlockFactoryCore BlockFactoryCoder BlockFactoryMex))
+    if(${${comp}_FOUND})
+        string(CONCAT FOUND_COMPONENTS_LIST ${FOUND_COMPONENTS_LIST} " ${comp}")
+    endif()
+endforeach()
+
+foreach(comp ${${NAME}_FIND_COMPONENTS})
+    # Match the component status with the find_dependency exit variable
+    set(${NAME}_${comp}_FOUND ${${comp}_FOUND})
+endforeach()
+
+check_required_components(${NAME})
+
+if(${NAME}_FOUND)
+    message(STATUS "Found BlockFactory ${${NAME}_FIND_VERSION} (Components:${FOUND_COMPONENTS_LIST})")
+endif()
+
+if(NOT ${NAME}_FIND_QUIETLY)
+    foreach(comp ${${NAME}_FIND_COMPONENTS})
+        # If a component is not found, tell the user its name
+        if((NOT ${NAME}_FIND_REQUIRED_${comp}) AND (NOT ${comp}_FOUND))
+            # status if it is OPTIONAL_COMPONENT
+            message(STATUS "BlockFactory: OPTIONAL component ${comp} NOT found")
+        elseif(NOT ${comp}_FOUND)
+            # warning if it is REQUIRED
+            message(WARNING "BlockFactory: REQUIRED component ${comp} NOT found")
+            # Note: find_package will exit with a fatal error but without telling
+            # what is missing
+        endif()
+    endforeach()
+endif()
+
+unset(NAME)
+unset(FOUND_COMPONENTS_LIST)

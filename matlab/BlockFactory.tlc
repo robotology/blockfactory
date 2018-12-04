@@ -1,0 +1,272 @@
+%% File    : WBToolbox.tlc
+%% Abstract: Inlined tlc file for S-function WBToolbox.cpp
+%%
+
+%implements "WBToolbox" "C"
+
+%% Function: NotifyErrors
+%% ======================
+%%
+%% Abstract: Utility for copying the code used for forwarding
+%%           errors to the model driver.
+%%
+
+%function NotifyErrors(prefix) Output
+
+    std::string error = wbt::Log::getSingleton().getErrors();
+    error = "%<prefix>" + error;
+
+    // Trim the message if needed
+    if (error.length() >= 1024) {
+        error = error.substr(0, 1024-1);
+    }
+
+    // This shouldn't happen
+    if (getRTM()->errorStatus) {
+        delete getRTM()->errorStatus;
+        getRTM()->errorStatus = nullptr;
+    }
+
+    getRTM()->errorStatus = new char[1024];
+    sprintf(const_cast<char_T*>(getRTM()->errorStatus), "%s", error.c_str());
+    return;
+    %return
+%endfunction %% NotifyErrors
+
+%% Function: Outputs
+%% =================
+
+%function Outputs(block, system) Output
+
+  %%assign identifier = Identifier
+
+  %% Save the PWork vector locations in TLC variables
+  %assign PWorkStorage_Block     = LibBlockPWork(blockPWork, "", "", 0)
+  %assign PWorkStorage_BlockInfo = LibBlockPWork(blockPWork, "", "", 1)
+
+  {
+    // Get the CoderBlockInformation from the PWork
+    wbt::CoderBlockInformation* blockInfo = nullptr;
+    blockInfo = static_cast<wbt::CoderBlockInformation*>(%<PWorkStorage_BlockInfo>);
+
+    // Get the Block from the PWork
+    wbt::Block* blockPtr = nullptr;
+    blockPtr = static_cast<wbt::Block*>(%<PWorkStorage_Block>);
+
+    // Calculate the output
+    // --------------------
+    bool ok;
+    ok = blockPtr->output(blockInfo);
+
+    // Report errors
+    if (!ok) {
+        %assign variable = "[Output]"
+        %assign dummy = NotifyErrors(variable)
+    }
+  }
+  // End of %<Type> Block: %<Name>
+%endfunction %% Outputs
+
+%% Function: BlockTypeSetup
+%% ========================
+
+%function BlockTypeSetup(block, system) void
+  
+  %<LibAddToCommonIncludes("<cstdio>")>
+  %<LibAddToCommonIncludes("<Core/Block.h>")>
+  %<LibAddToCommonIncludes("<Core/Log.h>")>
+  %<LibAddToCommonIncludes("<Core/Parameter.h>")>
+  %<LibAddToCommonIncludes("<Core/Parameters.h>")>
+  %<LibAddToCommonIncludes("<Core/CoderBlockInformation.h>")>
+
+%endfunction
+
+%% Function: BlockInstanceSetup
+%% ============================
+
+%function BlockInstanceSetup(block, system) void
+
+  %<LibAddToCommonIncludes("<Block/%<SFcnParamSettings[0].className>.h>")>
+
+%endfunction
+
+%% Function: Start
+%% ===============
+
+%function Start(block, system) Output
+    
+  %% Save the PWork vector locations in TLC variables
+  %assign PWorkStorage_Block     = LibBlockPWork(blockPWork, "", "", 0)
+  %assign PWorkStorage_BlockInfo = LibBlockPWork(blockPWork, "", "", 1)
+
+  {    
+    // Create and store the CoderBlockInformation object
+    wbt::CoderBlockInformation* blockInfo = new wbt::CoderBlockInformation();
+    %<PWorkStorage_BlockInfo> = static_cast<void*>(blockInfo);
+
+    // Initialize the parameters
+    // -------------------------
+
+    wbt::Parameters params;
+
+    %assign numberOfParameters = SFcnParamSettings[0].numberOfParameters
+    %assign className = SFcnParamSettings[0].className
+
+    %foreach i = numberOfParameters
+
+    %assign i = i + 1
+    %assign index = SFcnParamSettings[i].index
+    %assign name = SFcnParamSettings[i].name
+    %assign rows = SFcnParamSettings[i].rows
+    %assign cols = SFcnParamSettings[i].cols
+    %assign type = SFcnParamSettings[i].type
+    %assign storage = SFcnParamSettings[i].storage
+
+    %if SFcnParamSettings[i].isScalar == 1.0
+    %assign valueScalar = SFcnParamSettings[i].valueScalar
+    %if storage != "std::string"
+    params.storeParameter<%<storage>>(%<valueScalar>,
+    %else
+    params.storeParameter<%<storage>>("%<valueScalar>",
+    %endif
+      wbt::ParameterMetadata(wbt::%<type>, %<index>, %<rows>, %<cols>, "%<name>"));
+    %else
+    %assign valueVector = SFcnParamSettings[i].valueVector
+    {
+      std::vector<%<storage>> valueVector;
+      %if cols > 0
+      valueVector.reserve(%<cols>);
+      %endif
+      %foreach element = cols
+      %if storage != "std::string"
+      valueVector.push_back(%<valueVector[element]>);
+      %else
+      valueVector.push_back("%<valueVector[element]>");
+      %endif
+      %endforeach
+      params.storeParameter<%<storage>>(valueVector,
+        wbt::ParameterMetadata(wbt::%<type>, %<index>, %<rows>, %<cols>, "%<name>"));
+    }
+    %endif
+    %endforeach
+
+    // Store the parameters in the CoderBlockInformation object
+    blockInfo->storeRTWParameters(params);
+    
+    // Initialize input / output Signals
+    // ---------------------------------
+    
+    %assign numInputPorts = LibBlockNumInputPorts(block)
+    %assign numOutputPorts = LibBlockNumOutputPorts(block)
+
+    // Inputs
+    %foreach i = numInputPorts
+
+    %assign dims = LibBlockInputSignalDimensions(i)
+    %assign numDims = LibBlockInputSignalNumDimensions(i)
+    %if numDims == 1
+        %assign rows = 1
+        %assign cols = dims[0]
+    %else
+        %assign rows = dims[0]
+        %assign cols = dims[1]
+    %endif
+    %%assign width = LibBlockInputSignalWidth(i)
+    %assign address = LibBlockInputSignalAddr(i, "", "", 0)
+    blockInfo->setInputSignal(%<i>, static_cast<void*>(%<address>), {%<rows>, %<cols>});
+    %endforeach
+
+    // Outputs
+    %foreach i = numOutputPorts
+
+    %assign dims = LibBlockOutputSignalDimensions(i)
+    %assign numDims = LibBlockOutputSignalNumDimensions(i)
+    %if numDims == 1
+        %assign rows = 1
+        %assign cols = dims[0]
+    %else
+        %assign rows = dims[0]
+        %assign cols = dims[1]
+    %endif
+    %%assign width = LibBlockOutputSignalWidth(i)
+    %assign address = LibBlockOutputSignalAddr(i, "", "", 0)
+    %%blockInfo->setOutputSignal(%<i>, static_cast<void*>(%<address>), %<width>);
+    blockInfo->setOutputSignal(%<i>, static_cast<void*>(%<address>), {%<rows>, %<cols>});
+    %endforeach
+
+    // Initialize the class
+    // --------------------
+
+    // Allocate the block object
+    wbt::Block* blockPtr = static_cast<wbt::Block*>(new wbt::%<className>());
+
+    // Run a dummy configureSizeAndPorts step. This is currently required for properly
+    // handling optional input / outputs static variables.
+    // TODO: find a better way to handle them.
+    {
+        auto tmpCoderBlockInfo = std::unique_ptr<wbt::CoderBlockInformation>(
+            new wbt::CoderBlockInformation);
+        tmpCoderBlockInfo->storeRTWParameters(params);
+        blockPtr->configureSizeAndPorts(tmpCoderBlockInfo.get());
+    }
+
+    // Initialize the block
+    bool ok = blockPtr->initialize(blockInfo);
+
+    // Report errors
+    if (!ok) {
+        %assign variable = "[Initialize]"
+        %assign dummy = NotifyErrors(variable)
+    }
+
+    // Call the initializeInitialConditions() method
+    ok = blockPtr->initializeInitialConditions(blockInfo);
+
+    // Report errors
+    if (!ok) {
+        %assign variable = "[InitializeInitialConditions]"
+        %assign dummy = NotifyErrors(variable)
+    }
+
+    // Store the block in the PWork vector
+    %<PWorkStorage_Block> = static_cast<void*>(blockPtr);
+  }
+  // End of %<Type> Block: %<Name>
+
+%endfunction %% Start
+
+%% Function: Terminate
+%% ===================
+
+%function Terminate(block, system) Output
+
+  %% Save the PWork vector locations in TLC variables
+  %assign PWorkStorage_Block     = LibBlockPWork(blockPWork, "", "", 0)
+  %assign PWorkStorage_BlockInfo = LibBlockPWork(blockPWork, "", "", 1)
+
+  {
+    // Get the CoderBlockInformation from the PWork
+    wbt::CoderBlockInformation* blockInfo = nullptr;
+    blockInfo = static_cast<wbt::CoderBlockInformation*>(%<PWorkStorage_BlockInfo>);
+
+    // Get the Block from the PWork
+    wbt::Block* blockPtr = nullptr;
+    blockPtr = static_cast<wbt::Block*>(%<PWorkStorage_Block>);
+
+    // Terminate the class
+    // -------------------
+    bool ok;
+    ok = blockPtr->terminate(blockInfo);
+
+    delete blockInfo;
+    delete blockPtr;
+
+    // Report errors
+    if (!ok) {
+        %assign variable = "[Terminate]"
+        %assign dummy = NotifyErrors(variable)
+    }
+  }
+  // End of %<Type> Block: %<Name>
+
+%endfunction %% Terminate
