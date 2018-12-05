@@ -17,13 +17,15 @@
 #include <memory>
 #include <string>
 
-namespace wbt {
-    template <typename T>
-    class GeneratedCodeWrapper;
-}
+namespace blockfactory {
+    namespace coder {
+        template <typename T>
+        class GeneratedCodeWrapper;
+    } // namespace coder
+} // namespace blockfactory
 
 template <typename T>
-class wbt::GeneratedCodeWrapper
+class blockfactory::coder::GeneratedCodeWrapper
 {
 private:
     std::unique_ptr<T> m_model;
@@ -47,7 +49,7 @@ public:
 };
 
 template <typename T>
-bool wbt::GeneratedCodeWrapper<T>::modelFailed() const
+bool blockfactory::coder::GeneratedCodeWrapper<T>::modelFailed() const
 {
     if (m_model) {
         if (m_model->getRTM()) {
@@ -59,14 +61,14 @@ bool wbt::GeneratedCodeWrapper<T>::modelFailed() const
 }
 
 template <typename T>
-wbt::GeneratedCodeWrapper<T>::GeneratedCodeWrapper(const std::string& modelName,
-                                                   const unsigned& numSampleTimes)
+blockfactory::coder::GeneratedCodeWrapper<T>::GeneratedCodeWrapper(const std::string& modelName,
+                                                                   const unsigned& numSampleTimes)
     : m_modelName(modelName)
     , m_numSampleTimes(numSampleTimes)
 {}
 
 template <typename T>
-bool wbt::GeneratedCodeWrapper<T>::initialize()
+bool blockfactory::coder::GeneratedCodeWrapper<T>::initialize()
 {
     if (m_model) {
         m_model.reset();
@@ -83,7 +85,7 @@ bool wbt::GeneratedCodeWrapper<T>::initialize()
 }
 
 template <typename T>
-bool wbt::GeneratedCodeWrapper<T>::step()
+bool blockfactory::coder::GeneratedCodeWrapper<T>::step()
 {
     if (!m_model) {
         return false;
@@ -99,7 +101,7 @@ bool wbt::GeneratedCodeWrapper<T>::step()
 }
 
 template <typename T>
-bool wbt::GeneratedCodeWrapper<T>::terminate()
+bool blockfactory::coder::GeneratedCodeWrapper<T>::terminate()
 {
     if (!m_model) {
         return false;
@@ -115,7 +117,7 @@ bool wbt::GeneratedCodeWrapper<T>::terminate()
 }
 
 template <typename T>
-std::string wbt::GeneratedCodeWrapper<T>::getErrors() const
+std::string blockfactory::coder::GeneratedCodeWrapper<T>::getErrors() const
 {
     if (!m_model) {
         return {};

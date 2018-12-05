@@ -16,7 +16,7 @@
 #include <utility>
 #include <vector>
 
-using namespace wbt;
+using namespace blockfactory::core;
 
 // ================
 // PARAMETERS::IMPL
@@ -44,18 +44,18 @@ public:
     std::unordered_map<ParamName, ParameterString> paramsString;
 
     // Maps for handling the internal indexing
-    std::unordered_map<ParamName, wbt::ParameterType> nameToType;
+    std::unordered_map<ParamName, blockfactory::core::ParameterType> nameToType;
     std::unordered_map<ParamIndex, ParamName> indexToName;
     std::unordered_map<ParamName, ParamIndex> nameToIndex;
 
     bool existIndex(const ParamIndex& index) const;
-    bool existName(const ParamName& name, const wbt::ParameterType& type) const;
+    bool existName(const ParamName& name, const ParameterType& type) const;
 
     impl* clone() { return new impl(*this); }
 };
 
 bool Parameters::impl::existName(const Parameters::ParamName& name,
-                                 const wbt::ParameterType& type) const
+                                 const blockfactory::core::ParameterType& type) const
 {
     switch (type) {
         case ParameterType::INT:
@@ -115,11 +115,11 @@ Parameters::Parameters()
 // of a custom pimpl deleter
 Parameters::~Parameters() = default;
 
-Parameters::Parameters(const wbt::Parameters& other)
+Parameters::Parameters(const blockfactory::core::Parameters& other)
     : pImpl{other.pImpl->clone()}
 {}
 
-wbt::Parameters& Parameters::operator=(const wbt::Parameters& other)
+Parameters& Parameters::operator=(const Parameters& other)
 {
     pImpl.reset(other.pImpl->clone());
     return *this;
@@ -211,11 +211,11 @@ std::vector<Parameter<std::string>> Parameters::getStringParameters() const
     return vectorParams;
 }
 
-wbt::ParameterMetadata Parameters::getParameterMetadata(const ParamName& name)
+ParameterMetadata Parameters::getParameterMetadata(const ParamName& name)
 {
     if (!existName(name) || !pImpl->existName(name, pImpl->nameToType.at(name))) {
         // TODO: here dummy metadata are returned. This can be improved.
-        wbtError << "Failed to get metadata of " << name << " parameter.";
+        bfError << "Failed to get metadata of " << name << " parameter.";
         return {ParameterType::INT, 0, 0, 0, "dummy"};
     }
 
@@ -254,16 +254,22 @@ wbt::ParameterMetadata Parameters::getParameterMetadata(const ParamName& name)
 // ------
 
 // Instantiate the declared templates
-template bool Parameters::getParameter<int>(const Parameters::ParamName& name, int& param) const;
-template bool Parameters::getParameter<bool>(const Parameters::ParamName& name, bool& param) const;
-template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
-                                               double& param) const;
+namespace blockfactory {
+    namespace core {
+        template bool Parameters::getParameter<int>(const Parameters::ParamName& name,
+                                                    int& param) const;
+        template bool Parameters::getParameter<bool>(const Parameters::ParamName& name,
+                                                     bool& param) const;
+        template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
+                                                       double& param) const;
+    } // namespace core
+} // namespace blockfactory
 
 template <typename T>
-bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name, T& param) const
+bool Parameters::getParameter(const Parameters::ParamName& name, T& param) const
 {
     if (!existName(name) || !pImpl->existName(name, pImpl->nameToType.at(name))) {
-        wbtError << "Trying to get a non existing " << name << " parameter.";
+        bfError << "Trying to get a non existing " << name << " parameter.";
         return false;
     }
 
@@ -273,7 +279,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name, T& pa
         case ParameterType::STRUCT_INT:
         case ParameterType::STRUCT_CELL_INT:
             if (!pImpl->paramsInt.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = static_cast<T>(pImpl->paramsInt.at(name).getScalarParameter());
@@ -283,7 +289,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name, T& pa
         case ParameterType::STRUCT_BOOL:
         case ParameterType::STRUCT_CELL_BOOL:
             if (!pImpl->paramsBool.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = static_cast<T>(pImpl->paramsBool.at(name).getScalarParameter());
@@ -293,7 +299,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name, T& pa
         case ParameterType::STRUCT_DOUBLE:
         case ParameterType::STRUCT_CELL_DOUBLE:
             if (!pImpl->paramsDouble.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = static_cast<T>(pImpl->paramsDouble.at(name).getScalarParameter());
@@ -303,7 +309,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name, T& pa
         case ParameterType::STRUCT_STRING:
         case ParameterType::STRUCT_CELL_STRING:
             if (!pImpl->paramsString.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = static_cast<T>(std::stod(pImpl->paramsString.at(name).getScalarParameter()));
@@ -315,21 +321,24 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name, T& pa
 // VECTOR
 // ------
 
-template bool Parameters::getParameter<int>(const Parameters::ParamName& name,
-                                            std::vector<int>& param) const;
-template bool Parameters::getParameter<bool>(const Parameters::ParamName& name,
-                                             std::vector<bool>& param) const;
-template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
-                                               std::vector<double>& param) const;
-template bool Parameters::getParameter<std::string>(const Parameters::ParamName& name,
-                                                    std::vector<std::string>& param) const;
+namespace blockfactory {
+    namespace core {
+        template bool Parameters::getParameter<int>(const Parameters::ParamName& name,
+                                                    std::vector<int>& param) const;
+        template bool Parameters::getParameter<bool>(const Parameters::ParamName& name,
+                                                     std::vector<bool>& param) const;
+        template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
+                                                       std::vector<double>& param) const;
+        template bool Parameters::getParameter<std::string>(const Parameters::ParamName& name,
+                                                            std::vector<std::string>& param) const;
+    } // namespace core
+} // namespace blockfactory
 
 template <typename T>
-bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name,
-                                   std::vector<T>& param) const
+bool Parameters::getParameter(const Parameters::ParamName& name, std::vector<T>& param) const
 {
     if (!existName(name) || !pImpl->existName(name, pImpl->nameToType.at(name))) {
-        wbtError << "Trying to get a non existing " << name << " parameter.";
+        bfError << "Trying to get a non existing " << name << " parameter.";
         return false;
     }
 
@@ -341,7 +350,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name,
         case ParameterType::STRUCT_INT:
         case ParameterType::STRUCT_CELL_INT: {
             if (pImpl->paramsInt.at(name).isScalar()) {
-                wbtError << "Trying to get a vector from a scalar parameter.";
+                bfError << "Trying to get a vector from a scalar parameter.";
                 return false;
             }
             std::vector<T> output;
@@ -353,7 +362,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name,
         case ParameterType::STRUCT_BOOL:
         case ParameterType::STRUCT_CELL_BOOL: {
             if (pImpl->paramsBool.at(name).isScalar()) {
-                wbtError << "Trying to get a vector from a scalar parameter.";
+                bfError << "Trying to get a vector from a scalar parameter.";
                 return false;
             }
             std::vector<T> output;
@@ -365,7 +374,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name,
         case ParameterType::STRUCT_DOUBLE:
         case ParameterType::STRUCT_CELL_DOUBLE: {
             if (pImpl->paramsDouble.at(name).isScalar()) {
-                wbtError << "Trying to get a vector from a scalar parameter.";
+                bfError << "Trying to get a vector from a scalar parameter.";
                 return false;
             }
             std::vector<T> output;
@@ -377,7 +386,7 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name,
         case ParameterType::STRUCT_STRING:
         case ParameterType::STRUCT_CELL_STRING: {
             if (pImpl->paramsString.at(name).isScalar()) {
-                wbtError << "Trying to get a vector from a scalar parameter.";
+                bfError << "Trying to get a vector from a scalar parameter.";
                 return false;
             }
             std::vector<T> output;
@@ -394,23 +403,27 @@ bool wbt::Parameters::getParameter(const wbt::Parameters::ParamName& name,
 // SCALAR
 // ------
 
-template bool Parameters::storeParameter<int>(const int& param,
-                                              const ParameterMetadata& paramMetadata);
-template bool Parameters::storeParameter<bool>(const bool& param,
-                                               const ParameterMetadata& paramMetadata);
-template bool Parameters::storeParameter<double>(const double& param,
-                                                 const ParameterMetadata& paramMetadata);
+namespace blockfactory {
+    namespace core {
+        template bool Parameters::storeParameter<int>(const int& param,
+                                                      const ParameterMetadata& paramMetadata);
+        template bool Parameters::storeParameter<bool>(const bool& param,
+                                                       const ParameterMetadata& paramMetadata);
+        template bool Parameters::storeParameter<double>(const double& param,
+                                                         const ParameterMetadata& paramMetadata);
+    } // namespace core
+} // namespace blockfactory
 
 template <typename T>
-bool wbt::Parameters::storeParameter(const T& param, const wbt::ParameterMetadata& paramMetadata)
+bool Parameters::storeParameter(const T& param, const ParameterMetadata& paramMetadata)
 {
     if (existName(paramMetadata.name) || pImpl->existName(paramMetadata.name, paramMetadata.type)) {
-        wbtError << "Trying to store an already existing " << paramMetadata.name << " parameter.";
+        bfError << "Trying to store an already existing " << paramMetadata.name << " parameter.";
         return false;
     }
 
     if (paramMetadata.rows != 1 && paramMetadata.cols != 1) {
-        wbtError << "2D parameters are not supported.";
+        bfError << "2D parameters are not supported.";
         return false;
     }
 
@@ -456,26 +469,30 @@ bool wbt::Parameters::storeParameter(const T& param, const wbt::ParameterMetadat
 // VECTOR
 // ------
 
-template bool Parameters::storeParameter<int>(const std::vector<int>& param,
-                                              const ParameterMetadata& paramMetadata);
-template bool Parameters::storeParameter<bool>(const std::vector<bool>& param,
-                                               const ParameterMetadata& paramMetadata);
-template bool Parameters::storeParameter<double>(const std::vector<double>& param,
-                                                 const ParameterMetadata& paramMetadata);
-template bool Parameters::storeParameter<std::string>(const std::vector<std::string>& param,
+namespace blockfactory {
+    namespace core {
+        template bool Parameters::storeParameter<int>(const std::vector<int>& param,
                                                       const ParameterMetadata& paramMetadata);
+        template bool Parameters::storeParameter<bool>(const std::vector<bool>& param,
+                                                       const ParameterMetadata& paramMetadata);
+        template bool Parameters::storeParameter<double>(const std::vector<double>& param,
+                                                         const ParameterMetadata& paramMetadata);
+        template bool
+        Parameters::storeParameter<std::string>(const std::vector<std::string>& param,
+                                                const ParameterMetadata& paramMetadata);
+    } // namespace core
+} // namespace blockfactory
 
 template <typename T>
-bool wbt::Parameters::storeParameter(const std::vector<T>& param,
-                                     const wbt::ParameterMetadata& paramMetadata)
+bool Parameters::storeParameter(const std::vector<T>& param, const ParameterMetadata& paramMetadata)
 {
     if (existName(paramMetadata.name) || pImpl->existName(paramMetadata.name, paramMetadata.type)) {
-        wbtError << "Trying to store an already existing " << paramMetadata.name << " parameter.";
+        bfError << "Trying to store an already existing " << paramMetadata.name << " parameter.";
         return false;
     }
 
     if (paramMetadata.rows != 1 && paramMetadata.cols != param.size()) {
-        wbtError << "2D parameters are not supported.";
+        bfError << "2D parameters are not supported.";
         return false;
     }
 
@@ -532,17 +549,22 @@ bool wbt::Parameters::storeParameter(const std::vector<T>& param,
 // PARAMETER
 // ---------
 
-template bool Parameters::storeParameter<int>(const Parameter<int>& parameter);
-template bool Parameters::storeParameter<bool>(const Parameter<bool>& parameter);
-template bool Parameters::storeParameter<double>(const Parameter<double>& parameter);
-template bool Parameters::storeParameter<std::string>(const Parameter<std::string>& parameter);
+namespace blockfactory {
+    namespace core {
+        template bool Parameters::storeParameter<int>(const Parameter<int>& parameter);
+        template bool Parameters::storeParameter<bool>(const Parameter<bool>& parameter);
+        template bool Parameters::storeParameter<double>(const Parameter<double>& parameter);
+        template bool
+        Parameters::storeParameter<std::string>(const Parameter<std::string>& parameter);
+    } // namespace core
+} // namespace blockfactory
 
 template <typename T>
-bool wbt::Parameters::storeParameter(const wbt::Parameter<T>& parameter)
+bool Parameters::storeParameter(const Parameter<T>& parameter)
 {
     if (existName(parameter.getMetadata().name)) {
-        wbtError << "Trying to store an already existing " << parameter.getMetadata().name
-                 << " parameter.";
+        bfError << "Trying to store an already existing " << parameter.getMetadata().name
+                << " parameter.";
         return false;
     }
 
@@ -561,7 +583,7 @@ template <>
 bool Parameters::getParameter<std::string>(const ParamName& name, std::string& param) const
 {
     if (!existName(name) || !pImpl->existName(name, pImpl->nameToType.at(name))) {
-        wbtError << "Trying to get a non existing " << name << " parameter.";
+        bfError << "Trying to get a non existing " << name << " parameter.";
         return false;
     }
 
@@ -571,7 +593,7 @@ bool Parameters::getParameter<std::string>(const ParamName& name, std::string& p
         case ParameterType::STRUCT_INT:
         case ParameterType::STRUCT_CELL_INT:
             if (!pImpl->paramsInt.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = std::to_string(pImpl->paramsInt.at(name).getScalarParameter());
@@ -581,7 +603,7 @@ bool Parameters::getParameter<std::string>(const ParamName& name, std::string& p
         case ParameterType::STRUCT_BOOL:
         case ParameterType::STRUCT_CELL_BOOL:
             if (!pImpl->paramsBool.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = std::to_string(pImpl->paramsBool.at(name).getScalarParameter());
@@ -591,7 +613,7 @@ bool Parameters::getParameter<std::string>(const ParamName& name, std::string& p
         case ParameterType::STRUCT_DOUBLE:
         case ParameterType::STRUCT_CELL_DOUBLE:
             if (!pImpl->paramsDouble.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = std::to_string(pImpl->paramsDouble.at(name).getScalarParameter());
@@ -601,7 +623,7 @@ bool Parameters::getParameter<std::string>(const ParamName& name, std::string& p
         case ParameterType::STRUCT_STRING:
         case ParameterType::STRUCT_CELL_STRING:
             if (!pImpl->paramsString.at(name).isScalar()) {
-                wbtError << "Trying to get a scalar from a vector parameter.";
+                bfError << "Trying to get a scalar from a vector parameter.";
                 return false;
             }
             param = pImpl->paramsString.at(name).getScalarParameter();
@@ -611,16 +633,16 @@ bool Parameters::getParameter<std::string>(const ParamName& name, std::string& p
 }
 
 template <>
-bool wbt::Parameters::storeParameter<std::string>(const std::string& param,
-                                                  const wbt::ParameterMetadata& paramMetadata)
+bool Parameters::storeParameter<std::string>(const std::string& param,
+                                             const ParameterMetadata& paramMetadata)
 {
     if (existName(paramMetadata.name) || pImpl->existName(paramMetadata.name, paramMetadata.type)) {
-        wbtError << "Trying to store an already existing " << paramMetadata.name << " parameter.";
+        bfError << "Trying to store an already existing " << paramMetadata.name << " parameter.";
         return false;
     }
 
     if (paramMetadata.rows != 1 && paramMetadata.cols != 1) {
-        wbtError << "2D parameters are not supported.";
+        bfError << "2D parameters are not supported.";
         return false;
     }
 

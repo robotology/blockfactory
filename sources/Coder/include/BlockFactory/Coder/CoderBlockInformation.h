@@ -15,15 +15,19 @@
 #include <memory>
 #include <string>
 
-namespace wbt {
-    class CoderBlockInformation;
-}
+namespace blockfactory {
+    namespace coder {
+        class CoderBlockInformation;
+    } // namespace coder
+} // namespace blockfactory
 
-class wbt::CoderBlockInformation final : public wbt::BlockInformation
+class blockfactory::coder::CoderBlockInformation final : public blockfactory::core::BlockInformation
 {
 private:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     class impl;
     std::unique_ptr<impl> pImpl;
+#endif
 
 public:
     CoderBlockInformation();
@@ -37,8 +41,8 @@ public:
     // PARAMETERS METHODS
     // ==================
 
-    bool addParameterMetadata(const wbt::ParameterMetadata& paramMD) override;
-    bool parseParameters(wbt::Parameters& parameters) override;
+    bool addParameterMetadata(const core::ParameterMetadata& paramMD) override;
+    bool parseParameters(core::Parameters& parameters) override;
 
     // PORT INFORMATION SETTERS
     // ========================
@@ -58,17 +62,17 @@ public:
     // BLOCK SIGNALS
     // =============
 
-    wbt::InputSignalPtr
+    core::InputSignalPtr
     getInputPortSignal(const PortIndex idx,
-                       const VectorSize size = wbt::Signal::DynamicSize) const override;
-    wbt::OutputSignalPtr
+                       const VectorSize size = core::Signal::DynamicSize) const override;
+    core::OutputSignalPtr
     getOutputPortSignal(const PortIndex idx,
-                        const VectorSize size = wbt::Signal::DynamicSize) const override;
+                        const VectorSize size = core::Signal::DynamicSize) const override;
 
     // METHODS OUTSIDE THE INTERFACE
     // =============================
 
-    bool storeRTWParameters(const Parameters& parameters);
+    bool storeRTWParameters(const core::Parameters& parameters);
     bool setInputSignal(const PortIndex idx, void* address, const PortDimension& dims);
     bool setOutputSignal(const PortIndex idx, void* address, const PortDimension& dims);
 };

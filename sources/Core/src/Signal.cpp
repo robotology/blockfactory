@@ -16,7 +16,7 @@
 #include <stdint.h>
 #include <typeinfo>
 
-using namespace wbt;
+using namespace blockfactory::core;
 
 // ============
 // SIGNAL::IMPL
@@ -50,8 +50,8 @@ void Signal::impl::allocateBuffer(const void* const bufferInput,
                                   const unsigned& length)
 {
     if (dataFormat == DataFormat::CONTIGUOUS_ZEROCOPY) {
-        wbtWarning << "Trying to allocate a buffer with a non-supported "
-                   << "CONTIGUOUS_ZEROCOPY data format.";
+        bfWarning << "Trying to allocate a buffer with a non-supported "
+                  << "CONTIGUOUS_ZEROCOPY data format.";
         return;
     }
 
@@ -68,7 +68,7 @@ void Signal::impl::allocateBuffer(const void* const bufferInput,
         }
         default:
             // TODO: Implement other DataType
-            wbtError << "The specified DataType is not yet supported. Used DOUBLE instead.";
+            bfError << "The specified DataType is not yet supported. Used DOUBLE instead.";
             return;
     }
 }
@@ -86,7 +86,7 @@ void Signal::impl::deleteBuffer()
             return;
         default:
             // TODO: Implement other DataType
-            wbtError << "The specified DataType is not yet supported. Used DOUBLE instead.";
+            bfError << "The specified DataType is not yet supported. Used DOUBLE instead.";
             return;
     }
 }
@@ -132,8 +132,8 @@ Signal::Signal(Signal&& other)
 bool Signal::initializeBufferFromContiguousZeroCopy(const void* buffer)
 {
     if (pImpl->dataFormat != DataFormat::CONTIGUOUS_ZEROCOPY) {
-        wbtError << "Trying to initialize a CONTIGUOUS_ZEROCOPY signal but the configured "
-                 << "DataFormat does not match.";
+        bfError << "Trying to initialize a CONTIGUOUS_ZEROCOPY signal but the configured "
+                << "DataFormat does not match.";
         return false;
     }
 
@@ -144,14 +144,14 @@ bool Signal::initializeBufferFromContiguousZeroCopy(const void* buffer)
 bool Signal::initializeBufferFromContiguous(const void* buffer)
 {
     if (pImpl->dataFormat != DataFormat::CONTIGUOUS) {
-        wbtError << "Trying to initialize a CONTIGUOUS signal but the configured "
-                 << "DataFormat does not match.";
+        bfError << "Trying to initialize a CONTIGUOUS signal but the configured "
+                << "DataFormat does not match.";
         return false;
     }
 
     if (pImpl->width <= 0) {
-        wbtError << "Signal width unknown. Unable to initialize the buffer if the "
-                 << "signal size is not set.";
+        bfError << "Signal width unknown. Unable to initialize the buffer if the "
+                << "signal size is not set.";
         return false;
     }
 
@@ -164,14 +164,14 @@ bool Signal::initializeBufferFromContiguous(const void* buffer)
 bool Signal::initializeBufferFromNonContiguous(const void* const* bufferPtrs)
 {
     if (pImpl->dataFormat != DataFormat::NONCONTIGUOUS) {
-        wbtError << "Trying to initialize a NONCONTIGUOUS signal but the configured "
-                 << "DataFormat does not match.";
+        bfError << "Trying to initialize a NONCONTIGUOUS signal but the configured "
+                << "DataFormat does not match.";
         return false;
     }
 
     if (pImpl->width <= 0) {
-        wbtError << "Signal width unknown. Unable to initialize the buffer if the "
-                 << "signal size is not set.";
+        bfError << "Signal width unknown. Unable to initialize the buffer if the "
+                << "signal size is not set.";
         return false;
     }
 
@@ -217,12 +217,12 @@ Signal::DataFormat Signal::getDataFormat() const
 bool Signal::set(const unsigned index, const double data)
 {
     if (pImpl->width <= index) {
-        wbtError << "The signal index exceeds its width.";
+        bfError << "The signal index exceeds its width.";
         return false;
     }
 
     if (!pImpl->bufferPtr) {
-        wbtError << "The pointer to data is null. The signal was not configured properly.";
+        bfError << "The pointer to data is null. The signal was not configured properly.";
         return false;
     }
 
@@ -239,7 +239,7 @@ bool Signal::set(const unsigned index, const double data)
         }
         default:
             // TODO: Implement other DataType
-            wbtError << "The specified DataType is not yet supported. Used DOUBLE instead.";
+            bfError << "The specified DataType is not yet supported. Used DOUBLE instead.";
             return false;
             break;
     }
@@ -248,10 +248,15 @@ bool Signal::set(const unsigned index, const double data)
 
 // Explicit template instantiations
 // ================================
-template double* Signal::getBuffer<double>();
-template const double* Signal::getBuffer<double>() const;
-template double Signal::get<double>(const unsigned i) const;
-template bool Signal::setBuffer<double>(const double* data, const unsigned length);
+
+namespace blockfactory {
+    namespace core {
+        template double* Signal::getBuffer<double>();
+        template const double* Signal::getBuffer<double>() const;
+        template double Signal::get<double>(const unsigned i) const;
+        template bool Signal::setBuffer<double>(const double* data, const unsigned length);
+    } // namespace core
+} // namespace blockfactory
 
 // Template definitions
 // ===================
@@ -262,12 +267,12 @@ T Signal::get(const unsigned i) const
     const T* buffer = getBuffer<T>();
 
     if (!buffer) {
-        wbtError << "The buffer inside the signal has not been initialized properly.";
+        bfError << "The buffer inside the signal has not been initialized properly.";
         return {};
     }
 
     if (i >= pImpl->width) {
-        wbtError << "Trying to access an element that exceeds signal width.";
+        bfError << "Trying to access an element that exceeds signal width.";
         return {};
     }
 
@@ -289,7 +294,7 @@ T* Signal::impl::getBufferImpl()
         {DataType::BOOLEAN, typeid(bool).hash_code()}};
 
     if (!bufferPtr) {
-        wbtError << "The pointer to data is null. The signal was not configured properly.";
+        bfError << "The pointer to data is null. The signal was not configured properly.";
         return nullptr;
     }
 
@@ -297,7 +302,7 @@ T* Signal::impl::getBufferImpl()
     // If this is not met, applying pointer arithmetics on the returned
     // pointer would show unknown behaviour.
     if (typeid(T).hash_code() != mapDataTypeToHash.at(portDataType)) {
-        wbtError << "Trying to get the buffer using a type different than its DataType";
+        bfError << "Trying to get the buffer using a type different than its DataType";
         return nullptr;
     }
 
@@ -323,20 +328,20 @@ bool Signal::setBuffer(const T* data, const unsigned length)
     // Non contiguous signals follow the Simulink convention of being read-only.
     // They are used only for input signals.
     if (pImpl->dataFormat == DataFormat::NONCONTIGUOUS) {
-        wbtError << "Changing buffer address to NONCONTIGUOUS is not allowed.";
+        bfError << "Changing buffer address to NONCONTIGUOUS is not allowed.";
         return false;
     }
 
     // Fail if the length is greater of the signal width
     if (pImpl->dataFormat == DataFormat::CONTIGUOUS_ZEROCOPY && length > pImpl->width) {
-        wbtError << "Trying to set a buffer with a length greater than the signal width.";
+        bfError << "Trying to set a buffer with a length greater than the signal width.";
         return false;
     }
 
     // Check that T matches the type of raw buffer stored. Use getBuffer since it will return
     // nullptr if this is not met.
     if (!getBuffer<T>()) {
-        wbtError << "Trying to get a pointer with a type not matching the signal's DataType.";
+        bfError << "Trying to get a pointer with a type not matching the signal's DataType.";
         return false;
     }
 
@@ -365,7 +370,7 @@ bool Signal::setBuffer(const T* data, const unsigned length)
             pImpl->width = length;
             break;
         case DataFormat::NONCONTIGUOUS:
-            wbtError << "The code should never arrive here. Unexpected error.";
+            bfError << "The code should never arrive here. Unexpected error.";
             return false;
     }
 

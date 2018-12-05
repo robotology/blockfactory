@@ -13,14 +13,16 @@
 #include <string>
 #include <vector>
 
-namespace wbt {
-    template <typename T>
-    class Parameter;
-    class ParameterMetadata;
-    class Parameters;
-    const int PARAM_INVALID_INDEX = -1;
-    const std::string PARAM_INVALID_NAME = {};
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        template <typename T>
+        class Parameter;
+        class ParameterMetadata;
+        class Parameters;
+        const int PARAM_INVALID_INDEX = -1;
+        const std::string PARAM_INVALID_NAME = {};
+    } // namespace core
+} // namespace blockfactory
 
 /**
  * @brief Class for storing block's parameters
@@ -29,19 +31,21 @@ namespace wbt {
  *
  * @see wbt::Parameter, wbt::ParameterMetadata, wbt::ParameterType
  */
-class wbt::Parameters
+class blockfactory::core::Parameters
 {
 public:
     using ParamIndex = int;
     using ParamName = std::string;
 
 private:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     class impl;
     std::unique_ptr<impl> pImpl;
+#endif
 
 public:
     Parameters();
-    Parameters(const wbt::Parameters& other);
+    Parameters(const blockfactory::core::Parameters& other);
     Parameters& operator=(const Parameters& other);
 
     ~Parameters();
@@ -85,7 +89,7 @@ public:
      * @return True for success, false otherwise.
      */
     template <typename T>
-    bool storeParameter(const T& param, const wbt::ParameterMetadata& paramMetadata);
+    bool storeParameter(const T& param, const blockfactory::core::ParameterMetadata& paramMetadata);
 
     /**
      * @brief Store a vector parameter
@@ -97,7 +101,8 @@ public:
      * @return True for success, false otherwise.
      */
     template <typename T>
-    bool storeParameter(const std::vector<T>& param, const wbt::ParameterMetadata& paramMetadata);
+    bool storeParameter(const std::vector<T>& param,
+                        const blockfactory::core::ParameterMetadata& paramMetadata);
 
     /**
      * @brief Store a parameter
@@ -170,7 +175,7 @@ public:
      * @return The metadata associate with the parameter for success, a metadata with a stored name
      *         `dummy` otherwise.
      */
-    wbt::ParameterMetadata getParameterMetadata(const ParamName& name);
+    blockfactory::core::ParameterMetadata getParameterMetadata(const ParamName& name);
 };
 
 // ============
@@ -178,75 +183,89 @@ public:
 // ============
 
 // SCALAR
-namespace wbt {
-    // Explicit declaration for numeric types
-    extern template bool Parameters::getParameter<int>(const Parameters::ParamName& name,
-                                                       int& param) const;
-    extern template bool Parameters::getParameter<bool>(const Parameters::ParamName& name,
-                                                        bool& param) const;
-    extern template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
-                                                          double& param) const;
-    // Explicit specialization for std::string
-    template <>
-    bool Parameters::getParameter<std::string>(const Parameters::ParamName& name,
-                                               std::string& param) const;
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        // Explicit declaration for numeric types
+        extern template bool Parameters::getParameter<int>(const Parameters::ParamName& name,
+                                                           int& param) const;
+        extern template bool Parameters::getParameter<bool>(const Parameters::ParamName& name,
+                                                            bool& param) const;
+        extern template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
+                                                              double& param) const;
+        // Explicit specialization for std::string
+        template <>
+        bool Parameters::getParameter<std::string>(const Parameters::ParamName& name,
+                                                   std::string& param) const;
+    } // namespace core
+} // namespace blockfactory
 
 // VECTOR
-namespace wbt {
-    // Explicit declaration for numeric types
-    extern template bool Parameters::getParameter<int>(const Parameters::ParamName& name,
-                                                       std::vector<int>& param) const;
-    extern template bool Parameters::getParameter<bool>(const Parameters::ParamName& name,
-                                                        std::vector<bool>& param) const;
-    extern template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
-                                                          std::vector<double>& param) const;
-    extern template bool
-    Parameters::getParameter<std::string>(const Parameters::ParamName& name,
-                                          std::vector<std::string>& param) const;
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        // Explicit declaration for numeric types
+        extern template bool Parameters::getParameter<int>(const Parameters::ParamName& name,
+                                                           std::vector<int>& param) const;
+        extern template bool Parameters::getParameter<bool>(const Parameters::ParamName& name,
+                                                            std::vector<bool>& param) const;
+        extern template bool Parameters::getParameter<double>(const Parameters::ParamName& name,
+                                                              std::vector<double>& param) const;
+        extern template bool
+        Parameters::getParameter<std::string>(const Parameters::ParamName& name,
+                                              std::vector<std::string>& param) const;
+    } // namespace core
+} // namespace blockfactory
 
 // ==============
 // STOREPARAMETER
 // ==============
 
 // SCALAR
-namespace wbt {
-    // Explicit declaration for numeric types
-    extern template bool Parameters::storeParameter<int>(const int& param,
-                                                         const ParameterMetadata& paramMetadata);
-    extern template bool Parameters::storeParameter<bool>(const bool& param,
-                                                          const ParameterMetadata& paramMetadata);
-    extern template bool Parameters::storeParameter<double>(const double& param,
-                                                            const ParameterMetadata& paramMetadata);
-    // Explicit specialization for std::string
-    template <>
-    bool Parameters::storeParameter<std::string>(const std::string& param,
-                                                 const ParameterMetadata& paramMetadata);
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        // Explicit declaration for numeric types
+        extern template bool
+        Parameters::storeParameter<int>(const int& param, const ParameterMetadata& paramMetadata);
+        extern template bool
+        Parameters::storeParameter<bool>(const bool& param, const ParameterMetadata& paramMetadata);
+        extern template bool
+        Parameters::storeParameter<double>(const double& param,
+                                           const ParameterMetadata& paramMetadata);
+        // Explicit specialization for std::string
+        template <>
+        bool Parameters::storeParameter<std::string>(const std::string& param,
+                                                     const ParameterMetadata& paramMetadata);
+    } // namespace core
+} // namespace blockfactory
 
 // VECTOR
-namespace wbt {
-    // Explicit declaration for numeric types
-    extern template bool Parameters::storeParameter<int>(const std::vector<int>& param,
-                                                         const ParameterMetadata& paramMetadata);
-    extern template bool Parameters::storeParameter<bool>(const std::vector<bool>& param,
-                                                          const ParameterMetadata& paramMetadata);
-    extern template bool Parameters::storeParameter<double>(const std::vector<double>& param,
-                                                            const ParameterMetadata& paramMetadata);
-    extern template bool
-    Parameters::storeParameter<std::string>(const std::vector<std::string>& param,
-                                            const ParameterMetadata& paramMetadata);
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        // Explicit declaration for numeric types
+        extern template bool
+        Parameters::storeParameter<int>(const std::vector<int>& param,
+                                        const ParameterMetadata& paramMetadata);
+        extern template bool
+        Parameters::storeParameter<bool>(const std::vector<bool>& param,
+                                         const ParameterMetadata& paramMetadata);
+        extern template bool
+        Parameters::storeParameter<double>(const std::vector<double>& param,
+                                           const ParameterMetadata& paramMetadata);
+        extern template bool
+        Parameters::storeParameter<std::string>(const std::vector<std::string>& param,
+                                                const ParameterMetadata& paramMetadata);
+    } // namespace core
+} // namespace blockfactory
 
 // PARAMETER
-namespace wbt {
-    // Explicit declaration for numeric types
-    extern template bool Parameters::storeParameter<int>(const Parameter<int>& parameter);
-    extern template bool Parameters::storeParameter<bool>(const Parameter<bool>& parameter);
-    extern template bool Parameters::storeParameter<double>(const Parameter<double>& parameter);
-    extern template bool
-    Parameters::storeParameter<std::string>(const Parameter<std::string>& parameter);
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        // Explicit declaration for numeric types
+        extern template bool Parameters::storeParameter<int>(const Parameter<int>& parameter);
+        extern template bool Parameters::storeParameter<bool>(const Parameter<bool>& parameter);
+        extern template bool Parameters::storeParameter<double>(const Parameter<double>& parameter);
+        extern template bool
+        Parameters::storeParameter<std::string>(const Parameter<std::string>& parameter);
+    } // namespace core
+} // namespace blockfactory
 
 #endif // WBT_PARAMETERS_H

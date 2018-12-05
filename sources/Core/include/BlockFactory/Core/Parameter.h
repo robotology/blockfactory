@@ -12,18 +12,20 @@
 #include <string>
 #include <vector>
 
-namespace wbt {
-    class ParameterMetadata;
-    template <typename T>
-    class Parameter;
-    enum class ParameterType;
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        class ParameterMetadata;
+        template <typename T>
+        class Parameter;
+        enum class ParameterType;
+    } // namespace core
+} // namespace blockfactory
 
 /**
  * @brief Defines the types of parameters supported by wbt::Parameter
  * @see wbt::ParameterMetadata, wbt::Parameter
  */
-enum class wbt::ParameterType
+enum class blockfactory::core::ParameterType
 {
     // Scalar / Vector / Matrix
     INT,
@@ -54,7 +56,7 @@ enum class wbt::ParameterType
  *
  * @see wbt::Parameter, wbt::ParameterType
  */
-class wbt::ParameterMetadata
+class blockfactory::core::ParameterMetadata
 {
 public:
     enum
@@ -67,7 +69,7 @@ public:
 
     int rows;
     int cols;
-    wbt::ParameterType type;
+    blockfactory::core::ParameterType type;
 
     ParameterMetadata() = delete;
     ~ParameterMetadata() = default;
@@ -97,7 +99,7 @@ public:
  * @see wbt::Parameters, wbt::ParameterMetadata
  */
 template <typename T>
-class wbt::Parameter
+class blockfactory::core::Parameter
 {
 private:
     using ParamVector = std::vector<T>;
@@ -105,19 +107,19 @@ private:
     bool m_isScalar;
     T m_valueScalar;
     ParamVector m_valueVector;
-    wbt::ParameterMetadata m_metadata;
+    blockfactory::core::ParameterMetadata m_metadata;
 
 public:
     enum class Type;
     Parameter() = delete;
     ~Parameter() = default;
 
-    Parameter(const T& value, const wbt::ParameterMetadata& md)
+    Parameter(const T& value, const blockfactory::core::ParameterMetadata& md)
         : m_isScalar(true)
         , m_valueScalar(value)
         , m_metadata(md)
     {}
-    Parameter(const ParamVector& valueVec, const wbt::ParameterMetadata& md)
+    Parameter(const ParamVector& valueVec, const blockfactory::core::ParameterMetadata& md)
         : m_valueVector(valueVec)
         , m_isScalar(false)
         , m_metadata(md)
@@ -126,7 +128,7 @@ public:
     bool isScalar() const { return m_isScalar; }
     T getScalarParameter() const { return m_valueScalar; }
     ParamVector getVectorParameter() const { return m_valueVector; }
-    wbt::ParameterMetadata getMetadata() const { return m_metadata; }
+    blockfactory::core::ParameterMetadata getMetadata() const { return m_metadata; }
 };
 
 #endif // WBT_PARAMETER_H

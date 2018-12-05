@@ -11,10 +11,12 @@
 
 #include <memory>
 
-namespace wbt {
-    class Signal;
-    enum class DataType;
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        class Signal;
+        enum class DataType;
+    } // namespace core
+} // namespace blockfactory
 
 /**
  * @brief Defines allowed signal data types
@@ -24,7 +26,7 @@ namespace wbt {
  * @note Currently only `DOUBLE` is fully implemented.
  * @see Signal::Signal, BlockInformation::setInputPortType, BlockInformation::setOutputPortType
  */
-enum class wbt::DataType
+enum class blockfactory::core::DataType
 {
     DOUBLE,
     SINGLE,
@@ -49,7 +51,7 @@ enum class wbt::DataType
  * @remark A signal can be plugged to more than one block port.
  * @see wbt::Block
  */
-class wbt::Signal
+class blockfactory::core::Signal
 {
 public:
     /// Defines the format of signals supported by Signal. It specifies what kind of data the
@@ -77,8 +79,10 @@ public:
     };
 
 private:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     class impl;
     std::unique_ptr<impl> pImpl;
+#endif
 
 public:
     enum
@@ -257,12 +261,14 @@ public:
 // TODO: for the time being, only DOUBLE is allowed. The toolbox has an almost complete support to
 //       many other data types, but they need to be tested.
 
-namespace wbt {
-    // DataType::DOUBLE
-    extern template double* Signal::getBuffer<double>();
-    extern template const double* Signal::getBuffer<double>() const;
-    extern template double Signal::get<double>(const unsigned i) const;
-    extern template bool Signal::setBuffer<double>(const double* data, const unsigned length);
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        // DataType::DOUBLE
+        extern template double* Signal::getBuffer<double>();
+        extern template const double* Signal::getBuffer<double>() const;
+        extern template double Signal::get<double>(const unsigned i) const;
+        extern template bool Signal::setBuffer<double>(const double* data, const unsigned length);
+    } // namespace core
+} // namespace blockfactory
 
 #endif // WBT_SIGNAL_H

@@ -36,7 +36,7 @@
 // UTILITIES
 // =========
 
-using BlockFactory = shlibpp::SharedLibraryClassFactory<wbt::Block>;
+using BlockFactory = shlibpp::SharedLibraryClassFactory<blockfactory::core::Block>;
 using BlockFactoryPtr = std::shared_ptr<BlockFactory>;
 
 class BlockFactorySingleton
@@ -78,7 +78,7 @@ public:
             auto factory = std::make_shared<BlockFactory>(classFactoryLibrary.c_str(),
                                                           classFactoryName.c_str());
             if (!factory || !factory->isValid()) {
-                wbtError << "Failed to create factory";
+                bfError << "Failed to create factory";
                 return {};
             }
 
@@ -88,7 +88,7 @@ public:
         }
 
         if (!factoryMap[blockFactoryData] || !factoryMap[blockFactoryData]->isValid()) {
-            wbtError << "Failed to create factory";
+            bfError << "Failed to create factory";
             return {};
         }
 
@@ -105,9 +105,9 @@ static void catchLogMessages(bool status, SimStruct* S)
     const unsigned bufferLen = 1024;
 
     // Notify warnings
-    if (!wbt::Log::getSingleton().getWarnings().empty()) {
+    if (!blockfactory::core::Log::getSingleton().getWarnings().empty()) {
         // Get the warnings
-        std::string warningMsg = wbt::Log::getSingleton().getWarnings();
+        std::string warningMsg = blockfactory::core::Log::getSingleton().getWarnings();
 
         // Trim the message if needed
         if (warningMsg.length() >= bufferLen) {
@@ -124,13 +124,13 @@ static void catchLogMessages(bool status, SimStruct* S)
         }
 
         // Clean the notified warnings
-        wbt::Log::getSingleton().clearWarnings();
+        blockfactory::core::Log::getSingleton().clearWarnings();
     }
 
     // Notify errors
     if (!status) {
         // Get the errors
-        std::string errorMsg = wbt::Log::getSingleton().getErrors();
+        std::string errorMsg = blockfactory::core::Log::getSingleton().getErrors();
 
         // Trim the message if needed
         if (errorMsg.length() >= bufferLen) {
@@ -147,7 +147,7 @@ static void catchLogMessages(bool status, SimStruct* S)
         }
 
         // Clean the notified errors
-        wbt::Log::getSingleton().clearErrors();
+        blockfactory::core::Log::getSingleton().clearErrors();
         return;
     }
 }
@@ -174,7 +174,7 @@ static void mdlSetInputPortDimensionInfo(SimStruct* S, int_T port, const DimsInf
     if (ssGetInputPortWidth(S, port) == DYNAMICALLY_SIZED) {
         if (dimsInfo->width != DYNAMICALLY_SIZED) {
             if (!ssSetInputPortDimensionInfo(S, port, dimsInfo)) {
-                wbtError << "Failed to set proposed sizes.";
+                bfError << "Failed to set proposed sizes.";
                 catchLogMessages(false, S);
                 return;
             }
@@ -190,7 +190,7 @@ static void mdlSetOutputPortDimensionInfo(SimStruct* S, int_T port, const DimsIn
     if (ssGetOutputPortWidth(S, port) == DYNAMICALLY_SIZED) {
         if (dimsInfo->width != DYNAMICALLY_SIZED) {
             if (!ssSetOutputPortDimensionInfo(S, port, dimsInfo)) {
-                wbtError << "Failed to set proposed sizes.";
+                bfError << "Failed to set proposed sizes.";
                 catchLogMessages(false, S);
                 return;
             }
@@ -205,10 +205,10 @@ static void mdlSetOutputPortDimensionInfo(SimStruct* S, int_T port, const DimsIn
 static void mdlInitializeSizes(SimStruct* S)
 {
     // Initialize the Log singleton
-    wbt::Log::getSingleton().clear();
+    blockfactory::core::Log::getSingleton().clear();
 
     if (ssGetSFcnParamsCount(S) < 1) {
-        wbtError << "The block type parameter must be specified";
+        bfError << "The block type parameter must be specified";
         catchLogMessages(false, S);
         return;
     }
@@ -221,25 +221,25 @@ static void mdlInitializeSizes(SimStruct* S)
     BlockFactoryPtr factory = BlockFactorySingleton::getInstance({blockLibraryName, className});
 
     if (!factory) {
-        wbtError << "Failed to get factory object";
+        bfError << "Failed to get factory object";
         catchLogMessages(false, S);
         return;
     }
 
     if (!factory->isValid()) {
-        wbtError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
-                 << "): " << factory->getError().c_str();
+        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
+                << "): " << factory->getError().c_str();
         catchLogMessages(false, S);
         return;
     }
 
     // Allocate the block from the factory. Since this object is supposed to be deleted
     // by the end of this function scope, SharedLibraryClass can be used and provides RAII.
-    shlibpp::SharedLibraryClass<wbt::Block> block(*factory);
+    shlibpp::SharedLibraryClass<blockfactory::core::Block> block(*factory);
 
     // Notify errors
     if (!block.isValid()) {
-        wbtError << "Could not create an object of type " + className;
+        bfError << "Could not create an object of type " + className;
         catchLogMessages(false, S);
         return;
     }
@@ -270,14 +270,14 @@ static void mdlInitializeSizes(SimStruct* S)
     else {
         int_T numOfExpectedParams = ssGetNumSFcnParams(S);
         int_T numOfBlockParams = ssGetSFcnParamsCount(S);
-        wbtError << "Number of parameters (" << numOfBlockParams
-                 << ") different from those expected (" << numOfExpectedParams << ")";
+        bfError << "Number of parameters (" << numOfBlockParams
+                << ") different from those expected (" << numOfExpectedParams << ")";
         catchLogMessages(false, S);
         return;
     }
 #endif
 
-    wbt::SimulinkBlockInformation blockInfo(S);
+    blockfactory::mex::SimulinkBlockInformation blockInfo(S);
     bool ok = block->configureSizeAndPorts(&blockInfo);
     catchLogMessages(ok, S);
 
@@ -312,7 +312,7 @@ static void mdlInitializeSizes(SimStruct* S)
     for (const auto& additionalOption : additionalOptions) {
         double option;
         if (!blockInfo.optionFromKey(additionalOption, option)) {
-            wbtError << "Failed to get option from key.";
+            bfError << "Failed to get option from key.";
             catchLogMessages(false, S);
             return;
         }
@@ -352,28 +352,29 @@ static void mdlStart(SimStruct* S)
     BlockFactoryPtr factory = BlockFactorySingleton::getInstance({blockLibraryName, className});
 
     if (!factory) {
-        wbtError << "Failed to get factory object";
+        bfError << "Failed to get factory object";
         catchLogMessages(false, S);
         return;
     }
 
     if (!factory->isValid()) {
-        wbtError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
-                 << "): " << factory->getError().c_str();
+        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
+                << "): " << factory->getError().c_str();
         catchLogMessages(false, S);
         return;
     }
 
     // Allocate the block from the factory and store its pointer in the PWork
-    wbt::Block* block = factory->create();
+    blockfactory::core::Block* block = factory->create();
     ssSetPWorkValue(S, 0, block);
 
     // Allocate the BlockInformation object and store its pointer in the PWork
-    wbt::BlockInformation* blockInfo = new wbt::SimulinkBlockInformation(S);
+    blockfactory::core::BlockInformation* blockInfo =
+        new blockfactory::mex::SimulinkBlockInformation(S);
     ssSetPWorkValue(S, 1, blockInfo);
 
     if (!block || !blockInfo) {
-        wbtError << "Failed to create objects before storing them in the PWork.";
+        bfError << "Failed to create objects before storing them in the PWork.";
         catchLogMessages(false, S);
         return;
     }
@@ -389,19 +390,20 @@ static void mdlUpdate(SimStruct* S, int_T tid)
 {
     UNUSED_ARG(tid);
     if (ssGetNumPWork(S) != 2) {
-        wbtError << "PWork should contain two elements.";
+        bfError << "PWork should contain two elements.";
         catchLogMessages(false, S);
         return;
     }
 
     // Get the Block object
-    wbt::Block* block = static_cast<wbt::Block*>(ssGetPWorkValue(S, 0));
+    blockfactory::core::Block* block =
+        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
     // Get the SimulinkBlockInformation object
-    wbt::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<wbt::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    blockfactory::mex::SimulinkBlockInformation* blockInfo;
+    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
-        wbtError << "Failed to get pointers from the PWork vector.";
+        bfError << "Failed to get pointers from the PWork vector.";
         catchLogMessages(false, S);
         return;
     }
@@ -418,19 +420,20 @@ static void mdlUpdate(SimStruct* S, int_T tid)
 static void mdlInitializeConditions(SimStruct* S)
 {
     if (ssGetNumPWork(S) != 2) {
-        wbtError << "PWork should contain two elements.";
+        bfError << "PWork should contain two elements.";
         catchLogMessages(false, S);
         return;
     }
 
     // Get the Block object
-    wbt::Block* block = static_cast<wbt::Block*>(ssGetPWorkValue(S, 0));
+    blockfactory::core::Block* block =
+        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
     // Get the SimulinkBlockInformation object
-    wbt::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<wbt::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    blockfactory::mex::SimulinkBlockInformation* blockInfo;
+    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
-        wbtError << "Failed to get pointers from the PWork vector.";
+        bfError << "Failed to get pointers from the PWork vector.";
         catchLogMessages(false, S);
         return;
     }
@@ -457,19 +460,20 @@ static void mdlOutputs(SimStruct* S, int_T tid)
 {
     UNUSED_ARG(tid);
     if (ssGetNumPWork(S) != 2) {
-        wbtError << "PWork should contain two elements.";
+        bfError << "PWork should contain two elements.";
         catchLogMessages(false, S);
         return;
     }
 
     // Get the Block object
-    wbt::Block* block = static_cast<wbt::Block*>(ssGetPWorkValue(S, 0));
+    blockfactory::core::Block* block =
+        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
     // Get the SimulinkBlockInformation object
-    wbt::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<wbt::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    blockfactory::mex::SimulinkBlockInformation* blockInfo;
+    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
-        wbtError << "Failed to get pointers from the PWork vector.";
+        bfError << "Failed to get pointers from the PWork vector.";
         catchLogMessages(false, S);
         return;
     }
@@ -486,26 +490,27 @@ static void mdlTerminate(SimStruct* S)
     }
 
     if (ssGetNumPWork(S) != 2) {
-        wbtError << "PWork should contain two elements.";
+        bfError << "PWork should contain two elements.";
         catchLogMessages(false, S);
         return;
     }
 
     // Get the Block object
-    wbt::Block* block = static_cast<wbt::Block*>(ssGetPWorkValue(S, 0));
+    blockfactory::core::Block* block =
+        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
     // Get the SimulinkBlockInformation object
-    wbt::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<wbt::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    blockfactory::mex::SimulinkBlockInformation* blockInfo;
+    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (block) {
         if (!block->terminate(blockInfo)) {
-            wbtError << "Failed to terminate block.";
+            bfError << "Failed to terminate block.";
             catchLogMessages(false, S);
         }
     }
     else {
-        wbtWarning << "Failed to get Block pointer from the PWork vector." << std::endl
-                   << "Could't terminate block";
+        bfWarning << "Failed to get Block pointer from the PWork vector." << std::endl
+                  << "Could't terminate block";
     }
 
     // Get the class name and the library name from the parameter
@@ -516,14 +521,14 @@ static void mdlTerminate(SimStruct* S)
     BlockFactoryPtr factory = BlockFactorySingleton::getInstance({blockLibraryName, className});
 
     if (!factory) {
-        wbtError << "Failed to get factory object";
+        bfError << "Failed to get factory object";
         catchLogMessages(false, S);
         return;
     }
 
     if (!factory->isValid()) {
-        wbtError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
-                 << "): " << factory->getError().c_str();
+        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
+                << "): " << factory->getError().c_str();
         catchLogMessages(false, S);
         return;
     }
@@ -567,50 +572,51 @@ std::string toRTWStringVector(const std::vector<std::string>& stringInput)
     return output;
 }
 
-const std::pair<std::string, std::string> parameterTypeToString(const wbt::ParameterType& type)
+const std::pair<std::string, std::string>
+parameterTypeToString(const blockfactory::core::ParameterType& type)
 {
     switch (type) {
-        case wbt::ParameterType::INT:
+        case blockfactory::core::ParameterType::INT:
             return {"ParameterType::INT", "int"};
-        case wbt::ParameterType::BOOL:
+        case blockfactory::core::ParameterType::BOOL:
             return {"ParameterType::BOOL", "bool"};
-        case wbt::ParameterType::DOUBLE:
+        case blockfactory::core::ParameterType::DOUBLE:
             return {"ParameterType::DOUBLE", "double"};
-        case wbt::ParameterType::STRING:
+        case blockfactory::core::ParameterType::STRING:
             return {"ParameterType::STRING", "std::string"};
-        case wbt::ParameterType::CELL_INT:
+        case blockfactory::core::ParameterType::CELL_INT:
             return {"ParameterType::CELL_INT", "int"};
-        case wbt::ParameterType::CELL_BOOL:
+        case blockfactory::core::ParameterType::CELL_BOOL:
             return {"ParameterType::CELL_BOOL", "bool"};
-        case wbt::ParameterType::CELL_DOUBLE:
+        case blockfactory::core::ParameterType::CELL_DOUBLE:
             return {"ParameterType::CELL_DOUBLE", "double"};
-        case wbt::ParameterType::CELL_STRING:
+        case blockfactory::core::ParameterType::CELL_STRING:
             return {"ParameterType::CELL_STRING", "std::string"};
-        case wbt::ParameterType::STRUCT_INT:
+        case blockfactory::core::ParameterType::STRUCT_INT:
             return {"ParameterType::STRUCT_INT", "int"};
-        case wbt::ParameterType::STRUCT_BOOL:
+        case blockfactory::core::ParameterType::STRUCT_BOOL:
             return {"ParameterType::STRUCT_BOOL", "bool"};
-        case wbt::ParameterType::STRUCT_DOUBLE:
+        case blockfactory::core::ParameterType::STRUCT_DOUBLE:
             return {"ParameterType::STRUCT_DOUBLE", "double"};
-        case wbt::ParameterType::STRUCT_STRING:
+        case blockfactory::core::ParameterType::STRUCT_STRING:
             return {"ParameterType::STRUCT_STRING", "std::string"};
-        case wbt::ParameterType::STRUCT_CELL_INT:
+        case blockfactory::core::ParameterType::STRUCT_CELL_INT:
             return {"ParameterType::STRUCT_CELL_INT", "int"};
-        case wbt::ParameterType::STRUCT_CELL_BOOL:
+        case blockfactory::core::ParameterType::STRUCT_CELL_BOOL:
             return {"ParameterType::STRUCT_CELL_BOOL", "bool"};
-        case wbt::ParameterType::STRUCT_CELL_DOUBLE:
+        case blockfactory::core::ParameterType::STRUCT_CELL_DOUBLE:
             return {"ParameterType::STRUCT_CELL_DOUBLE", "double"};
-        case wbt::ParameterType::STRUCT_CELL_STRING:
+        case blockfactory::core::ParameterType::STRUCT_CELL_STRING:
             return {"ParameterType::STRUCT_CELL_STRING", "std::string"};
     }
 }
 
 template <typename T>
-bool writeParameterToRTW(const wbt::Parameter<T> param, SimStruct* S)
+bool writeParameterToRTW(const blockfactory::core::Parameter<T> param, SimStruct* S)
 {
-    if (param.getMetadata().cols == wbt::ParameterMetadata::DynamicSize
-        || param.getMetadata().rows == wbt::ParameterMetadata::DynamicSize) {
-        wbtError << "Storing in the rtw file dynamically-sized parameters is not supported.";
+    if (param.getMetadata().cols == blockfactory::core::ParameterMetadata::DynamicSize
+        || param.getMetadata().rows == blockfactory::core::ParameterMetadata::DynamicSize) {
+        bfError << "Storing in the rtw file dynamically-sized parameters is not supported.";
         return false;
     }
 
@@ -678,11 +684,11 @@ bool writeParameterToRTW(const wbt::Parameter<T> param, SimStruct* S)
 
 // Specialize the template for std::string
 template <>
-bool writeParameterToRTW(const wbt::Parameter<std::string> param, SimStruct* S)
+bool writeParameterToRTW(const blockfactory::core::Parameter<std::string> param, SimStruct* S)
 {
-    if (param.getMetadata().cols == wbt::ParameterMetadata::DynamicSize
-        || param.getMetadata().rows == wbt::ParameterMetadata::DynamicSize) {
-        wbtError << "Storing in the rtw file dynamically-sized parameters is not supported.";
+    if (param.getMetadata().cols == blockfactory::core::ParameterMetadata::DynamicSize
+        || param.getMetadata().rows == blockfactory::core::ParameterMetadata::DynamicSize) {
+        bfError << "Storing in the rtw file dynamically-sized parameters is not supported.";
         return false;
     }
 
@@ -748,7 +754,7 @@ bool writeParameterToRTW(const wbt::Parameter<std::string> param, SimStruct* S)
     }
 }
 
-bool writeRTW(SimStruct* S, const wbt::Parameters& params)
+bool writeRTW(SimStruct* S, const blockfactory::core::Parameters& params)
 {
     // RTW Parameters record metadata
     // ==============================
@@ -795,7 +801,7 @@ bool writeRTW(SimStruct* S, const wbt::Parameters& params)
     }
 
     if (!ok) {
-        wbtError << "Failed to write parameters to RTW file.";
+        bfError << "Failed to write parameters to RTW file.";
         catchLogMessages(false, S);
         return false;
     }
@@ -808,13 +814,14 @@ static void mdlRTW(SimStruct* S)
     if (ssGetNumPWork(S) > 0 && ssGetPWork(S)) {
 
         // Get the block object from the PWork
-        wbt::Block* block = static_cast<wbt::Block*>(ssGetPWorkValue(S, 0));
+        blockfactory::core::Block* block =
+            static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
 
         bool ok;
-        wbt::Parameters params;
+        blockfactory::core::Parameters params;
 
         if (!block) {
-            wbtError << "Unable to get the class from the PWork vector.";
+            bfError << "Unable to get the class from the PWork vector.";
             catchLogMessages(false, S);
             return;
         }
@@ -823,8 +830,8 @@ static void mdlRTW(SimStruct* S)
         ok = block->getParameters(params);
         catchLogMessages(ok, S);
         if (!ok) {
-            wbtError << "Failed to get parameters from the block during the code "
-                     << "generation process";
+            bfError << "Failed to get parameters from the block during the code "
+                    << "generation process";
             return;
         }
 
@@ -832,8 +839,8 @@ static void mdlRTW(SimStruct* S)
         ok = writeRTW(S, params);
         catchLogMessages(ok, S);
         if (!ok) {
-            wbtError << "Failed to write parameters to the RTW file during the code "
-                     << "generation process";
+            bfError << "Failed to write parameters to the RTW file during the code "
+                    << "generation process";
             return;
         }
 
@@ -841,8 +848,8 @@ static void mdlRTW(SimStruct* S)
         ok = ssWriteRTWWorkVect(S, "PWork", 1, "blockPWork", ssGetNumPWork(S));
         catchLogMessages(ok, S);
         if (!ok) {
-            wbtError << "Failed to store the PWork vector during the code "
-                     << "generation process";
+            bfError << "Failed to store the PWork vector during the code "
+                    << "generation process";
             return;
         }
     }

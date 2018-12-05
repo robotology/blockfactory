@@ -8,4 +8,4 @@
 
 #include "BlockFactory/Core/BlockInformation.h"
 
-const std::string wbt::BlockOptionPrioritizeOrder = "wbt.BlockOptionPrioritizeOrder";
+const std::string blockfactory::core::BlockOptionPrioritizeOrder = "wbt.BlockOptionPrioritizeOrder";

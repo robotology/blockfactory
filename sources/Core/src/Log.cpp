@@ -10,7 +10,7 @@
 
 #include <vector>
 
-using namespace wbt;
+using namespace blockfactory::core;
 
 class Log::impl
 {
@@ -18,7 +18,7 @@ public:
     std::vector<std::unique_ptr<std::stringstream>> errorsSStream;
     std::vector<std::unique_ptr<std::stringstream>> warningsSStream;
 
-    const Verbosity verbosity = WBT_LOG_VERBOSITY;
+    const Verbosity verbosity = BF_LOG_VERBOSITY;
 
     static std::string
     serializeVectorStringStream(const std::vector<std::unique_ptr<std::stringstream>>& ss);

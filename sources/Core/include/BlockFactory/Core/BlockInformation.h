@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_BLOCKINFORMATION_H
-#define WBT_BLOCKINFORMATION_H
+#ifndef BLOCKFACTORY_CORE_BLOCKINFORMATION_H
+#define BLOCKFACTORY_CORE_BLOCKINFORMATION_H
 
 #include <memory>
 #include <string>
@@ -15,23 +15,27 @@
 #include <utility>
 #include <vector>
 
-namespace wbt {
-    class BlockInformation;
-    class ParameterMetadata;
-    class Parameters;
-    class Configuration;
-    class RobotInterface;
-    class Signal;
-    using InputSignalPtr = std::shared_ptr<const wbt::Signal>;
-    using OutputSignalPtr = std::shared_ptr<wbt::Signal>;
-    enum class DataType;
-    // List of possible key for defining block options:
-    extern const std::string BlockOptionPrioritizeOrder;
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        class BlockInformation;
+        class ParameterMetadata;
+        class Parameters;
+        class Configuration;
+        class RobotInterface;
+        class Signal;
+        using InputSignalPtr = std::shared_ptr<const blockfactory::core::Signal>;
+        using OutputSignalPtr = std::shared_ptr<blockfactory::core::Signal>;
+        enum class DataType;
+        // List of possible key for defining block options:
+        extern const std::string BlockOptionPrioritizeOrder;
+    } // namespace core
+} // namespace blockfactory
 
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 namespace iDynTree {
     class KinDynComputations;
 }
+#endif
 
 /**
  * @brief Abstract class for storing generic Block properties
@@ -53,7 +57,7 @@ namespace iDynTree {
  *
  * @see wbt::Block, wbt::Parameters, wbt::Signal
  */
-class wbt::BlockInformation
+class blockfactory::core::BlockInformation
 {
 public:
     using Rows = int;
@@ -73,7 +77,7 @@ public:
         };
     };
     using PortDimension = std::vector<int>;
-    using PortData = std::tuple<PortIndex, PortDimension, wbt::DataType>;
+    using PortData = std::tuple<PortIndex, PortDimension, blockfactory::core::DataType>;
 
     BlockInformation() = default;
     virtual ~BlockInformation() = default;
@@ -103,7 +107,7 @@ public:
      * @param[out] parameters A container filled with the parsed parameters.
      * @return True for success, false otherwise.
      */
-    virtual bool parseParameters(wbt::Parameters& parameters) = 0;
+    virtual bool parseParameters(blockfactory::core::Parameters& parameters) = 0;
 
     /**
      * @brief Add a parameter metadata
@@ -114,7 +118,7 @@ public:
      * @param paramMD The metadata to add.
      * @return True for success, false otherwise.
      */
-    virtual bool addParameterMetadata(const wbt::ParameterMetadata& paramMD) = 0;
+    virtual bool addParameterMetadata(const blockfactory::core::ParameterMetadata& paramMD) = 0;
 
     // ========================
     // PORT INFORMATION SETTERS
@@ -201,8 +205,8 @@ public:
      * @return The pointer to the signal connected to the input port for success, a `nullptr`
      *         otherwise.
      */
-    virtual wbt::InputSignalPtr getInputPortSignal(const PortIndex idx,
-                                                   const VectorSize size = -1) const = 0;
+    virtual blockfactory::core::InputSignalPtr
+    getInputPortSignal(const PortIndex idx, const VectorSize size = -1) const = 0;
 
     /**
      * @brief Get the signal connected to a 1D output port
@@ -212,14 +216,14 @@ public:
      *@return The pointer to the signal connected to the output port for success, a `nullptr`
      *         otherwise.
      */
-    virtual wbt::OutputSignalPtr getOutputPortSignal(const PortIndex idx,
-                                                     const VectorSize size = -1) const = 0;
+    virtual blockfactory::core::OutputSignalPtr
+    getOutputPortSignal(const PortIndex idx, const VectorSize size = -1) const = 0;
 };
 
-struct wbt::BlockInformation::IOData
+struct blockfactory::core::BlockInformation::IOData
 {
     std::vector<BlockInformation::PortData> input;
     std::vector<BlockInformation::PortData> output;
 };
 
-#endif // WBT_BLOCKINFORMATION_H
+#endif // BLOCKFACTORY_CORE_BLOCKINFORMATION_H

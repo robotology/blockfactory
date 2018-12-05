@@ -13,10 +13,12 @@
 #include <string>
 #include <vector>
 
-namespace wbt {
-    class Block;
-    class BlockInformation;
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        class Block;
+        class BlockInformation;
+    } // namespace core
+} // namespace blockfactory
 
 /**
  * @brief Basic abstract class for wrapping generic algorithms
@@ -81,7 +83,7 @@ namespace wbt {
  *
  * @see wbt::ParameterMetadata::ParameterMetadata for the data types of these variables.
  */
-class wbt::Block
+class blockfactory::core::Block
 {
 protected:
     /// Container for block's parameter. You can get this member using Block::getParameters
@@ -197,7 +199,7 @@ public:
      *     bool ok = blockInfo->addParameterMetadata(frameMetadata);
      *
      *     if (!ok) {
-     *         wbtError << "Failed to store parameters metadata.";
+     *         bfError << "Failed to store parameters metadata.";
      *         return false;
      *     }
 
@@ -220,7 +222,7 @@ public:
      * @param[out] params A wbt::Parameters object containing block's parameters.
      * @return bool True for success, false otherwise.
      */
-    bool getParameters(wbt::Parameters& params) const;
+    bool getParameters(blockfactory::core::Parameters& params) const;
 
     /**
      * @brief Configure the input and output ports

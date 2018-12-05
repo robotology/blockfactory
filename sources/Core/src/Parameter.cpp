@@ -8,7 +8,7 @@
 
 #include "BlockFactory/Core/Parameter.h"
 
-using namespace wbt;
+using namespace blockfactory::core;
 
 const std::string defaultParamPrefix = "ParamIndex_";
 

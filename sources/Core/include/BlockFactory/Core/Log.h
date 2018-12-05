@@ -14,33 +14,35 @@
 #include <string>
 
 #ifdef NDEBUG
-#define WBT_LOG_VERBOSITY wbt::Log::Verbosity::RELEASE
+#define BF_LOG_VERBOSITY blockfactory::core::Log::Verbosity::RELEASE
 #else
-#define WBT_LOG_VERBOSITY wbt::Log::Verbosity::DEBUG
+#define BF_LOG_VERBOSITY blockfactory::core::Log::Verbosity::DEBUG
 #endif
 
-#ifndef wbtError
-#define wbtError                                 \
-    wbt::Log::getSingleton().getLogStringStream( \
-        wbt::Log::Type::ERROR, __FILE__, __LINE__, __FUNCTION__)
+#ifndef bfError
+#define bfError                                                 \
+    blockfactory::core::Log::getSingleton().getLogStringStream( \
+        blockfactory::core::Log::Type::ERROR, __FILE__, __LINE__, __FUNCTION__)
 #endif
 
-#ifndef wbtWarning
-#define wbtWarning                               \
-    wbt::Log::getSingleton().getLogStringStream( \
-        wbt::Log::Type::WARNING, __FILE__, __LINE__, __FUNCTION__)
+#ifndef bfWarning
+#define bfWarning                                               \
+    blockfactory::core::Log::getSingleton().getLogStringStream( \
+        blockfactory::core::Log::Type::WARNING, __FILE__, __LINE__, __FUNCTION__)
 #endif
 
-namespace wbt {
-    class Log;
-} // namespace wbt
+namespace blockfactory {
+    namespace core {
+        class Log;
+    } // namespace core
+} // namespace blockfactory
 
 /**
  * @brief Class for handling log messages
  *
  * Errors and Warnings are currently supported.
  */
-class wbt::Log
+class blockfactory::core::Log
 {
 public:
     enum class Type
@@ -56,8 +58,10 @@ public:
     };
 
 private:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     class impl;
     std::unique_ptr<impl> pImpl;
+#endif
 
 public:
     Log();
@@ -70,7 +74,7 @@ public:
      *
      * @return The log singleton.
      */
-    static wbt::Log& getSingleton();
+    static blockfactory::core::Log& getSingleton();
 
     /**
      * @brief Get the stringstream object for adding log messages

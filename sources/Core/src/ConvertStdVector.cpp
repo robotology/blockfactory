@@ -13,7 +13,7 @@
 // ===================
 
 template <typename Tin, typename Tout>
-void wbt::convertStdVector(const std::vector<Tin>& input, std::vector<Tout>& output)
+void blockfactory::core::convertStdVector(const std::vector<Tin>& input, std::vector<Tout>& output)
 {
     output = std::vector<Tout>(input.begin(), input.end());
 }
@@ -21,36 +21,37 @@ void wbt::convertStdVector(const std::vector<Tin>& input, std::vector<Tout>& out
 // Explicit instantiation for all the other supported types
 // ========================================================
 
-template void wbt::convertStdVector<int, int>(const std::vector<int>& input,
-                                              std::vector<int>& output);
-template void wbt::convertStdVector<int, bool>(const std::vector<int>& input,
-                                               std::vector<bool>& output);
-template void wbt::convertStdVector<int, double>(const std::vector<int>& input,
-                                                 std::vector<double>& output);
+template void blockfactory::core::convertStdVector<int, int>(const std::vector<int>& input,
+                                                             std::vector<int>& output);
+template void blockfactory::core::convertStdVector<int, bool>(const std::vector<int>& input,
+                                                              std::vector<bool>& output);
+template void blockfactory::core::convertStdVector<int, double>(const std::vector<int>& input,
+                                                                std::vector<double>& output);
 // Bool to other numeric types
-template void wbt::convertStdVector<bool, bool>(const std::vector<bool>& input,
-                                                std::vector<bool>& output);
-template void wbt::convertStdVector<bool, int>(const std::vector<bool>& input,
-                                               std::vector<int>& output);
-template void wbt::convertStdVector<bool, double>(const std::vector<bool>& input,
-                                                  std::vector<double>& output);
+template void blockfactory::core::convertStdVector<bool, bool>(const std::vector<bool>& input,
+                                                               std::vector<bool>& output);
+template void blockfactory::core::convertStdVector<bool, int>(const std::vector<bool>& input,
+                                                              std::vector<int>& output);
+template void blockfactory::core::convertStdVector<bool, double>(const std::vector<bool>& input,
+                                                                 std::vector<double>& output);
 // Double to other numeric types
-template void wbt::convertStdVector<double, double>(const std::vector<double>& input,
-                                                    std::vector<double>& output);
-template void wbt::convertStdVector<double, int>(const std::vector<double>& input,
-                                                 std::vector<int>& output);
-template void wbt::convertStdVector<double, bool>(const std::vector<double>& input,
-                                                  std::vector<bool>& output);
+template void blockfactory::core::convertStdVector<double, double>(const std::vector<double>& input,
+                                                                   std::vector<double>& output);
+template void blockfactory::core::convertStdVector<double, int>(const std::vector<double>& input,
+                                                                std::vector<int>& output);
+template void blockfactory::core::convertStdVector<double, bool>(const std::vector<double>& input,
+                                                                 std::vector<bool>& output);
 // String to string
-template void wbt::convertStdVector<std::string, std::string>(const std::vector<std::string>& input,
-                                                              std::vector<std::string>& output);
+template void blockfactory::core::convertStdVector<std::string, std::string>(
+    const std::vector<std::string>& input,
+    std::vector<std::string>& output);
 
 // Explicit specialization for std::string type
 // ============================================
 
 template <>
-void wbt::convertStdVector<std::string, int>(const std::vector<std::string>& input,
-                                             std::vector<int>& output)
+void blockfactory::core::convertStdVector<std::string, int>(const std::vector<std::string>& input,
+                                                            std::vector<int>& output)
 {
     output.clear();
     output.resize(input.size());
@@ -60,8 +61,8 @@ void wbt::convertStdVector<std::string, int>(const std::vector<std::string>& inp
 }
 
 template <>
-void wbt::convertStdVector<std::string, bool>(const std::vector<std::string>& input,
-                                              std::vector<bool>& output)
+void blockfactory::core::convertStdVector<std::string, bool>(const std::vector<std::string>& input,
+                                                             std::vector<bool>& output)
 {
     output.clear();
     output.resize(input.size());
@@ -71,8 +72,9 @@ void wbt::convertStdVector<std::string, bool>(const std::vector<std::string>& in
 }
 
 template <>
-void wbt::convertStdVector<std::string, double>(const std::vector<std::string>& input,
-                                                std::vector<double>& output)
+void blockfactory::core::convertStdVector<std::string, double>(
+    const std::vector<std::string>& input,
+    std::vector<double>& output)
 {
     output.clear();
     output.resize(input.size());
@@ -82,8 +84,8 @@ void wbt::convertStdVector<std::string, double>(const std::vector<std::string>& 
 }
 
 template <>
-void wbt::convertStdVector<int, std::string>(const std::vector<int>& input,
-                                             std::vector<std::string>& output)
+void blockfactory::core::convertStdVector<int, std::string>(const std::vector<int>& input,
+                                                            std::vector<std::string>& output)
 {
     output.clear();
     output.resize(input.size());
@@ -93,8 +95,8 @@ void wbt::convertStdVector<int, std::string>(const std::vector<int>& input,
 }
 
 template <>
-void wbt::convertStdVector<bool, std::string>(const std::vector<bool>& input,
-                                              std::vector<std::string>& output)
+void blockfactory::core::convertStdVector<bool, std::string>(const std::vector<bool>& input,
+                                                             std::vector<std::string>& output)
 {
     output.clear();
     output.resize(input.size());
@@ -104,8 +106,8 @@ void wbt::convertStdVector<bool, std::string>(const std::vector<bool>& input,
 }
 
 template <>
-void wbt::convertStdVector<double, std::string>(const std::vector<double>& input,
-                                                std::vector<std::string>& output)
+void blockfactory::core::convertStdVector<double, std::string>(const std::vector<double>& input,
+                                                               std::vector<std::string>& output)
 {
     output.clear();
     output.resize(input.size());
@@ -113,11 +115,3 @@ void wbt::convertStdVector<double, std::string>(const std::vector<double>& input
         return std::to_string(num);
     });
 }
-
-// template <>
-// void wbt::convertStdVector<std::string, std::string>(const std::vector<std::string>& input,
-//                                                     std::vector<std::string>& output)
-//{
-//    output = input;
-//    return;
-//}

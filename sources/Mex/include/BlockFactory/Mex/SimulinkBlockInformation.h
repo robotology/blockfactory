@@ -18,19 +18,21 @@
 #include <string>
 #include <vector>
 
-namespace wbt {
-    class SimulinkBlockInformation;
-} // namespace wbt
+namespace blockfactory {
+    namespace mex {
+        class SimulinkBlockInformation;
+    } // namespace mex
+} // namespace blockfactory
 
-class wbt::SimulinkBlockInformation final : public wbt::BlockInformation
+class blockfactory::mex::SimulinkBlockInformation final : public core::BlockInformation
 {
 private:
     SimStruct* simstruct;
     std::string m_confBlockName;
-    std::vector<wbt::ParameterMetadata> m_paramsMetadata;
+    std::vector<core::ParameterMetadata> m_paramsMetadata;
 
-    wbt::DataType mapSimulinkToPortType(const DTypeId typeId) const;
-    DTypeId mapPortTypeToSimulink(const wbt::DataType dataType) const;
+    core::DataType mapSimulinkToPortType(const DTypeId typeId) const;
+    DTypeId mapPortTypeToSimulink(const core::DataType dataType) const;
 
 public:
     using ParameterIndex = unsigned;
@@ -46,8 +48,8 @@ public:
     // PARAMETERS METHODS
     // ==================
 
-    bool addParameterMetadata(const wbt::ParameterMetadata& paramMD) override;
-    bool parseParameters(wbt::Parameters& parameters) override;
+    bool addParameterMetadata(const core::ParameterMetadata& paramMD) override;
+    bool parseParameters(core::Parameters& parameters) override;
 
     // PORT INFORMATION SETTERS
     // ========================
@@ -67,12 +69,12 @@ public:
     // BLOCK SIGNALS
     // =============
 
-    wbt::InputSignalPtr
+    core::InputSignalPtr
     getInputPortSignal(const PortIndex idx,
-                       const VectorSize size = wbt::Signal::DynamicSize) const override;
-    wbt::OutputSignalPtr
+                       const VectorSize size = core::Signal::DynamicSize) const override;
+    core::OutputSignalPtr
     getOutputPortSignal(const PortIndex idx,
-                        const VectorSize size = wbt::Signal::DynamicSize) const override;
+                        const VectorSize size = core::Signal::DynamicSize) const override;
 
     // METHODS OUTSIDE THE INTERFACE
     // =============================
@@ -82,8 +84,8 @@ public:
     bool updateOutputPortData(const PortData& portData);
     bool setNumberOfInputPorts(const unsigned numberOfPorts);
     bool setNumberOfOutputPorts(const unsigned numberOfPorts);
-    bool setInputPortType(const PortIndex idx, const wbt::DataType type);
-    bool setOutputPortType(const PortIndex idx, const wbt::DataType type);
+    bool setInputPortType(const PortIndex idx, const core::DataType type);
+    bool setOutputPortType(const PortIndex idx, const core::DataType type);
     bool setInputPortVectorSize(const PortIndex idx, const VectorSize& size);
     bool setInputPortMatrixSize(const PortIndex idx, const MatrixSize& size);
     bool setOutputPortVectorSize(const PortIndex idx, const VectorSize& size);

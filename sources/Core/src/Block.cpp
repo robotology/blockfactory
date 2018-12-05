@@ -13,7 +13,7 @@
 
 #include <ostream>
 
-using namespace wbt;
+using namespace blockfactory::core;
 
 unsigned Block::numberOfParameters()
 {
@@ -39,7 +39,7 @@ bool Block::parseParameters(BlockInformation* blockInfo)
 {
     if (!blockInfo->addParameterMetadata({ParameterType::STRING, 0, 1, 1, "className"})
         || !blockInfo->addParameterMetadata({ParameterType::STRING, 1, 1, 1, "libName"})) {
-        wbtError << "Failed to add parameters metadata.";
+        bfError << "Failed to add parameters metadata.";
         return false;
     }
 
@@ -49,7 +49,7 @@ bool Block::parseParameters(BlockInformation* blockInfo)
 bool Block::configureSizeAndPorts(BlockInformation* blockInfo)
 {
     if (!Block::parseParameters(blockInfo)) {
-        wbtError << "Failed to parse Block parameters.";
+        bfError << "Failed to parse Block parameters.";
         return false;
     }
 
@@ -59,7 +59,7 @@ bool Block::configureSizeAndPorts(BlockInformation* blockInfo)
 bool Block::initialize(BlockInformation* blockInfo)
 {
     if (!Block::parseParameters(blockInfo)) {
-        wbtError << "Failed to parse Block parameters.";
+        bfError << "Failed to parse Block parameters.";
         return false;
     }
 
@@ -96,7 +96,7 @@ bool Block::terminate(const BlockInformation* /*blockInfo*/)
     return true;
 }
 
-bool Block::getParameters(wbt::Parameters& params) const
+bool Block::getParameters(blockfactory::core::Parameters& params) const
 {
     params = m_parameters;
     return true;
