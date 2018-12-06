@@ -10,12 +10,11 @@
 #define S_FUNCTION_NAME BlockFactory
 
 #include "BlockFactory/Core/Block.h"
+#include "BlockFactory/Core/FactorySingleton.h"
 #include "BlockFactory/Core/Log.h"
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Parameters.h"
 #include "BlockFactory/Mex/SimulinkBlockInformation.h"
-#include "shlibpp/SharedLibrary.h"
-#include "shlibpp/SharedLibraryClass.h"
 
 #include <matrix.h>
 #include <simstruc.h>
@@ -31,71 +30,6 @@
 #include <string>
 #include <utility>
 #include <vector>
-
-// =========
-// UTILITIES
-// =========
-
-using BlockFactory = shlibpp::SharedLibraryClassFactory<blockfactory::core::Block>;
-using BlockFactoryPtr = std::shared_ptr<BlockFactory>;
-
-class BlockFactorySingleton
-{
-    using ClassFactoryName = std::string;
-    using ClassFactoryLibrary = std::string;
-    using BlockFactoryData = std::pair<ClassFactoryLibrary, ClassFactoryName>;
-
-public:
-    static std::string platformSpecificLibName(const std::string& library)
-    {
-#if defined(_WIN32)
-        return library + "dll";
-#elif defined(__linux__)
-        return "lib" + library + ".so";
-#elif defined(__APPLE__)
-        return "lib" + library + ".dylib";
-#endif
-    }
-
-    static BlockFactoryPtr getInstance(BlockFactoryData data)
-    {
-        static std::map<BlockFactoryData, BlockFactoryPtr> factoryMap;
-
-        ClassFactoryLibrary classFactoryLibrary = platformSpecificLibName(data.first);
-        ClassFactoryName& classFactoryName = data.second;
-        BlockFactoryData blockFactoryData = {classFactoryLibrary, classFactoryName};
-
-        // Clean possible leftovers
-        if (factoryMap.find(blockFactoryData) != factoryMap.end()
-            && !factoryMap[blockFactoryData]) {
-            factoryMap.erase(blockFactoryData);
-        }
-
-        // Allocate the factory that loads the dll the first time
-        if (factoryMap.find(blockFactoryData) == factoryMap.end()) {
-
-            // Allocate the factory
-            auto factory = std::make_shared<BlockFactory>(classFactoryLibrary.c_str(),
-                                                          classFactoryName.c_str());
-            if (!factory || !factory->isValid()) {
-                bfError << "Failed to create factory";
-                return {};
-            }
-
-            // Store it in the map
-            factoryMap.emplace(std::make_pair<BlockFactoryData, BlockFactoryPtr>(
-                {classFactoryLibrary, classFactoryName}, std::move(factory)));
-        }
-
-        if (!factoryMap[blockFactoryData] || !factoryMap[blockFactoryData]->isValid()) {
-            bfError << "Failed to create factory";
-            return {};
-        }
-
-        // Return the block factory
-        return factoryMap[blockFactoryData];
-    }
-};
 
 const bool ForwardLogsToStdErr = true;
 
@@ -218,7 +152,8 @@ static void mdlInitializeSizes(SimStruct* S)
     const std::string blockLibraryName(mxArrayToString(ssGetSFcnParam(S, 1)));
 
     // Get the block factory
-    BlockFactoryPtr factory = BlockFactorySingleton::getInstance({blockLibraryName, className});
+    auto factory = blockfactory::core::ClassFactorySingleton::getInstance().getClassFactory(
+        {blockLibraryName, className});
 
     if (!factory) {
         bfError << "Failed to get factory object";
@@ -349,7 +284,8 @@ static void mdlStart(SimStruct* S)
     const std::string blockLibraryName(mxArrayToString(ssGetSFcnParam(S, 1)));
 
     // Get the block factory
-    BlockFactoryPtr factory = BlockFactorySingleton::getInstance({blockLibraryName, className});
+    auto factory = blockfactory::core::ClassFactorySingleton::getInstance().getClassFactory(
+        {blockLibraryName, className});
 
     if (!factory) {
         bfError << "Failed to get factory object";
@@ -518,7 +454,8 @@ static void mdlTerminate(SimStruct* S)
     const std::string blockLibraryName(mxArrayToString(ssGetSFcnParam(S, 1)));
 
     // Get the block factory
-    BlockFactoryPtr factory = BlockFactorySingleton::getInstance({blockLibraryName, className});
+    auto factory = blockfactory::core::ClassFactorySingleton::getInstance().getClassFactory(
+        {blockLibraryName, className});
 
     if (!factory) {
         bfError << "Failed to get factory object";

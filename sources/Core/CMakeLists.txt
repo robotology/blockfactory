@@ -9,7 +9,8 @@ set(CORE_SRC
     src/Parameter.cpp
     src/Parameters.cpp
     src/ConvertStdVector.cpp
-    src/Signal.cpp)
+    src/Signal.cpp
+    src/FactorySingleton.cpp)
 
 set(CORE_PUBLIC_HDR
     include/BlockFactory/Core/Block.h
@@ -17,13 +18,16 @@ set(CORE_PUBLIC_HDR
     include/BlockFactory/Core/Log.h
     include/BlockFactory/Core/Parameter.h
     include/BlockFactory/Core/Parameters.h
-    include/BlockFactory/Core/Signal.h)
+    include/BlockFactory/Core/Signal.h
+    include/BlockFactory/Core/FactorySingleton.h)
 
 set(CORE_PRIVATE_HDR
     include/BlockFactory/Core/ConvertStdVector.h)
 
 add_library(Core ${CORE_SRC} ${CORE_PUBLIC_HDR} ${CORE_PRIVATE_HDR})
 add_library(BlockFactory::Core ALIAS Core)
+
+target_link_libraries(Core PUBLIC shlibpp::shlibpp)
 
 target_include_directories(Core PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -47,5 +51,6 @@ install_basic_package_files(BlockFactoryCore
     COMPATIBILITY AnyNewerVersion
     EXPORT BlockFactoryCoreExport
     FIRST_TARGET Core
+    DEPENDENCIES shlibpp
     NAMESPACE BlockFactory::
     NO_CHECK_REQUIRED_COMPONENTS_MACRO)
