@@ -77,6 +77,7 @@
   %<LibAddToCommonIncludes("<BlockFactory/Core/Log.h>")>
   %<LibAddToCommonIncludes("<BlockFactory/Core/Parameter.h>")>
   %<LibAddToCommonIncludes("<BlockFactory/Core/Parameters.h>")>
+  %<LibAddToCommonIncludes("<BlockFactory/Core/FactorySingleton.h>")>
   %<LibAddToCommonIncludes("<BlockFactory/Coder/CoderBlockInformation.h>")>
 
 %endfunction
@@ -84,11 +85,8 @@
 %% Function: BlockInstanceSetup
 %% ============================
 
-%function BlockInstanceSetup(block, system) void
-
-  %<LibAddToCommonIncludes("<Block/%<SFcnParamSettings[0].className>.h>")>
-
-%endfunction
+%%function BlockInstanceSetup(block, system) void
+%%endfunction
 
 %% Function: Start
 %% ===============
@@ -111,6 +109,7 @@
 
     %assign numberOfParameters = SFcnParamSettings[0].numberOfParameters
     %assign className = SFcnParamSettings[0].className
+    %assign libName = SFcnParamSettings[0].libName
 
     %foreach i = numberOfParameters
 
@@ -198,7 +197,16 @@
     // --------------------
 
     // Allocate the block object
-    blockfactory::core::Block* blockPtr = static_cast<blockfactory::core::Block*>(new wbt::block::%<className>());
+    wbt::Block* blockPtr = static_cast<wbt::Block*>(new wbt::%<className>());
+
+    if (!factory->isValid()) {
+        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
+                << "): " << factory->getError().c_str();
+        %assign variable = "[Initialize]"
+        %assign dummy = NotifyErrors(variable)
+    }
+    
+    blockfactory::core::Block* blockPtr = factory->create();
 
     // Run a dummy configureSizeAndPorts step. This is currently required for properly
     // handling optional input / outputs static variables.

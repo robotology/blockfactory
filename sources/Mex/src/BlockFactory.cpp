@@ -706,15 +706,22 @@ bool writeRTW(SimStruct* S, const blockfactory::core::Parameters& params)
     std::string className;
     params.getParameter("className", className);
 
+    // Get the plugin library name
+    std::string libName;
+    params.getParameter("libName", libName);
+
     // Create the record
     ssWriteRTWParamSettings(S,
-                            2,
+                            3,
                             SSWRITE_VALUE_NUM,
                             "numberOfParameters",
                             static_cast<real_T>(numberOfParameters),
                             SSWRITE_VALUE_QSTR,
                             "className",
-                            className.c_str());
+                            className.c_str(),
+                            SSWRITE_VALUE_QSTR,
+                            "libName",
+                            libName.c_str());
 
     // RTW Parameters
     // ==============

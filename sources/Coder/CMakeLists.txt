@@ -24,7 +24,9 @@ target_include_directories(Coder PUBLIC
 
 # CMake macro and functions
 install(
-    FILES "${CMAKE_SOURCE_DIR}/cmake/AddGeneratedCodeLib.cmake"
+    FILES
+    "${CMAKE_SOURCE_DIR}/cmake/TargetFromGeneratedCode.cmake"
+    "${CMAKE_SOURCE_DIR}/cmake/SimulinkCoderSetup.cmake"
     DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/BlockFactory/cmake")
 
 install(
