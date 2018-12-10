@@ -42,6 +42,8 @@ ClassFactorySingleton::getClassFactory(const ClassFactoryData& factorydata)
 
         if (!factory || !factory->isValid()) {
             bfError << "Failed to create factory";
+            bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
+                    << "): " << factory->getError().c_str();
             return {};
         }
 
@@ -52,6 +54,9 @@ ClassFactorySingleton::getClassFactory(const ClassFactoryData& factorydata)
     if (!pImpl->factoryMap[factorydata]->isValid()) {
         bfError << "The factory " << factoryName << " associated with the plugin " << fsLibraryName
                 << " is not valid";
+        bfError << "Factory error ("
+                << static_cast<std::uint32_t>(pImpl->factoryMap[factorydata]->getStatus())
+                << "): " << pImpl->factoryMap[factorydata]->getError().c_str();
         return {};
     }
 

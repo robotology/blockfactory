@@ -140,6 +140,7 @@ static void mdlInitializeSizes(SimStruct* S)
     if (ssGetNumSFcnParams(S) == ssGetSFcnParamsCount(S)) {
         mdlCheckParameters(S);
         if (ssGetErrorStatus(S)) {
+            catchLogMessages(false, S);
             return;
         }
     }
@@ -373,6 +374,7 @@ static void mdlTerminate(SimStruct* S)
     // Get the factory object from the singleton
     auto factory = getFactoryForThisBlockType(S);
 
+    // TODO:
     assert(factory);
 
     if (!factory) {
@@ -790,7 +792,6 @@ bool writeRTW(SimStruct* S, const blockfactory::core::Parameters& params)
 
     if (!ok) {
         bfError << "Failed to write parameters to RTW file.";
-        catchLogMessages(false, S);
         return false;
     }
 
@@ -820,6 +821,7 @@ static void mdlRTW(SimStruct* S)
         if (!ok) {
             bfError << "Failed to get parameters from the block during the code "
                     << "generation process";
+            catchLogMessages(false, S);
             return;
         }
 
@@ -829,6 +831,7 @@ static void mdlRTW(SimStruct* S)
         if (!ok) {
             bfError << "Failed to write parameters to the RTW file during the code "
                     << "generation process";
+            catchLogMessages(false, S);
             return;
         }
 
@@ -838,6 +841,7 @@ static void mdlRTW(SimStruct* S)
         if (!ok) {
             bfError << "Failed to store the PWork vector during the code "
                     << "generation process";
+            catchLogMessages(false, S);
             return;
         }
     }
