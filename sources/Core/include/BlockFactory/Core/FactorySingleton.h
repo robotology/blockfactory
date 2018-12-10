@@ -48,6 +48,8 @@ public:
     static ClassFactorySingleton& getInstance();
     //    ClassFactoryPtr getClassFactory(const ClassFactoryData& factorydata);
     ClassFactoryPtr getClassFactory(const ClassFactoryData& factorydata);
+
+    bool destroyFactory(const ClassFactoryData& factorydata);
 };
 
 #endif

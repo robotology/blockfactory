@@ -59,6 +59,24 @@ ClassFactorySingleton::getClassFactory(const ClassFactoryData& factorydata)
     return pImpl->factoryMap[factorydata];
 }
 
+bool ClassFactorySingleton::destroyFactory(
+    const ClassFactorySingleton::ClassFactoryData& factorydata)
+{
+    if (pImpl->factoryMap.find(factorydata) == pImpl->factoryMap.end()) {
+        bfError << "Failed to find a matching factory with the passed factory data";
+        return false;
+    }
+
+    if (pImpl->factoryMap[factorydata].use_count() != 1) {
+        bfError << "Cannot destroy factory. Its memory is owned by someone else (counter = "
+                << pImpl->factoryMap[factorydata].use_count() << ").";
+        return false;
+    }
+
+    pImpl->factoryMap.erase(factorydata);
+    return true;
+}
+
 std::string platformSpecificLibName(const std::string& library)
 {
 #if defined(_WIN32)
