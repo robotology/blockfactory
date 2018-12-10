@@ -22,6 +22,7 @@
 #include <sl_sample_time_defs.h>
 #include <tmwtypes.h>
 
+#include <cassert>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -34,58 +35,9 @@
 static const size_t NumPWork = 2;
 const bool ForwardLogsToStdErr = true;
 
-static void catchLogMessages(bool status, SimStruct* S)
-{
-    // Initialize static buffers
-    const unsigned bufferLen = 1024;
-
-    // Notify warnings
-    if (!blockfactory::core::Log::getSingleton().getWarnings().empty()) {
-        // Get the warnings
-        std::string warningMsg = blockfactory::core::Log::getSingleton().getWarnings();
-
-        // Trim the message if needed
-        if (warningMsg.length() >= bufferLen) {
-            warningMsg = warningMsg.substr(0, bufferLen - 1);
-        }
-
-        // Forward to Simulink
-        char warningBuffer[bufferLen];
-        sprintf(warningBuffer, "%s", warningMsg.c_str());
-        ssWarning(S, warningBuffer);
-
-        if (ForwardLogsToStdErr) {
-            fprintf(stderr, "%s", warningBuffer);
-        }
-
-        // Clean the notified warnings
-        blockfactory::core::Log::getSingleton().clearWarnings();
-    }
-
-    // Notify errors
-    if (!status) {
-        // Get the errors
-        std::string errorMsg = blockfactory::core::Log::getSingleton().getErrors();
-
-        // Trim the message if needed
-        if (errorMsg.length() >= bufferLen) {
-            errorMsg = errorMsg.substr(0, bufferLen - 1);
-        }
-
-        // Forward to Simulink
-        char errorBuffer[bufferLen];
-        sprintf(errorBuffer, "%s", errorMsg.c_str());
-        ssSetErrorStatus(S, errorBuffer);
-
-        if (ForwardLogsToStdErr) {
-            fprintf(stderr, "%s", errorBuffer);
-        }
-
-        // Clean the notified errors
-        blockfactory::core::Log::getSingleton().clearErrors();
-        return;
-    }
-}
+static void catchLogMessages(bool status, SimStruct* S);
+static blockfactory::core::ClassFactorySingleton::ClassFactoryPtr
+getFactoryForThisBlockType(SimStruct* S);
 
 // ==========
 // S-FUNCTION
@@ -148,23 +100,10 @@ static void mdlInitializeSizes(SimStruct* S)
         return;
     }
 
-    // Get the class name and the library name from the parameter
-    const std::string className(mxArrayToString(ssGetSFcnParam(S, 0)));
-    const std::string blockLibraryName(mxArrayToString(ssGetSFcnParam(S, 1)));
-
-    // Get the block factory
-    auto factory = blockfactory::core::ClassFactorySingleton::getInstance().getClassFactory(
-        {blockLibraryName, className});
-
+    // Get the factory object from the singleton
+    auto factory = getFactoryForThisBlockType(S);
     if (!factory) {
-        bfError << "Failed to get factory object";
-        catchLogMessages(false, S);
-        return;
-    }
-
-    if (!factory->isValid()) {
-        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
-                << "): " << factory->getError().c_str();
+        bfError << "Failed to get the factory";
         catchLogMessages(false, S);
         return;
     }
@@ -175,6 +114,7 @@ static void mdlInitializeSizes(SimStruct* S)
 
     // Notify errors
     if (!block.isValid()) {
+        std::string className(mxArrayToString(ssGetSFcnParam(S, 0)));
         bfError << "Could not create an object of type " + className;
         catchLogMessages(false, S);
         return;
@@ -280,23 +220,10 @@ static void mdlInitializeSampleTimes(SimStruct* S)
 #define MDL_START
 static void mdlStart(SimStruct* S)
 {
-    // Get the class name and the library name from the parameter
-    const std::string className(mxArrayToString(ssGetSFcnParam(S, 0)));
-    const std::string blockLibraryName(mxArrayToString(ssGetSFcnParam(S, 1)));
-
-    // Get the block factory
-    auto factory = blockfactory::core::ClassFactorySingleton::getInstance().getClassFactory(
-        {blockLibraryName, className});
-
+    // Get the factory object from the singleton
+    auto factory = getFactoryForThisBlockType(S);
     if (!factory) {
-        bfError << "Failed to get factory object";
-        catchLogMessages(false, S);
-        return;
-    }
-
-    if (!factory->isValid()) {
-        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
-                << "): " << factory->getError().c_str();
+        bfError << "Failed to get the factory";
         catchLogMessages(false, S);
         return;
     }
@@ -315,6 +242,10 @@ static void mdlStart(SimStruct* S)
         catchLogMessages(false, S);
         return;
     }
+
+    // Increase the reference counter of the factory
+    // NOTE: the counter starts at 1!
+    factory->addRef();
 
     // Call the initialize() method
     bool ok = block->initialize(blockInfo);
@@ -439,17 +370,133 @@ static void mdlTerminate(SimStruct* S)
     blockfactory::mex::SimulinkBlockInformation* blockInfo;
     blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
 
-    if (block) {
-        if (!block->terminate(blockInfo)) {
-            bfError << "Failed to terminate block.";
-            catchLogMessages(false, S);
-        }
-    }
-    else {
-        bfWarning << "Failed to get Block pointer from the PWork vector." << std::endl
-                  << "Could't terminate block";
+    // Get the factory object from the singleton
+    auto factory = getFactoryForThisBlockType(S);
+
+    assert(factory);
+
+    if (!factory) {
+        bfError << "Failed to get the factory";
+        catchLogMessages(false, S);
+        return;
     }
 
+    // If the block exist, delete it.
+    // Note that it might not exist, e.g. when the initialization fails not all blocks
+    // are created, but in any case the terminate method is called for all of them.
+    if (factory && block) {
+        if (block->terminate(blockInfo)) {
+            // Delete the block using the factory
+            factory->destroy(block);
+            block = nullptr;
+
+            // NOTE: The counter starts at 1. This means that when it is equal to 1
+            //       all the classes allocated from this factory have been destroyed.
+            factory->removeRef();
+
+            if (factory->getReferenceCount() == 1) {
+                // Only this object and the one inside the singleton
+                assert(factory.use_count() == 2);
+                factory.reset();
+
+                const std::string className(mxArrayToString(ssGetSFcnParam(S, 0)));
+                const std::string blockLibraryName(mxArrayToString(ssGetSFcnParam(S, 1)));
+
+                // Delete the factory object
+                if (!blockfactory::core::ClassFactorySingleton::getInstance().destroyFactory(
+                        {blockLibraryName, className})) {
+                    bfError << "Failed to destroy the factory";
+                    catchLogMessages(false, S);
+                    // Do not return since other actions need to be performed
+                }
+            }
+        }
+        else {
+            bfError << "Failed to terminate block.";
+            catchLogMessages(false, S);
+            // Do not return since other actions need to be performed
+        }
+    }
+
+    // Delete the BlockInformation object from the PWork vector
+    delete blockInfo;
+
+    // Clean the PWork vector
+    ssSetPWorkValue(S, 0, nullptr);
+    ssSetPWorkValue(S, 1, nullptr);
+
+    // Report warnings if any
+    catchLogMessages(true, S);
+}
+
+// ===============
+// UTILS FUNCTIONS
+// ===============
+
+static void catchLogMessages(bool status, SimStruct* S)
+{
+    // Initialize static buffers
+    const unsigned bufferLen = 1024;
+
+    std::string prefix{};
+#ifndef NDEBUG
+    // Get the path of the block
+    const char_T* blockPath = ssGetPath(S);
+    prefix = "\n==> ";
+    prefix += blockPath;
+#endif // NDEBUG
+
+    // Notify warnings
+    if (!blockfactory::core::Log::getSingleton().getWarnings().empty()) {
+        // Get the warnings
+        std::string warningMsg = prefix + blockfactory::core::Log::getSingleton().getWarnings();
+
+        // Trim the message if needed
+        if (warningMsg.length() >= bufferLen) {
+            warningMsg = warningMsg.substr(0, bufferLen - 1);
+        }
+
+        // Forward to Simulink
+        char warningBuffer[bufferLen];
+        sprintf(warningBuffer, "%s", warningMsg.c_str());
+        ssWarning(S, warningBuffer);
+
+        if (ForwardLogsToStdErr) {
+            fprintf(stderr, "%s", warningBuffer);
+        }
+
+        // Clean the notified warnings
+        blockfactory::core::Log::getSingleton().clearWarnings();
+    }
+
+    // Notify errors
+    if (!status) {
+        // Get the errors
+        std::string errorMsg = prefix + blockfactory::core::Log::getSingleton().getErrors();
+
+        // Trim the message if needed
+        if (errorMsg.length() >= bufferLen) {
+            errorMsg = errorMsg.substr(0, bufferLen - 1);
+        }
+
+        // Forward to Simulink
+        char errorBuffer[bufferLen];
+        sprintf(errorBuffer, "%s", errorMsg.c_str());
+        ssSetErrorStatus(S, errorBuffer);
+
+        if (ForwardLogsToStdErr) {
+            fprintf(stderr, "%s", errorBuffer);
+        }
+
+        // Clean the notified errors
+        blockfactory::core::Log::getSingleton().clearErrors();
+        return;
+    }
+}
+
+static blockfactory::core::ClassFactorySingleton::ClassFactoryPtr
+getFactoryForThisBlockType(SimStruct* S)
+{
     // Get the class name and the library name from the parameter
     const std::string className(mxArrayToString(ssGetSFcnParam(S, 0)));
     const std::string blockLibraryName(mxArrayToString(ssGetSFcnParam(S, 1)));
@@ -459,27 +506,23 @@ static void mdlTerminate(SimStruct* S)
         {blockLibraryName, className});
 
     if (!factory) {
-        bfError << "Failed to get factory object";
-        catchLogMessages(false, S);
-        return;
+        bfError << "Failed to get factory object (className=" << className
+                << ",libName=" << blockLibraryName << ")";
+        return {};
     }
 
     if (!factory->isValid()) {
         bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
                 << "): " << factory->getError().c_str();
-        catchLogMessages(false, S);
-        return;
+        return {};
     }
 
-    // Delete the resources allocated in the PWork vector
-    delete blockInfo;
-
-    factory->destroy(block);
-
-    // Clean the PWork vector
-    ssSetPWorkValue(S, 0, nullptr);
-    ssSetPWorkValue(S, 1, nullptr);
+    return factory;
 }
+
+// =============
+// RTW FUNCTIONS
+// =============
 
 #if defined(MATLAB_MEX_FILE)
 #define MDL_RTW
