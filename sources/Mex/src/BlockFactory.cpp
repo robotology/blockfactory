@@ -31,6 +31,7 @@
 #include <utility>
 #include <vector>
 
+static const size_t NumPWork = 2;
 const bool ForwardLogsToStdErr = true;
 
 static void catchLogMessages(bool status, SimStruct* S)
@@ -184,7 +185,7 @@ static void mdlInitializeSizes(SimStruct* S)
     // Two PWorks:
     // 0: pointer to a Block implementation
     // 1: pointer to a BlockInformation implementation
-    ssSetNumPWork(S, 2);
+    ssSetNumPWork(S, NumPWork);
 
     // Setup the block parameters' properties
     ssSetNumSFcnParams(S, block->numberOfParameters());
@@ -325,8 +326,8 @@ static void mdlStart(SimStruct* S)
 static void mdlUpdate(SimStruct* S, int_T tid)
 {
     UNUSED_ARG(tid);
-    if (ssGetNumPWork(S) != 2) {
-        bfError << "PWork should contain two elements.";
+    if (ssGetNumPWork(S) != NumPWork) {
+        bfError << "PWork should contain " << NumPWork << " elements.";
         catchLogMessages(false, S);
         return;
     }
@@ -355,8 +356,8 @@ static void mdlUpdate(SimStruct* S, int_T tid)
 #if defined(MDL_INITIALIZE_CONDITIONS) && defined(MATLAB_MEX_FILE)
 static void mdlInitializeConditions(SimStruct* S)
 {
-    if (ssGetNumPWork(S) != 2) {
-        bfError << "PWork should contain two elements.";
+    if (ssGetNumPWork(S) != NumPWork) {
+        bfError << "PWork should contain " << NumPWork << " elements.";
         catchLogMessages(false, S);
         return;
     }
@@ -395,8 +396,8 @@ static void mdlDerivatives(SimStruct* /*S*/)
 static void mdlOutputs(SimStruct* S, int_T tid)
 {
     UNUSED_ARG(tid);
-    if (ssGetNumPWork(S) != 2) {
-        bfError << "PWork should contain two elements.";
+    if (ssGetNumPWork(S) != NumPWork) {
+        bfError << "PWork should contain " << NumPWork << " elements.";
         catchLogMessages(false, S);
         return;
     }
@@ -425,8 +426,8 @@ static void mdlTerminate(SimStruct* S)
         return;
     }
 
-    if (ssGetNumPWork(S) != 2) {
-        bfError << "PWork should contain two elements.";
+    if (ssGetNumPWork(S) != NumPWork) {
+        bfError << "PWork should contain " << NumPWork << " elements.";
         catchLogMessages(false, S);
         return;
     }
