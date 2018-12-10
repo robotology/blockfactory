@@ -33,6 +33,32 @@
     %return
 %endfunction %% NotifyErrors
 
+%% Function: GetFactoryForBlockType
+%% ================================
+%%
+%% Abstract: Utility for getting the factory object for the current block type
+%%
+
+%function GetFactoryForBlockType(libName, className, logPrefix) Output
+    // Get the block factory
+    auto factory = blockfactory::core::ClassFactorySingleton::getInstance().getClassFactory(
+        {"%<libName>", "%<className>"});
+
+    if (!factory) {
+        bfError << "Failed to get factory object (className=" << "%<className>"
+                << ",libName=" << "%<libName>" << ")";
+        %assign dummy = NotifyErrors(logPrefix)
+    }
+
+    if (!factory->isValid()) {
+        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
+                << "): " << factory->getError().c_str();
+        %assign dummy = NotifyErrors(logPrefix)
+    }
+    %return
+%endfunction %% GetFactoryForBlockType
+
+
 %% Function: Outputs
 %% =================
 
@@ -196,27 +222,24 @@
     // Initialize the class
     // --------------------
 
-    // Allocate the block object
-    wbt::Block* blockPtr = static_cast<wbt::Block*>(new wbt::%<className>());
-
-    if (!factory->isValid()) {
-        bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
-                << "): " << factory->getError().c_str();
-        %assign variable = "[Initialize]"
-        %assign dummy = NotifyErrors(variable)
-    }
-    
-    blockfactory::core::Block* blockPtr = factory->create();
+    %assign dummy = GetFactoryForBlockType(libName, className, "[Initialize]")
 
     // Run a dummy configureSizeAndPorts step. This is currently required for properly
     // handling optional input / outputs static variables.
     // TODO: find a better way to handle them.
     {
+        // Create a new class. This object will be destroyed at the end of the scope.
+        shlibpp::SharedLibraryClass<blockfactory::core::Block> blockPtr(*factory);
+
         auto tmpCoderBlockInfo = std::unique_ptr<blockfactory::coder::CoderBlockInformation>(
             new blockfactory::coder::CoderBlockInformation);
         tmpCoderBlockInfo->storeRTWParameters(params);
         blockPtr->configureSizeAndPorts(tmpCoderBlockInfo.get());
     }
+
+    // Allocate the block
+    blockfactory::core::Block* blockPtr = factory->create();
+    factory->addRef();
 
     // Initialize the block
     bool ok = blockPtr->initialize(blockInfo);
@@ -252,6 +275,10 @@
   %assign PWorkStorage_Block     = LibBlockPWork(blockPWork, "", "", 0)
   %assign PWorkStorage_BlockInfo = LibBlockPWork(blockPWork, "", "", 1)
 
+  %assign numberOfParameters = SFcnParamSettings[0].numberOfParameters
+  %assign className = SFcnParamSettings[0].className
+  %assign libName = SFcnParamSettings[0].libName
+
   {
     // Get the CoderBlockInformation from the PWork
     blockfactory::coder::CoderBlockInformation* blockInfo = nullptr;
@@ -261,13 +288,34 @@
     blockfactory::core::Block* blockPtr = nullptr;
     blockPtr = static_cast<blockfactory::core::Block*>(%<PWorkStorage_Block>);
 
+    %assign dummy = GetFactoryForBlockType(libName, className, "[Initialize]")
+
     // Terminate the class
     // -------------------
     bool ok;
     ok = blockPtr->terminate(blockInfo);
 
+    // Destroy the block
+    factory->destroy(blockPtr);
+    blockPtr = nullptr;
+
+    // Decrease the counter of the factory
+    factory->removeRef();
+
+    if (factory->getReferenceCount() == 1) {
+        // Delete the memory ownership of the shared pointer used in this function
+        factory.reset();
+        // Delete the factory object
+        if (!blockfactory::core::ClassFactorySingleton::getInstance().destroyFactory(
+            {"%<libName>", "%<className>"})) {
+            bfError << "Failed to destroy the factory";
+            // Do not return since other actions need to be performed
+        }
+    }
+
+    // Delete the BlockInformation object
     delete blockInfo;
-    delete blockPtr;
+    blockInfo = nullptr;
 
     // Report errors
     if (!ok) {
