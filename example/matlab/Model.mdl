@@ -6,7 +6,7 @@ Model {
     NumRootInports	    0
     NumRootOutports	    0
     ParameterArgumentNames  ""
-    ComputedModelVersion    "1.12"
+    ComputedModelVersion    "1.15"
     NumModelReferences	    0
     NumTestPointedSignals   0
     NumProvidedFunctions    0
@@ -53,7 +53,7 @@ Model {
       $ObjectID		      2
       $ClassName	      "Simulink.WindowInfo"
       IsActive		      [1]
-      Location		      [200.0, 70.0, 1575.0, 918.0]
+      Location		      [480.0, 305.0, 1965.0, 1121.0]
       Object {
 	$PropName		"ModelBrowserInfo"
 	$ObjectID		3
@@ -77,9 +77,9 @@ Model {
 	IsActive		[1]
 	ViewObjType		"SimulinkTopLevel"
 	LoadSaveID		"0"
-	Extents			[1521.0, 688.0]
-	ZoomFactor		[1.5]
-	Offset			[-87.952221478008482, -101.92174592542986]
+	Extents			[1911.0, 891.0]
+	ZoomFactor		[2.8110749185667752]
+	Offset			[37.594438006952487, -22.9803012746234]
       }
       Object {
 	$PropName		"DockComponentsInfo"
@@ -99,7 +99,7 @@ Model {
       "AAAAAAA+wAAABYARABvAGMAawBXAGkAZABnAGUAdAA0AAAAAAD/////AAAAAAAAAAD7AAAAUgBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0Ac"
       "ABvAG4AZQBuAHQALwBHAEwAVQBFADIAIAB0AHIAZQBlACAAYwBvAG0AcABvAG4AZQBuAHQAAAAAAP////8AAAB4AP///wAAAAEAAAAAAAAAAPwCA"
       "AAAAfsAAABUAEcATABVAEUAMgA6AFAAcgBvAHAAZQByAHQAeQBJAG4AcwBwAGUAYwB0AG8AcgAvAFAAcgBvAHAAZQByAHQAeQAgAEkAbgBzAHAAZ"
-      "QBjAHQAbwByAAAAAAD/////AAAAMQD///8AAAYXAAAC9gAAAAEAAAACAAAAAQAAAAL8AAAAAQAAAAIAAAAP/////wAAAAAA/////wAAAAAAAAAA/"
+      "QBjAHQAbwByAAAAAAD/////AAAAMQD///8AAAedAAADwQAAAAEAAAACAAAAAQAAAAL8AAAAAQAAAAIAAAAP/////wAAAAAA/////wAAAAAAAAAA/"
       "////wEAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/"
       "////wEAAACG/////wAAAAAAAAAA/////wEAAADu/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wEAAAF0/////wAAAAAAAAAA/"
       "////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wAAAAAA/////wAAAAAAAAAA/////wEAAAOq/////wAAAAAAAAAA/"
@@ -113,9 +113,9 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "dferigo"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Fri Aug 10 16:26:57 2018"
-  RTWModifiedTimeStamp	  455819216
-  ModelVersionFormat	  "1.%<AutoIncrement:12>"
+  LastModifiedDate	  "Tue Dec 11 11:29:37 2018"
+  RTWModifiedTimeStamp	  466428450
+  ModelVersionFormat	  "1.%<AutoIncrement:15>"
   SampleTimeColors	  off
   SampleTimeAnnotations	  off
   LibraryLinkDisplay	  "all"
@@ -1013,7 +1013,7 @@ Model {
   }
   System {
     Name		    "Model"
-    Location		    [200, 70, 1775, 988]
+    Location		    [480, 305, 2445, 1426]
     Open		    on
     PortBlocksUseCompactNotation off
     SetDomainSpec	    off
@@ -1028,7 +1028,7 @@ Model {
     TiledPaperMargins	    [0.500000, 0.500000, 0.500000, 0.500000]
     TiledPageScale	    1
     ShowPageBoundaries	    off
-    ZoomFactor		    "150"
+    ZoomFactor		    "281"
     ReportName		    "simulink-default.rpt"
     SIDHighWatermark	    "11"
     Block {
@@ -1098,7 +1098,7 @@ Model {
       Ports		      [2, 1]
       Position		      [335, -1, 470, 66]
       ZOrder		      9
-      LibraryVersion	      "1.8"
+      LibraryVersion	      "1.12"
       SourceBlock	      "ExampleToolbox/Signal Math"
       SourceType	      ""
       SourceProductName	      "Example Toolbox"
@@ -1112,7 +1112,7 @@ Model {
       Ports		      [2, 1]
       Position		      [370, 184, 430, 251]
       ZOrder		      8
-      FunctionName	      "WBToolbox"
+      FunctionName	      "BlockFactory"
       Parameters	      "'SignalMath','ExampleToolbox','Addition'"
       SFunctionDeploymentMode off
       EnableBusSupport	      off

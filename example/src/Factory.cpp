@@ -4,4 +4,4 @@
 #include <shlibpp/SharedLibraryClassApi.h>
 
 // Add the example::SignalMath class to the plugin factory
-SHLIBPP_DEFINE_SHARED_SUBCLASS(SignalMath, example::SignalMath, wbt::Block);
+SHLIBPP_DEFINE_SHARED_SUBCLASS(SignalMath, example::SignalMath, blockfactory::core::Block);

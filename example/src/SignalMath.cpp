@@ -1,40 +1,41 @@
 #include "SignalMath.h"
 
-#include <Core/Log.h>
-#include <Core/Parameter.h>
-#include <Core/Signal.h>
+#include <BlockFactory/Core/Log.h>
+#include <BlockFactory/Core/Parameter.h>
+#include <BlockFactory/Core/Signal.h>
 
 using namespace example;
 
 unsigned SignalMath::numberOfParameters()
 {
-    // The base wbt::Block class needs parameters (e.g. the ClassName).
+    // The base blockfactory::core::Block class needs parameters (e.g. the ClassName).
     // You must specify here how many more parameters this class needs.
     // Our example needs just one more: the operation to perform.
     return Block::numberOfParameters() + 1;
 }
 
-// This method should let BlockInformation know the parameters metadata
-bool SignalMath::parseParameters(wbt::BlockInformation* blockInfo)
+// This method should let BlockInformation know the parameters metadata.
+// BlockFactory will use this information to gather the parameters from the active engine.
+bool SignalMath::parseParameters(blockfactory::core::BlockInformation* blockInfo)
 {
     // Initialize information for our only parameter
     int rows = 1;
     int cols = 1;
-    std::string name = "Operation"; // This label is used to access the param later
+    std::string name = "Operation"; // This label is used later to access the paramemeter
     unsigned index = Block::numberOfParameters(); // Indices start from 0
-    wbt::ParameterType type = wbt::ParameterType::STRING;
+    auto type = blockfactory::core::ParameterType::STRING;
 
     // Create the parameter
-    wbt::ParameterMetadata parameterMetadata(type, index, rows, cols, name);
+    blockfactory::core::ParameterMetadata parameterMetadata(type, index, rows, cols, name);
 
     // Add the parameter metadata into the BlockInformation
     if (!blockInfo->addParameterMetadata(parameterMetadata)) {
-        wbtError << "Failed to store parameter metadata";
+        bfError << "Failed to store parameter metadata";
         return false;
     }
 
     // Ask to the BlockInformation interface to parse the parameters and store them into
-    // the m_parameters variable. This variable is contained in the wbt::Block class.
+    // the protected m_parameters member of the parent blockfactory::core::Block class.
     bool paramParsedOk = blockInfo->parseParameters(m_parameters);
 
     // Return the outcome of the parameter parsing.
@@ -43,54 +44,63 @@ bool SignalMath::parseParameters(wbt::BlockInformation* blockInfo)
 }
 
 // Keep in mind that after this step, all the allocated memory will be deleted.
-// Memory persistency is guaranteed starting from the initialize method.
-bool SignalMath::configureSizeAndPorts(wbt::BlockInformation* blockInfo)
+// Memory persistency is guaranteed starting from the initialize() method.
+bool SignalMath::configureSizeAndPorts(blockfactory::core::BlockInformation* blockInfo)
 {
-    // The base wbt::Block class need to be configured
-    if (!wbt::Block::configureSizeAndPorts(blockInfo)) {
+    // The base blockfactory::core::Block class needs to be configured first
+    if (!blockfactory::core::Block::configureSizeAndPorts(blockInfo)) {
         return false;
     }
 
     // Create data about input and output ports.
-    wbt::BlockInformation::PortData input1;
-    wbt::BlockInformation::PortData input2;
-    wbt::BlockInformation::PortData output;
-    input1 = {/*portIndex=*/0, std::vector<int>{wbt::Signal::DynamicSize}, wbt::DataType::DOUBLE};
-    input2 = {/*portIndex=*/1, std::vector<int>{wbt::Signal::DynamicSize}, wbt::DataType::DOUBLE};
-    output = {/*portIndex=*/0, std::vector<int>{wbt::Signal::DynamicSize}, wbt::DataType::DOUBLE};
+    blockfactory::core::BlockInformation::PortData input1;
+    blockfactory::core::BlockInformation::PortData input2;
+    blockfactory::core::BlockInformation::PortData output;
+
+    input1 = {/*portIndex=*/0,
+              std::vector<int>{blockfactory::core::Signal::DynamicSize},
+              blockfactory::core::DataType::DOUBLE};
+
+    input2 = {/*portIndex=*/1,
+              std::vector<int>{blockfactory::core::Signal::DynamicSize},
+              blockfactory::core::DataType::DOUBLE};
+
+    output = {/*portIndex=*/0,
+              std::vector<int>{blockfactory::core::Signal::DynamicSize},
+              blockfactory::core::DataType::DOUBLE};
 
     // Populate a structure with the overall input / output data
-    wbt::BlockInformation::IOData ioData;
+    blockfactory::core::BlockInformation::IOData ioData;
     ioData.input.push_back(input1);
     ioData.input.push_back(input2);
     ioData.output.push_back(output);
 
     // Store this data into the BlockInformation
     if (!blockInfo->setIOPortsData(ioData)) {
-        wbtError << "Failed to configure input / output ports";
+        bfError << "Failed to configure input / output ports";
         return false;
     }
 
     return true;
 }
 
-bool SignalMath::initialize(wbt::BlockInformation* blockInfo)
+bool SignalMath::initialize(blockfactory::core::BlockInformation* blockInfo)
 {
-    // The base wbt::Block class need to be initialized
+    // The base blockfactory::core::Block class need to be initialized first
     if (!Block::initialize(blockInfo)) {
         return false;
     }
 
     // Parse the parameters
     if (!SignalMath::parseParameters(blockInfo)) {
-        wbtError << "Failed to parse parameters.";
+        bfError << "Failed to parse parameters.";
         return false;
     }
 
     // Read the Operation parameter and store it as a private member
     std::string operation;
     if (!m_parameters.getParameter("Operation", operation)) {
-        wbtError << "Failed to parse Operation parameter";
+        bfError << "Failed to parse Operation parameter";
         return false;
     }
 
@@ -106,44 +116,45 @@ bool SignalMath::initialize(wbt::BlockInformation* blockInfo)
         ;
     }
     else {
-        wbtError << "Operation " << operation << " not supported";
+        bfError << "Operation " << operation << " not recognized";
         return false;
     }
 
     // Check that the size of the input signals match
     if (blockInfo->getInputPortWidth(/*index=*/0) != blockInfo->getInputPortWidth(/*index=*/1)) {
-        wbtError << "Input signals widths do not match";
+        bfError << "Input signals widths do not match";
         return false;
     }
 
     return true;
 }
 
-bool SignalMath::output(const wbt::BlockInformation* blockInfo)
+bool SignalMath::output(const blockfactory::core::BlockInformation* blockInfo)
 {
     // Get the input signals
-    wbt::InputSignalPtr input1 = blockInfo->getInputPortSignal(/*index=*/0);
-    wbt::InputSignalPtr input2 = blockInfo->getInputPortSignal(/*index=*/1);
+    blockfactory::core::InputSignalPtr input1 = blockInfo->getInputPortSignal(/*index=*/0);
+    blockfactory::core::InputSignalPtr input2 = blockInfo->getInputPortSignal(/*index=*/1);
 
     // Get the output signal
-    wbt::OutputSignalPtr output = blockInfo->getOutputPortSignal(/*index=*/0);
+    blockfactory::core::OutputSignalPtr output = blockInfo->getOutputPortSignal(/*index=*/0);
 
     // Check the signal validity
     if (!input1 || !input2 || !output) {
-        wbtError << "Signals not valid";
+        bfError << "Signals not valid";
         return false;
     }
 
     // Check the width of the output signal.
-    // This is recommended for dynamically sized signals.
+    // This check is recommended for dynamically sized signals since the engine might
+    // fail to propagate the right dimensions.
     if (output->getWidth() != input1->getWidth()) {
-        wbtError << "Output signal has a width of " << output->getWidth()
-                 << " while input signals have a width of " << input1->getWidth();
+        bfError << "Output signal has a width of " << output->getWidth()
+                << " while input signals have a width of " << input1->getWidth();
         return false;
     }
 
     // Perform the given operation
-    for (unsigned i = 0; i < output->getWidth(); ++i) {
+    for (int i = 0; i < output->getWidth(); ++i) {
         switch (m_operation) {
             case Operation::ADDITION:
                 output->set(i, input1->get<double>(i) + input2->get<double>(i));
@@ -160,7 +171,7 @@ bool SignalMath::output(const wbt::BlockInformation* blockInfo)
     return true;
 }
 
-bool SignalMath::terminate(const wbt::BlockInformation* /*blockInfo*/)
+bool SignalMath::terminate(const blockfactory::core::BlockInformation* /*blockInfo*/)
 {
     return true;
 }

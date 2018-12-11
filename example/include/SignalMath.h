@@ -9,8 +9,8 @@
 #ifndef EXAMPLE_SIGNALMATH_H
 #define EXAMPLE_SIGNALMATH_H
 
-#include <Core/Block.h>
-#include <Core/BlockInformation.h>
+#include <BlockFactory/Core/Block.h>
+#include <BlockFactory/Core/BlockInformation.h>
 
 #include <memory>
 #include <string>
@@ -19,7 +19,7 @@ namespace example {
     class SignalMath;
 } // namespace example
 
-class example::SignalMath : public wbt::Block
+class example::SignalMath : public blockfactory::core::Block
 {
 private:
     enum class Operation
@@ -38,11 +38,11 @@ public:
     ~SignalMath() override = default;
 
     unsigned numberOfParameters() override;
-    bool parseParameters(wbt::BlockInformation* blockInfo) override;
-    bool configureSizeAndPorts(wbt::BlockInformation* blockInfo) override;
-    bool initialize(wbt::BlockInformation* blockInfo) override;
-    bool output(const wbt::BlockInformation* blockInfo) override;
-    bool terminate(const wbt::BlockInformation* blockInfo) override;
+    bool parseParameters(blockfactory::core::BlockInformation* blockInfo) override;
+    bool configureSizeAndPorts(blockfactory::core::BlockInformation* blockInfo) override;
+    bool initialize(blockfactory::core::BlockInformation* blockInfo) override;
+    bool output(const blockfactory::core::BlockInformation* blockInfo) override;
+    bool terminate(const blockfactory::core::BlockInformation* blockInfo) override;
 };
 
 #endif // EXAMPLE_SIGNALMATH_H
