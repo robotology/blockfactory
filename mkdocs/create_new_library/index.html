@@ -1,0 +1,1651 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="A framework for wrapping algorithms for dataflow programming">
+      
+      
+      
+        <meta name="author" content="Diego Ferigo">
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-3.1.0">
+    
+    
+      
+        <title>Create a new library - blockfactory</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.11e41852.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.22915126.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#546e7a">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.20ef595d.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue-grey" data-md-color-accent="amber">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448"
+    viewBox="0 0 416 448" id="__github">
+  <path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19-18.125
+        8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19 18.125-8.5
+        18.125 8.5 10.75 19 3.125 20.5zM320 304q0 10-3.125 20.5t-10.75
+        19-18.125 8.5-18.125-8.5-10.75-19-3.125-20.5 3.125-20.5 10.75-19
+        18.125-8.5 18.125 8.5 10.75 19 3.125 20.5zM360
+        304q0-30-17.25-51t-46.75-21q-10.25 0-48.75 5.25-17.75 2.75-39.25
+        2.75t-39.25-2.75q-38-5.25-48.75-5.25-29.5 0-46.75 21t-17.25 51q0 22 8
+        38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0
+        37.25-1.75t35-7.375 30.5-15 20.25-25.75 8-38.375zM416 260q0 51.75-15.25
+        82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5-41.75
+        1.125q-19.5 0-35.5-0.75t-36.875-3.125-38.125-7.5-34.25-12.875-30.25-20.25-21.5-28.75q-15.5-30.75-15.5-82.75
+        0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25
+        30.875q36.75-8.75 77.25-8.75 37 0 70 8 26.25-20.5
+        46.75-30.25t47.25-9.75q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34
+        99.5z" />
+</svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#how-to-create-a-new-library" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href=".." title="blockfactory" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon">dashboard</i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            
+              <span class="md-header-nav__topic">
+                blockfactory
+              </span>
+              <span class="md-header-nav__topic">
+                Create a new library
+              </span>
+            
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          
+            <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+            
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+          
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+
+  <a href="https://github.com/robotology/blockfactory/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      robotology/blockfactory
+    </div>
+  </a>
+
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+  
+
+<nav class="md-tabs md-tabs--active" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href=".." title="Home" class="md-tabs__link">
+        Home
+      </a>
+    
+  </li>
+
+      
+        
+      
+        
+      
+        
+      
+        
+  
+  
+    <li class="md-tabs__item">
+      
+        <a href="./" title="Tutorials" class="md-tabs__link md-tabs__link--active">
+          Tutorials
+        </a>
+      
+    </li>
+  
+
+      
+        
+      
+        
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href=".." title="blockfactory" class="md-nav__button md-logo">
+      
+        <i class="md-icon">dashboard</i>
+      
+    </a>
+    blockfactory
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+
+  <a href="https://github.com/robotology/blockfactory/" title="Go to repository" class="md-source" data-md-source="github">
+    
+      <div class="md-source__icon">
+        <svg viewBox="0 0 24 24" width="24" height="24">
+          <use xlink:href="#__github" width="24" height="24"></use>
+        </svg>
+      </div>
+    
+    <div class="md-source__repository">
+      robotology/blockfactory
+    </div>
+  </a>
+
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../install/" title="Install" class="md-nav__link">
+      Install
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://robotology.github.io/blockfactory/doxygen/" title="Documentation [master]" class="md-nav__link">
+      Documentation [master]
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="https://robotology.github.io/blockfactory/devel/doxygen/" title="Documentation [devel]" class="md-nav__link">
+      Documentation [devel]
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      Tutorials
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        Tutorials
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Create a new library
+      </label>
+    
+    <a href="./" title="Create a new library" class="md-nav__link md-nav__link--active">
+      Create a new library
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" title="Introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithm-specifications" title="Algorithm specifications" class="md-nav__link">
+    Algorithm specifications
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminology" title="Terminology" class="md-nav__link">
+    Terminology
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#block" title="Block" class="md-nav__link">
+    Block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port" title="Port" class="md-nav__link">
+    Port
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signal" title="Signal" class="md-nav__link">
+    Signal
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engine" title="Engine" class="md-nav__link">
+    Engine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blockinformation" title="BlockInformation" class="md-nav__link">
+    BlockInformation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulink-block" title="Simulink Block" class="md-nav__link">
+    Simulink Block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulink-model" title="Simulink Model" class="md-nav__link">
+    Simulink Model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulink-library" title="Simulink Library" class="md-nav__link">
+    Simulink Library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s-function" title="S-Function" class="md-nav__link">
+    S-Function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-mask" title="Block Mask" class="md-nav__link">
+    Block Mask
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software-library" title="Software library" class="md-nav__link">
+    Software library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-library" title="Plugin Library" class="md-nav__link">
+    Plugin Library
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overview-of-simulink-execution" title="Overview of Simulink execution" class="md-nav__link">
+    Overview of Simulink execution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#develop-the-c-plugin" title="Develop the C++ plugin" class="md-nav__link">
+    Develop the C++ plugin
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmake-project-for-compiling-the-library" title="CMake project for compiling the library" class="md-nav__link">
+    CMake project for compiling the library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implement-the-block-logic" title="Implement the block logic" class="md-nav__link">
+    Implement the block logic
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header" title="Header" class="md-nav__link">
+    Header
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" title="Parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" title="Configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialization" title="Initialization" class="md-nav__link">
+    Initialization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" title="Output" class="md-nav__link">
+    Output
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminate" title="Terminate" class="md-nav__link">
+    Terminate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implement-the-plugin-factory" title="Implement the plugin factory" class="md-nav__link">
+    Implement the plugin factory
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matlab-and-simulink" title="Matlab and Simulink" class="md-nav__link">
+    Matlab and Simulink
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-an-new-simulink-library" title="Create an new Simulink Library" class="md-nav__link">
+    Create an new Simulink Library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-block" title="Add a block" class="md-nav__link">
+    Add a block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-test-simulink-model" title="Create a test Simulink Model" class="md-nav__link">
+    Create a test Simulink Model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-block-mask" title="Create a block mask" class="md-nav__link">
+    Create a block mask
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-comments" title="Final comments" class="md-nav__link">
+    Final comments
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../autogenerate_code/" title="Autogenerate C++ code" class="md-nav__link">
+      Autogenerate C++ code
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../about/" title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../license/" title="License" class="md-nav__link">
+      License
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" title="Introduction" class="md-nav__link">
+    Introduction
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#algorithm-specifications" title="Algorithm specifications" class="md-nav__link">
+    Algorithm specifications
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminology" title="Terminology" class="md-nav__link">
+    Terminology
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#block" title="Block" class="md-nav__link">
+    Block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port" title="Port" class="md-nav__link">
+    Port
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#signal" title="Signal" class="md-nav__link">
+    Signal
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#engine" title="Engine" class="md-nav__link">
+    Engine
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#blockinformation" title="BlockInformation" class="md-nav__link">
+    BlockInformation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulink-block" title="Simulink Block" class="md-nav__link">
+    Simulink Block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulink-model" title="Simulink Model" class="md-nav__link">
+    Simulink Model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulink-library" title="Simulink Library" class="md-nav__link">
+    Simulink Library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s-function" title="S-Function" class="md-nav__link">
+    S-Function
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#block-mask" title="Block Mask" class="md-nav__link">
+    Block Mask
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#software-library" title="Software library" class="md-nav__link">
+    Software library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugin-library" title="Plugin Library" class="md-nav__link">
+    Plugin Library
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overview-of-simulink-execution" title="Overview of Simulink execution" class="md-nav__link">
+    Overview of Simulink execution
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#develop-the-c-plugin" title="Develop the C++ plugin" class="md-nav__link">
+    Develop the C++ plugin
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmake-project-for-compiling-the-library" title="CMake project for compiling the library" class="md-nav__link">
+    CMake project for compiling the library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implement-the-block-logic" title="Implement the block logic" class="md-nav__link">
+    Implement the block logic
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#header" title="Header" class="md-nav__link">
+    Header
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parameters" title="Parameters" class="md-nav__link">
+    Parameters
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" title="Configuration" class="md-nav__link">
+    Configuration
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#initialization" title="Initialization" class="md-nav__link">
+    Initialization
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#output" title="Output" class="md-nav__link">
+    Output
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terminate" title="Terminate" class="md-nav__link">
+    Terminate
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implement-the-plugin-factory" title="Implement the plugin factory" class="md-nav__link">
+    Implement the plugin factory
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#matlab-and-simulink" title="Matlab and Simulink" class="md-nav__link">
+    Matlab and Simulink
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-an-new-simulink-library" title="Create an new Simulink Library" class="md-nav__link">
+    Create an new Simulink Library
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-a-block" title="Add a block" class="md-nav__link">
+    Add a block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-test-simulink-model" title="Create a test Simulink Model" class="md-nav__link">
+    Create a test Simulink Model
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-block-mask" title="Create a block mask" class="md-nav__link">
+    Create a block mask
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#final-comments" title="Final comments" class="md-nav__link">
+    Final comments
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/robotology/blockfactory/edit/master/doc/mkdocs/data/create_new_library.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 id="how-to-create-a-new-library">How to create a new library<a class="headerlink" href="#how-to-create-a-new-library" title="Permanent link">&para;</a></h1>
+<p>This guide describes how to use the core infrastructure of the Whole Body Toolbox for creating a new toolbox <strong>Toolbox Example</strong>. It will contain a single block <em>Signal math</em> with the following specifications:</p>
+<ul>
+<li>Accepts two input signals</li>
+<li>Performs element-wise operations: sum, subtraction, multiplication</li>
+<li>Allows to select the operation with a user friendly GUI (mask)</li>
+<li>Produces an output signal with the result of the operation</li>
+</ul>
+<p>Despite it is a very trivial example, it shows how to structure both the C++ and the Matlab components of a toolbox. From this starting point is then possible to build more complex architectures which might need e.g. to be split in many parts or to link against third-party libraries.</p>
+<div class="admonition example">
+<p class="admonition-title">Toolbox Example project</p>
+<p>You can find the files of this example in the <a href="https://github.com/robotology/blockfactory/tree/master/example"><code>example</code></a> folder.</p>
+</div>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<p>Before jumping in the example of this tutorial, in this section you will find helpful information useful to grasp the key ideas about the toolbox and a refreshing of common terms and patterns used in programming.</p>
+<h3 id="algorithm-specifications">Algorithm specifications<a class="headerlink" href="#algorithm-specifications" title="Permanent link">&para;</a></h3>
+<p>The execution of a generic algorithm can be split in the following basic phases:</p>
+<ol>
+<li>Configuration</li>
+<li>Initialization</li>
+<li>Step</li>
+<li>Termination</li>
+</ol>
+<p>In the configuration phase the algorithm can, for instance, read parameters and specify details about its inputs and outputs. During the initialization it might need to allocate resources. When everything is ready, the simulation starts and on every cycle of the loop the algorithm computes a step. Before finishing the simulation, in the termination step the resources that are not anymore needed can be deallocated and final operations can be executed.</p>
+<h3 id="terminology">Terminology<a class="headerlink" href="#terminology" title="Permanent link">&para;</a></h3>
+<p>There are few key components which are part of the core infrastructure, and it is important they are clear from the very beginning.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This project has strong roots with Simulink. Despite it is not anymore strictly related to it, the structure keeps as inheritance its terminology.</p>
+</div>
+<h4 id="block">Block<a class="headerlink" href="#block" title="Permanent link">&para;</a></h4>
+<p>The Block is the main component of the toolbox. You may think of it as a wrapper for a generic algorithm. It provides support of all the phases discussed above.</p>
+<h4 id="port">Port<a class="headerlink" href="#port" title="Permanent link">&para;</a></h4>
+<p>Blocks need to interface with the outside for reading input data and writing their results. Ports are attached to the Block and let data flow in and out from it. They have properties like the accepted data type and they are characterized by a size.</p>
+<h4 id="signal">Signal<a class="headerlink" href="#signal" title="Permanent link">&para;</a></h4>
+<p>A Signal is the generalization of a buffer. It can be plugged to multiple Ports and allows sharing data between them. Similarly to Ports, a Signal has a data type and a width. When a Signal is connected to a Port, their dimension must match.</p>
+<h4 id="engine">Engine<a class="headerlink" href="#engine" title="Permanent link">&para;</a></h4>
+<p>The engine is the framework that calls and executes the code implementing the Blocks. We currently provide support for Simulink and Simulink Coder. Alternative engines might be Scilab or even standalone C++ code.</p>
+<h4 id="blockinformation">BlockInformation<a class="headerlink" href="#blockinformation" title="Permanent link">&para;</a></h4>
+<p>BlockInformation is the interface between a Block and the engine that executes its code. Despite blocks are not aware of what engine is executing them, blocks and engine need to exchange information such as user parameters and Port data. BlockInformation provides methods for setting and getting this piece of information.</p>
+<h4 id="simulink-block">Simulink Block<a class="headerlink" href="#simulink-block" title="Permanent link">&para;</a></h4>
+<p>A Simulink Block is the wrapper of a (C++) Block. It provides a visual representation of it, with input and output ports and gives the possibility to connect it with other Simulink blocks through signals. The terms above come from this representation and map it to C++.</p>
+<h4 id="simulink-model">Simulink Model<a class="headerlink" href="#simulink-model" title="Permanent link">&para;</a></h4>
+<p>A Simulink Model is a project composed of a set of Simulink Blocks interconnected by Signals.</p>
+<h4 id="simulink-library">Simulink Library<a class="headerlink" href="#simulink-library" title="Permanent link">&para;</a></h4>
+<p>A Simulink Library is a container of a set of Blocks that populates the <em>Simulink Library Browser</em>. Every toolbox must be shipped with an associated Simulink Library file in order to expose its Blocks.</p>
+<h4 id="s-function">S-Function<a class="headerlink" href="#s-function" title="Permanent link">&para;</a></h4>
+<p>There are many types of functions for implementing an algorithm wrapped by a Simulink Block. In Matlab terminology, these functions are referred as <a href="https://it.mathworks.com/help/simulink/sfg/what-is-an-s-function.html">S-Functions</a>. You can read more about the supported types in <a href="https://it.mathworks.com/help/simulink/sfg/what-type-of-s-function-should-you-use.html">What type of S-Function should you use</a>.</p>
+<p>In short S-Functions provide a sort of interface (through C callbacks) where a given number of functions need to be implemented. Simulink knows the name of these functions and calls them on demand.</p>
+<h4 id="block-mask">Block Mask<a class="headerlink" href="#block-mask" title="Permanent link">&para;</a></h4>
+<p>A Simulink Block is just a square with input and output ports. It is possible to "mask" a Simulink Block in order to provide a user-friendly GUI that can be useful e.g. for setting Block parameters. The mask may contain buttons, sliders, check boxes, dropdown menus, etc.</p>
+<h4 id="software-library">Software library<a class="headerlink" href="#software-library" title="Permanent link">&para;</a></h4>
+<p>A library is a file containing compiled code (functions, classes, constants, etc.) which cannot be executed standalone. It can be either <em>static</em> or <em>dynamic</em>. Static libraries are meant to be embedded inside the executable that calls their symbols, instead the code of dynamic libraries (also called shared libraries) is only referenced inside the executable and called when needed.</p>
+<p>To grasp better this difference, if multiple executables link against the same static library, the same code is embedded inside all of them, resulting in bigger executables and code duplication. A dynamic library object instead can be shared by multiple executables that need only to know its location in the filesystem and which symbols it provide.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>You can find more detailed information about software libraries and linkers at <a href="https://www.lurklurk.org/linkers/linkers.html">this link</a>. </p>
+</div>
+<h4 id="plugin-library">Plugin Library<a class="headerlink" href="#plugin-library" title="Permanent link">&para;</a></h4>
+<p>A plugin library is a particular type of a dynamic library. An executable can load dynamic libraries either at load time, i.e. when the executable is launched, or at run time, i.e. when needed during the execution. The libraries that can be loaded during run time are referred as plugins.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>On UNIX systems the load of a plugin is executed by a <code>dlopen</code> call</p>
+</div>
+<h3 id="overview-of-simulink-execution">Overview of Simulink execution<a class="headerlink" href="#overview-of-simulink-execution" title="Permanent link">&para;</a></h3>
+<p>BlockFactory provides a framework capable of loading during runtime shared libraries (plugins). When the Simulink simulation starts, its engine assigns a deterministic order to the blocks of the Simulink Model. If one of these blocks is not contained in the default toolboxes provided by Mathworks, it needs to be associated to a <em>S-Function</em> that implements its logic. The toolbox provides a streamlined approach to implement these functions without the need of being an expert of the complex Simulink APIs.</p>
+<p>The blocks of our library are implemented in Simulink using the following <em>S-Function</em> block:</p>
+<p><img alt="EmptySFunctionBlock" src="../images/EmptySFunctionBlock.png" /></p>
+<p>For the time being, what you need to know is that the name of the plugin library generated from the C++ code will be stored in the <em>S-function parameters</em> field of the block mask. We provide a generic <strong>Level-2 MEX S-Function</strong> that reads this parameter and uses the library name name to dynamically load the dynamic library that contains the block's code.</p>
+<p>After the library is found in the filesystem and successfully loaded, Simulink allocates an object of the C++ class associated to the block functionality. Again, this information (the class name) is passed in the <em>S-function parameters</em> field of the block mask.</p>
+<h2 id="develop-the-c-plugin">Develop the C++ plugin<a class="headerlink" href="#develop-the-c-plugin" title="Permanent link">&para;</a></h2>
+<p>You already learned that Blocks are no more than regular C++ classes. They are not an exception, in fact all the components discussed until now are mapped to C++ classes or interfaces (<a href="https://en.cppreference.com/w/cpp/language/abstract_class">abstract classes</a>).</p>
+<p>The following resources provide further information about them:</p>
+<ul>
+<li>Blocks are implementations of the <a href="https://robotology.github.io/blockfactory/doxygen/classwbt_1_1_block.html"><code>blockfactory::core::Block</code></a> interface</li>
+<li>BlockInformation is defined in the  <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_block_information.html"><code>blockfactory::core::BlockInformation</code></a> interface</li>
+<li>Signals are mapped to the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_signal.html"><code>blockfactory::core::Signal</code></a> class</li>
+<li>Blocks parameters are mapped to the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_parameter.html"><code>blockfactory::core::Parameter</code></a> class</li>
+</ul>
+<p>We need the following folder structure for the C++ project. Create already the empty files so the project can compile from the very first attempt.</p>
+<div class="highlight"><pre><span></span>.
+├── CMakeLists.txt
+├── include
+│   └── SignalMath.h
+└── src
+    ├── Factory.cpp
+    └── SignalMath.cpp
+</pre></div>
+
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>All the path of this tutorial will be relative to the root folder of the project. This means that if the directory tree above is stored in <code>/home/foo/tutorial</code>, when you read to go the <code>./build</code> directory it means <code>/home/foo/tutorial/build</code>.  </p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Bear in mind that this C++ class is independent from Simulink. Potentially, it can be called by a standalone C++ executable.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>It is not mandatory to implement a new class for every Simulink Block. If they share a lot of code, a single class can be referenced by multiple Simulink Blocks and its behavior can be selected using parameters.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use all the external libraries you want to implement the code of this class.</p>
+</div>
+<h3 id="cmake-project-for-compiling-the-library">CMake project for compiling the library<a class="headerlink" href="#cmake-project-for-compiling-the-library" title="Permanent link">&para;</a></h3>
+<p>You are free to use your favourite tool for compiling the project. We recommend CMake. If you are not an expert user of this tool, just follow the steps. The comments in the file should be enough to understand what it is happening.</p>
+<p>Fill the file <code>CMakeLists.txt</code> with the following content:</p>
+<div class="highlight"><pre><span></span><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.5</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">ExampleToolbox</span> <span class="s">LANGUAGES</span> <span class="s">CXX</span> <span class="s">VERSION</span> <span class="s">0.1</span><span class="p">)</span>
+
+<span class="c"># C++ standard</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span> <span class="s">14</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD_REQUIRED</span> <span class="s">ON</span><span class="p">)</span>
+
+<span class="c"># Export all symbols in Windows</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS</span> <span class="s">ON</span><span class="p">)</span>
+
+<span class="c"># Utility for defining install folders</span>
+<span class="nb">include</span><span class="p">(</span><span class="s">GNUInstallDirs</span><span class="p">)</span>
+
+<span class="c"># Tweak linker flags in Linux.</span>
+<span class="c"># Matlab is very strict on missing symbols and by default ld do not warn if</span>
+<span class="c"># something is missing.</span>
+<span class="nb">if</span><span class="p">(</span><span class="s">UNIX</span> <span class="s">AND</span> <span class="s">NOT</span> <span class="s">APPLE</span><span class="p">)</span>
+    <span class="nb">get_filename_component</span><span class="p">(</span><span class="s">LINKER_BIN</span> <span class="o">${</span><span class="nv">CMAKE_LINKER</span><span class="o">}</span> <span class="s">NAME</span><span class="p">)</span>
+    <span class="nb">if</span><span class="p">(</span><span class="o">${</span><span class="nv">LINKER_BIN</span><span class="o">}</span> <span class="s">STREQUAL</span> <span class="s2">&quot;ld&quot;</span><span class="p">)</span>
+        <span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_SHARED_LINKER_FLAGS</span> <span class="s2">&quot;-Wl,--unresolved-symbols=report-all&quot;</span><span class="p">)</span>
+    <span class="nb">endif</span><span class="p">()</span>
+<span class="nb">endif</span><span class="p">()</span>
+
+<span class="c"># ===========</span>
+<span class="c"># C++ LIBRARY</span>
+<span class="c"># ===========</span>
+
+<span class="c"># Find the needed BlockFactory components:</span>
+<span class="c"># - BlockFactoryCore contains the core classes such as Block and Signal</span>
+<span class="c"># - BlockFactoryMex is required at runtime for loading the library from Simulink</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">BlockFactory</span> <span class="s">1</span> <span class="s">REQUIRED</span> <span class="s">COMPONENTS</span> <span class="s">BlockFactoryCore</span> <span class="s">BlockFactoryMex</span><span class="p">)</span>
+
+<span class="c"># Create the plugin library. This must be a SHARED library.</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="s">ExampleToolbox</span> <span class="s">SHARED</span>
+    <span class="s">include/SignalMath.h</span>
+    <span class="s">src/SignalMath.cpp</span>
+    <span class="s">src/Factory.cpp</span><span class="p">)</span>
+
+<span class="c"># Manually set the name of the output library. This is not required and it</span>
+<span class="c"># is done only for sake of clarity.</span>
+<span class="nb">set_target_properties</span><span class="p">(</span><span class="s">ExampleToolbox</span> <span class="s">PROPERTIES</span>
+    <span class="s">OUTPUT_NAME</span> <span class="s2">&quot;ExampleToolbox&quot;</span><span class="p">)</span>
+
+<span class="c"># Link the library with the Core component containing the core classes</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">ExampleToolbox</span> <span class="s">PRIVATE</span>
+    <span class="s">BlockFactory::Core</span><span class="p">)</span>
+
+<span class="c"># Setup the include directories</span>
+<span class="nb">target_include_directories</span><span class="p">(</span><span class="s">ExampleToolbox</span> <span class="s">PRIVATE</span>
+    <span class="o">$&lt;</span><span class="nv">BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If your library needs to link against other libraries, use <code>find_package</code> to load their targets and then add them to the <code>target_link_libraries</code> directive.</p>
+</div>
+<p>From the root folder of the project, execute:</p>
+<div class="highlight"><pre><span></span>mkdir build
+<span class="nb">cd</span> build
+cmake ..
+cmake --build .
+</pre></div>
+
+<p>You should now find in the <code>./build</code> directories a new library file, which depending on your OS is:</p>
+<ul>
+<li><code>libExampleToolbox.so</code> on Linux</li>
+<li><code>libExampleToolbox.dylib</code> on macOS</li>
+<li><code>ExampleToolbox.dll</code> on Windows</li>
+</ul>
+<p>This is the toolbox's plugin library which is loaded during runtime by the active Engine. </p>
+<h3 id="implement-the-block-logic">Implement the block logic<a class="headerlink" href="#implement-the-block-logic" title="Permanent link">&para;</a></h3>
+<p>The only <em>Signal math</em> block of our new toolbox will be implemented in a <code>example::SignalMath</code> C++ class. </p>
+<h4 id="header">Header<a class="headerlink" href="#header" title="Permanent link">&para;</a></h4>
+<p>Here below the <code>./include/SignalMath.h</code> header.</p>
+<p>Given the simple logic it should be straightforward to understand. The class inherits from the <code>blockfactory::core::Block</code> interface and implements some of its methods.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>The only mandatory method to implement is the <code>blockfactory::core::Block::output</code>. By default the other methods are dummy and they always return <code>true</code>.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="cp">#ifndef EXAMPLE_SIGNALMATH_H</span>
+<span class="cp">#define EXAMPLE_SIGNALMATH_H</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;BlockFactory/Core/Block.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;BlockFactory/Core/BlockInformation.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+
+<span class="k">namespace</span> <span class="n">example</span> <span class="p">{</span>
+    <span class="k">class</span> <span class="nc">SignalMath</span><span class="p">;</span>
+<span class="p">}</span> <span class="c1">// namespace example</span>
+
+<span class="k">class</span> <span class="nc">example</span><span class="o">::</span><span class="nl">SignalMath</span> <span class="p">:</span> <span class="k">public</span> <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Block</span>
+<span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+    <span class="k">enum</span> <span class="k">class</span> <span class="nc">Operation</span>
+    <span class="p">{</span>
+        <span class="n">ADDITION</span><span class="p">,</span>
+        <span class="n">SUBTRACTION</span><span class="p">,</span>
+        <span class="n">MULTIPLICATION</span><span class="p">,</span>
+    <span class="p">};</span>
+
+    <span class="n">Operation</span> <span class="n">m_operation</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">static</span> <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">ClassName</span><span class="p">;</span>
+
+    <span class="n">SignalMath</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="o">~</span><span class="n">SignalMath</span><span class="p">()</span> <span class="k">override</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="nf">numberOfParameters</span><span class="p">()</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="nf">parseParameters</span><span class="p">(</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="nf">configureSizeAndPorts</span><span class="p">(</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="nf">output</span><span class="p">(</span><span class="k">const</span> <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="nf">terminate</span><span class="p">(</span><span class="k">const</span> <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span> <span class="k">override</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="cp">#endif </span><span class="c1">// EXAMPLE_SIGNALMATH_H</span>
+</pre></div>
+
+<p>The <code>./src/SignalMath.cpp</code> file is more interesting, let's split it in chunks.</p>
+<h4 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h4>
+<p>If you recall, BlockInformation is used by the Block for interfacing with the Engine. When this code is executed inside Simulink, the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_simulink_block_information.html"><code>blockfactory::core::SimulinkBlockInformation</code></a> implementation will perform the required operations calling Simulink APIs.</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;SignalMath.h&quot;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;BlockFactory/Core/Log.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;BlockFactory/Core/Parameter.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;BlockFactory/Core/Signal.h&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">example</span><span class="p">;</span>
+
+<span class="kt">unsigned</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">numberOfParameters</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// The base blockfactory::core::Block class needs parameters (e.g. the ClassName).</span>
+    <span class="c1">// You must specify here how many more parameters this class needs.</span>
+    <span class="c1">// Our example needs just one more: the operation to perform.</span>
+    <span class="k">return</span> <span class="n">Block</span><span class="o">::</span><span class="n">numberOfParameters</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// This method should let BlockInformation know the parameters metadata.</span>
+<span class="c1">// BlockFactory will use this information to gather the parameters from the active engine.</span>
+<span class="kt">bool</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">parseParameters</span><span class="p">(</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Initialize information for our only parameter</span>
+    <span class="kt">int</span> <span class="n">rows</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">cols</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Operation&quot;</span><span class="p">;</span> <span class="c1">// This label is used later to access the paramemeter</span>
+    <span class="kt">unsigned</span> <span class="n">index</span> <span class="o">=</span> <span class="n">Block</span><span class="o">::</span><span class="n">numberOfParameters</span><span class="p">();</span> <span class="c1">// Indices start from 0</span>
+    <span class="k">auto</span> <span class="n">type</span> <span class="o">=</span> <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ParameterType</span><span class="o">::</span><span class="n">STRING</span><span class="p">;</span>
+
+    <span class="c1">// Create the parameter</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">ParameterMetadata</span> <span class="n">parameterMetadata</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
+
+    <span class="c1">// Add the parameter metadata into the BlockInformation</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">addParameterMetadata</span><span class="p">(</span><span class="n">parameterMetadata</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to store parameter metadata&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Ask to the BlockInformation interface to parse the parameters and store them into</span>
+    <span class="c1">// the protected m_parameters member of the parent blockfactory::core::Block class.</span>
+    <span class="kt">bool</span> <span class="n">paramParsedOk</span> <span class="o">=</span> <span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">parseParameters</span><span class="p">(</span><span class="n">m_parameters</span><span class="p">);</span>
+
+    <span class="c1">// Return the outcome of the parameter parsing.</span>
+    <span class="c1">// If the parsing fails, the execution stops.</span>
+    <span class="k">return</span> <span class="n">paramParsedOk</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h4>
+<p>The configuration of the Block is performed in the following steps:</p>
+<ol>
+<li>The base class needs to be configured. It needs some parameters (e.g. the class name and the library name) and this call asks the Engine to parse them.</li>
+<li>The ports of the Block need to be defined. In this example the size is set as dynamic so that it accepts signals with any width.</li>
+<li>The <a href="https://robotology.github.io/wb-toolbox/doxygen/structwbt_1_1_block_information_1_1_i_o_data.html"><code>blockfactory::core::BlockInformation::IOData</code></a> class is used to store the data of all the ports. It is a <code>struct</code> containing two <code>std::vectors</code>.</li>
+<li>The data is then sent to the Engine through the BlockInformation interface.</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>If needed, parameters can be accessed from this step. Refer to the initialization phase to understand how to gather them.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Signal size</p>
+<p>Simulink has the support of inheriting the port size from the signal size, though use this feature only when strictly needed. In complex Simulink Models it might be difficult executing the size propagation, and fixing the Port size provides helpful constraints for the Engine (especially for blocks with only outputs) </p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Important</p>
+<p>Be careful on memory allocations during this step. A temporary object is created only for configuration means, and then destroyed. All the allocated memory will be hereby deleted.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">configureSizeAndPorts</span><span class="p">(</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// The base blockfactory::core::Block class needs to be configured first</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Block</span><span class="o">::</span><span class="n">configureSizeAndPorts</span><span class="p">(</span><span class="n">blockInfo</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Create data about input and output ports.</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">PortData</span> <span class="n">input1</span><span class="p">;</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">PortData</span> <span class="n">input2</span><span class="p">;</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">PortData</span> <span class="n">output</span><span class="p">;</span>
+
+    <span class="n">input1</span> <span class="o">=</span> <span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">0</span><span class="p">,</span>
+              <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Signal</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
+              <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
+
+    <span class="n">input2</span> <span class="o">=</span> <span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">1</span><span class="p">,</span>
+              <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Signal</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
+              <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">0</span><span class="p">,</span>
+              <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Signal</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
+              <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
+
+    <span class="c1">// Populate a structure with the overall input / output data</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">IOData</span> <span class="n">ioData</span><span class="p">;</span>
+    <span class="n">ioData</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">input1</span><span class="p">);</span>
+    <span class="n">ioData</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">input2</span><span class="p">);</span>
+    <span class="n">ioData</span><span class="p">.</span><span class="n">output</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
+
+    <span class="c1">// Store this data into the BlockInformation</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">setIOPortsData</span><span class="p">(</span><span class="n">ioData</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to configure input / output ports&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4 id="initialization">Initialization<a class="headerlink" href="#initialization" title="Permanent link">&para;</a></h4>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Starting from this step, memory persistence is guaranteed.</p>
+</div>
+<p>In the initialisation step, the input parameter that defines the operation is parsed. In this example the parameter is passed as a string. In the header a new <code>enum class Operation</code> was defined and here the related private member is properly initialised. Additional checks can be added, i.e. testing that both ports have the same width given that a dynamic size was previously assigned.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>In this case there's no need to allocate memory. If your class has buffers to initialise, this is the right time to do it.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// The base blockfactory::core::Block class need to be initialized first</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">Block</span><span class="o">::</span><span class="n">initialize</span><span class="p">(</span><span class="n">blockInfo</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Parse the parameters</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">SignalMath</span><span class="o">::</span><span class="n">parseParameters</span><span class="p">(</span><span class="n">blockInfo</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to parse parameters.&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Read the Operation parameter and store it as a private member</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">operation</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">m_parameters</span><span class="p">.</span><span class="n">getParameter</span><span class="p">(</span><span class="s">&quot;Operation&quot;</span><span class="p">,</span> <span class="n">operation</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to parse Operation parameter&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Check the content of the parameter</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">operation</span> <span class="o">==</span> <span class="s">&quot;Addition&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">m_operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="o">::</span><span class="n">ADDITION</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">operation</span> <span class="o">==</span> <span class="s">&quot;Subtraction&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">m_operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="o">::</span><span class="n">SUBTRACTION</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">operation</span> <span class="o">==</span> <span class="s">&quot;Multiplication&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">m_operation</span> <span class="o">=</span> <span class="n">Operation</span><span class="o">::</span><span class="n">MULTIPLICATION</span><span class="p">;</span>
+        <span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Operation &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">operation</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; not recognized&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Check that the size of the input signals match</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">getInputPortWidth</span><span class="p">(</span><span class="cm">/*index=*/</span><span class="mi">0</span><span class="p">)</span> <span class="o">!=</span> <span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">getInputPortWidth</span><span class="p">(</span><span class="cm">/*index=*/</span><span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Input signals widths do not match&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h4>
+<p>The <code>output</code> method is where the real algorithm is implemented. The Signals are firstly gathered from the Engine using their index. The classes <code>blockfactory::core::InputSignalPtr</code> and <code>blockfactory::core::OutputSignalPtr</code> are particular <code>typedef</code> of the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_signal.html"><code>blockfactory::core::Signal</code></a> class and they have the same methods. In the <code>for</code> loop the configured operation is performed and the result stored in the output signal.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that input signals are read-only and accessed in C++ as <code>const</code> object. You can store data only to the output signals objects.</p>
+</div>
+<div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">output</span><span class="p">(</span><span class="k">const</span> <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="n">blockInfo</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Get the input signals</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">InputSignalPtr</span> <span class="n">input1</span> <span class="o">=</span> <span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">getInputPortSignal</span><span class="p">(</span><span class="cm">/*index=*/</span><span class="mi">0</span><span class="p">);</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">InputSignalPtr</span> <span class="n">input2</span> <span class="o">=</span> <span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">getInputPortSignal</span><span class="p">(</span><span class="cm">/*index=*/</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="c1">// Get the output signal</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">OutputSignalPtr</span> <span class="n">output</span> <span class="o">=</span> <span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">getOutputPortSignal</span><span class="p">(</span><span class="cm">/*index=*/</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">// Check the signal validity</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">input1</span> <span class="o">||</span> <span class="o">!</span><span class="n">input2</span> <span class="o">||</span> <span class="o">!</span><span class="n">output</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Signals not valid&quot;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Check the width of the output signal.</span>
+    <span class="c1">// This check is recommended for dynamically sized signals since the engine might</span>
+    <span class="c1">// fail to propagate the right dimensions.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">output</span><span class="o">-&gt;</span><span class="n">getWidth</span><span class="p">()</span> <span class="o">!=</span> <span class="n">input1</span><span class="o">-&gt;</span><span class="n">getWidth</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Output signal has a width of &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">output</span><span class="o">-&gt;</span><span class="n">getWidth</span><span class="p">()</span>
+                <span class="o">&lt;&lt;</span> <span class="s">&quot; while input signals have a width of &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">input1</span><span class="o">-&gt;</span><span class="n">getWidth</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Perform the given operation</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">output</span><span class="o">-&gt;</span><span class="n">getWidth</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">switch</span> <span class="p">(</span><span class="n">m_operation</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="n">Operation</span><span class="o">::</span><span class="nl">ADDITION</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">input1</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">input2</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="n">Operation</span><span class="o">::</span><span class="nl">SUBTRACTION</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">input1</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="n">input2</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="n">Operation</span><span class="o">::</span><span class="nl">MULTIPLICATION</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">input1</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">input2</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+                <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h4 id="terminate">Terminate<a class="headerlink" href="#terminate" title="Permanent link">&para;</a></h4>
+<p>Given the simplicity of our Block, the <code>terminate</code> step is a dummy implementation. This method is reported just for the sake of clarity. It can be omitted since <code>blockfactory::core::Block::terminate</code> already provides the same dummy implementation.</p>
+<div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">terminate</span><span class="p">(</span><span class="k">const</span> <span class="n">wbt</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="cm">/*blockInfo*/</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3 id="implement-the-plugin-factory">Implement the plugin factory<a class="headerlink" href="#implement-the-plugin-factory" title="Permanent link">&para;</a></h3>
+<p>A plugin library usually contains multiple classes used for multiple Blocks. The <code>sharedlibpp</code> tool for plugins requires declaring what classes are part of the plugin. This operation is done in the <code>./include/Factory.cpp</code> file:</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;SignalMath.h&quot;</span><span class="cp"></span>
+
+<span class="c1">// Class factory API</span>
+<span class="cp">#include</span> <span class="cpf">&lt;shlibpp/SharedLibraryClassApi.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// Add the example::SignalMath class to the plugin factory</span>
+<span class="n">SHLIBPP_DEFINE_SHARED_SUBCLASS</span><span class="p">(</span><span class="n">SignalMath</span><span class="p">,</span> <span class="n">example</span><span class="o">::</span><span class="n">SignalMath</span><span class="p">,</span> <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Block</span><span class="p">);</span>
+</pre></div>
+
+<p>The <code>SHLIBPP_DEFINE_SHARED_SUBCLASS</code> macro needs the following three arguments:</p>
+<ul>
+<li>A label used to extract the class from the plugin library</li>
+<li>The class of the block</li>
+<li>The base class of the block</li>
+</ul>
+<p>The only interesting part here is the label. Keep this name in mind because we need to know it later in the Simulink section.</p>
+<p>If everything was properly done, the library is now ready and can be compiled again:</p>
+<div class="highlight"><pre><span></span><span class="nb">cd</span> build
+cmake --build .
+</pre></div>
+
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Simulink will open this library at the beginning of the simulation loop and it needs to find it from the filesystem. Be sure that the <code>./build</code> folder is in the searching path of your dynamic linker. In the supported OSs you should add it to:</p>
+<div class="superfences-tabs">
+<input name="__tabs_1" type="radio" id="__tab_1_0" checked="checked" />
+<label for="__tab_1_0">GNU/LINUX</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>LD_LIBRARY_PATH
+</pre></div></div>
+<input name="__tabs_1" type="radio" id="__tab_1_1" />
+<label for="__tab_1_1">macOS</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>DYLD_LIBRARY_PATH
+</pre></div></div>
+<input name="__tabs_1" type="radio" id="__tab_1_2" />
+<label for="__tab_1_2">Windows</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>Path
+</pre></div></div>
+</div>
+</div>
+<h2 id="matlab-and-simulink">Matlab and Simulink<a class="headerlink" href="#matlab-and-simulink" title="Permanent link">&para;</a></h2>
+<p>Once the C++ library is ready, the class can be wrapped by a Simulink Block. If, as in this case, there's no existing Simulink Library to which the new block can be added, some extra step to create a new one is necessary.</p>
+<p>We're going to store the files discussed in this section in the <code>./matlab</code> folder, obtaining at the end the following project structure:</p>
+<div class="highlight"><pre><span></span>.
+├── CMakeLists.txt
+├── include
+│   └── SignalMath.h
+├── matlab
+│   ├── ExampleToolbox.slx
+│   ├── Model.mdl
+│   └── slblocks.m
+└── src
+    ├── Factory.cpp
+    └── SignalMath.cpp
+</pre></div>
+
+<ul>
+<li><code>ExampleToolbox.slx</code> is the Simulink Library containing our new <em>Signal Math</em> Block.</li>
+<li><code>slblocks.m</code> is a m-script necessary for loading external Simulink Libraries into the Simulink Library Browser .</li>
+<li><code>Model.mdl</code> is a Simulink Model for testing the Block.</li>
+</ul>
+<h3 id="create-an-new-simulink-library">Create an new Simulink Library<a class="headerlink" href="#create-an-new-simulink-library" title="Permanent link">&para;</a></h3>
+<p>The first step is creating a new Simulink Library. Open the Simulink Start Page and create a Blank Library. Save it in <code>./matlab/ExampleToolbox.slx</code>.</p>
+<p><img alt="NewBlankLibrary" src="../images/NewBlankLibrary.png" /></p>
+<p>In order to <a href="https://it.mathworks.com/help/simulink/ug/adding-libraries-to-the-library-browser.html">populate the Simulink Library Browser</a>, you need to create a <code>slblocks.m</code> file with the following content:</p>
+<div class="highlight"><pre><span></span><span class="k">function</span> <span class="nf">blkStruct</span> <span class="p">=</span> <span class="n">slblocks</span>
+
+<span class="n">Browser</span><span class="p">.</span><span class="n">Library</span> <span class="p">=</span> <span class="s">&#39;ExampleToolbox&#39;</span><span class="p">;</span>
+<span class="n">Browser</span><span class="p">.</span><span class="n">Name</span>    <span class="p">=</span> <span class="s">&#39;Example Toolbox&#39;</span><span class="p">;</span>
+<span class="n">Browser</span><span class="p">.</span><span class="n">IsFlat</span>  <span class="p">=</span>  <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">blkStruct</span><span class="p">.</span><span class="n">Browser</span> <span class="p">=</span>  <span class="n">Browser</span><span class="p">;</span>
+</pre></div>
+
+<p>As explained in the <a href="https://it.mathworks.com/help/simulink/ug/adding-libraries-to-the-library-browser.html">official documentation</a>, we also need to modify a property of the library file:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;</span> <span class="n">set_param</span><span class="p">(</span><span class="s">&#39;ExampleToolbox&#39;</span><span class="p">,</span><span class="s">&#39;EnableLBRepository&#39;</span><span class="p">,</span><span class="s">&#39;on&#39;</span><span class="p">);</span>
+</pre></div>
+
+<p>If you followed these steps, the new library should be ready. Be sure that the <code>./matlab</code> folder is in the Matlab <code>path</code>, then open the Simulink Library Browser and press <span class="keys"><kbd class="key-f5">F5</kbd></span>. You should now see the empty <em>Example Toolbox</em> entry.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to add a folder to the <code>path</code>, you can either browse it from the Matlab tree view making it the current folder, or executing <code>addpath('/path/of/the/folder')</code>.  Find more details at <a href="https://it.mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html">What Is the MATLAB Search Path?</a>.</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Every time you close the library, Matlab locks it. Press the lock icon in the bottom left corner to unlock the library.</p>
+</div>
+<h3 id="add-a-block">Add a block<a class="headerlink" href="#add-a-block" title="Permanent link">&para;</a></h3>
+<p>Open the library and add a new <em>S-Function</em> block with the following parameters:</p>
+<p><img alt="SFunctionBlock" src="../images/SFunctionBlock.png" /></p>
+<ul>
+<li>The <em>S-function name</em> is the name of the generic S-Function that BlockFactory provides</li>
+<li>The <em>S-function parameters</em> are the parameters passed to the S-Function. The first two are required by <code>blockfactory::core::Block</code>, and the third one is the parameter of our <code>example::SignalMath</code> class:<ul>
+<li><code>'SignalMath'</code> is the label we used in <code>Factory.cpp</code> when we registered our class.</li>
+<li><code>'ExampleToolbox'</code> is the name of the plugin library.  It must match the <code>OUTPUT_NAME</code> we assigned to the target in <code>CMakeLists.txt</code>.</li>
+<li><code>'Addition'</code> is the kind of operation we want this block to perform.</li>
+</ul>
+</li>
+</ul>
+<p>Press OK and save the library. If you insert wrong information, like a wrong number of parameters or parameters with a wrong type or content, the <code>bfError</code>s we added in the C++ class should provide more details (try it, a new popup error message should open).</p>
+<h3 id="create-a-test-simulink-model">Create a test Simulink Model<a class="headerlink" href="#create-a-test-simulink-model" title="Permanent link">&para;</a></h3>
+<p>Now it's time for finally testing all our work. Create a new <em>Blank Model</em> and populate it with the following blocks:</p>
+<p><img alt="TestSimulinkModel" src="../images/TestSimulinkModel.png" /></p>
+<p>Then press the Play icon, and the <em>Display</em> connected to the block output should show the result of the addition.</p>
+<h3 id="create-a-block-mask">Create a block mask<a class="headerlink" href="#create-a-block-mask" title="Permanent link">&para;</a></h3>
+<p>The type of the operation is defined as a parameter of the <em>S-Function</em> block. It is not very intuitive changing it in this way. Beyond the effort of changing the string, we should remember exactly what parameter the block accepts.</p>
+<p>This limitation can be overcome by masking the block, that means providing it a GUI. Right-click the block from the <em>Example Toolbox</em> library and press <code>Mask &gt; Create Mask</code>.</p>
+<p>In the <code>Icon &amp; Ports</code> tab, fill the <code>Icon drawing commands</code> with:</p>
+<div class="highlight"><pre><span></span><span class="nb">disp</span><span class="p">(</span><span class="s">&#39;Signal Math&#39;</span><span class="p">)</span>
+
+<span class="n">port_label</span><span class="p">(</span><span class="s">&#39;input&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;Input 1&#39;</span><span class="p">)</span>
+<span class="n">port_label</span><span class="p">(</span><span class="s">&#39;input&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s">&#39;Input 2&#39;</span><span class="p">)</span>
+
+<span class="n">port_label</span><span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="s">&#39;Output&#39;</span><span class="p">)</span>
+</pre></div>
+
+<p>Then, in the <code>Parameters &amp; Dialog</code> tab, add a <code>Popup</code> and fill it obtaining the following status:</p>
+<p><img alt="BlockMask" src="../images/BlockMask.png" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that we unchecked the <code>Evaluate</code> attribute. When a Popup is not evaluated, its associated variable (<code>operation</code> in this case) will contain the string of the selected option. Instead, if it is evaluated, it contains a 0-based index.</p>
+</div>
+<p>Save the library and substitute the new Block in the Simulink Model. You can now select the operation double-clicking the block and changing the popup menu entry.</p>
+<p><img alt="TestSimulinkModelWithMask" src="../images/TestSimulinkModelWithMask.png" /></p>
+<h2 id="final-comments">Final comments<a class="headerlink" href="#final-comments" title="Permanent link">&para;</a></h2>
+<p>BlockFactory provides great abstraction capabilities for wrapping C and C++ algorithms to Simulink Blocks. You don't need to be a Simulink expert for this kind of operation, all the machinery is hidden under the hood. Possibilities are endless.</p>
+<p>We are eager to hear your feedback! If you find bugs or want to propose enhancements, please fill a <a href="https://github.com/robotology/blockfactory/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc">new Issue</a>.</p>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../install/" title="Install" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Install
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../autogenerate_code/" title="Autogenerate C++ code" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Autogenerate C++ code
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2019 Istituto Italiano di Tecnologia - iCub Facility
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+        
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.9e1f3b71.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      
+    
+    
+      
+    
+  </body>
+</html>

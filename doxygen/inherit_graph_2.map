@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classblockfactory_1_1core_1_1_block_information.html" title="Abstract class for storing generic Block properties. " alt="" coords="5,39,133,80"/>
+<area shape="rect" id="node2" href="$classblockfactory_1_1coder_1_1_coder_block_information.html" title="blockfactory::coder\l::CoderBlockInformation" alt="" coords="185,5,348,47"/>
+<area shape="rect" id="node3" href="$classblockfactory_1_1mex_1_1_simulink_block_information.html" title="blockfactory::mex::\lSimulinkBlockInformation" alt="" coords="181,71,352,112"/>
+</map>
