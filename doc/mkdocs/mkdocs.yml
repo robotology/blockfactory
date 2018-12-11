@@ -1,0 +1,64 @@
+# Project information
+site_name: 'blockfactory'
+site_description: 'A framework for wrapping algorithms for dataflow programming'
+site_author: 'Diego Ferigo'
+
+# Repository
+repo_name: robotology/blockfactory
+repo_url: 'https://github.com/robotology/blockfactory'
+edit_uri: 'edit/master/doc/mkdocs/data'
+
+# Configuration
+docs_dir: 'data'
+theme:
+    name: 'material'
+    palette:
+        primary: blue grey
+        accent: amber
+    feature:
+        tabs: true
+    # favicon:
+    #     icon: dashboard
+    logo:
+        icon: dashboard
+
+# Copyright
+copyright: 'Copyright &copy; 2019 Istituto Italiano di Tecnologia - iCub Facility'
+
+# Extensions
+markdown_extensions:
+    - markdown.extensions.admonition
+    # - markdown.extensions.codehilite
+    - pymdownx.arithmatex
+    - pymdownx.betterem:
+        smart_enable: all
+    - pymdownx.caret
+    - pymdownx.critic
+    - pymdownx.details
+    - pymdownx.inlinehilite
+    - pymdownx.highlight
+    - pymdownx.keys
+    - pymdownx.magiclink:
+        user: robotology
+        repo: blockfactory
+        repo_url_shortener: true
+        repo_url_shorthand: true
+    - pymdownx.mark
+    - pymdownx.smartsymbols
+    - pymdownx.superfences
+    - pymdownx.tasklist
+    - pymdownx.tilde
+    - markdown.extensions.toc:
+        permalink: true
+
+# Page tree
+nav:
+    - Home: 'index.md'
+    - Install: 'install.md'
+    - Documentation [master]: https://robotology.github.io/blockfactory/doxygen/
+    - Documentation [devel]: https://robotology.github.io/blockfactory/devel/doxygen/
+    - Tutorials:
+        - Create a new library: 'create_new_library.md'
+        - Autogenerate C++ code: 'autogenerate_code.md'
+    - About: 'about.md'
+    - License: 'license.md'
