@@ -2,7 +2,7 @@
 # This software may be modified and distributed under the terms of the
 # GNU Lesser General Public License v2.1 or any later version.
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.5)
 project(blockfactory LANGUAGES CXX VERSION 1.0)
 
 #if(BF_BUILD_DOCS)
@@ -61,11 +61,21 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
 # Add custom functions / macros
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-find_package(Matlab COMPONENTS
-    MX_LIBRARY
-    ENG_LIBRARY
-    MAIN_PROGRAM
-    SIMULINK)
+if(${CMAKE_VERSION} VERSION_LESS 3.7)
+    find_package(Matlab COMPONENTS
+        MX_LIBRARY
+        ENG_LIBRARY
+        MAIN_PROGRAM)
+    if(NOT CMAKE_MINIMUM_REQUIRED_VERSION VERSION_LESS 3.7)
+      message(AUTHOR_WARNING "CMake minimum required version greater than 3.7. You can remove this.")
+    endif()
+else()
+    find_package(Matlab COMPONENTS
+        MX_LIBRARY
+        ENG_LIBRARY
+        MAIN_PROGRAM
+        SIMULINK)
+endif()
 
 if(NOT USES_MATLAB)
     option(USES_MATLAB "Compile also Matlab-related components" ${Matlab_FOUND})
