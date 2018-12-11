@@ -1,0 +1,212 @@
+dist: xenial
+language: cpp
+services: docker
+
+os: linux
+
+cache:
+  directories:
+    - $HOME/.ccache
+    - $HOME/Library/Caches/Homebrew
+
+stages:
+  - test # Default stage with job matrix
+  - windows
+  - osx
+  - name: deploy
+    if: fork = false AND branch IN (master, devel) AND type != pull_request AND env(DEPLOY_TOKEN) IS present
+
+compiler:
+  - gcc
+  - clang
+
+env:
+  global:
+    - TRAVIS_CMAKE_GENERATOR="Ninja"
+    - DEPS_BRANCH="master"
+  matrix:
+    - TRAVIS_BUILD_TYPE="Release" UBUNTU="xenial"
+    - TRAVIS_BUILD_TYPE="Debug" UBUNTU="xenial"
+    - TRAVIS_BUILD_TYPE="Release" UBUNTU="bionic"
+    - TRAVIS_BUILD_TYPE="Debug" UBUNTU="bionic"
+
+# ===================
+# STAGE: test (linux)
+# ===================
+
+# This step is shared with osx stage
+before_install:
+  - if [ "$TRAVIS_BRANCH" != "master" ] ; then export DEPS_BRANCH="devel" ; fi
+  - if echo $TRAVIS_COMMIT_MESSAGE | grep -F -q "[ci master]" ; then export DEPS_BRANCH="master" ; fi
+  - if echo $TRAVIS_COMMIT_MESSAGE | grep -F -q "[master ci]" ; then export DEPS_BRANCH="master" ; fi
+
+before_script:
+  # Build the docker image
+  - cd $TRAVIS_BUILD_DIR/.ci
+  - docker build --pull --build-arg from=ubuntu:$UBUNTU --rm -t blockfactory/ci .
+
+script:
+  - >-
+    docker run -it \
+      -v $TRAVIS_BUILD_DIR:$TRAVIS_BUILD_DIR \
+      -v $HOME/.ccache:$HOME/.ccache \
+      -w $TRAVIS_BUILD_DIR \
+      --env-file $TRAVIS_BUILD_DIR/.ci/env-file \
+      blockfactory/ci \
+      sh .ci/script.sh
+
+# ==========
+# STAGE: osx
+# ==========
+
+stage_osx:
+  script: &osx_script
+    - cd $TRAVIS_BUILD_DIR/.ci
+    - ./script.sh
+
+# ==============
+# STAGE: windows
+# ==============
+
+stage_windows:
+  script: &windows_script
+    #- cd $TRAVIS_BUILD_DIR/.ci
+    #- ./script.sh
+    - cd $TRAVIS_BUILD_DIR
+    - mkdir -p build && cd build
+    - cmake -G"$TRAVIS_CMAKE_GENERATOR" --config $TRAVIS_BUILD_TYPE ..
+    - cmake --build .
+    
+# =============
+# STAGE: deploy
+# =============
+
+stage_deploy:
+  install: &deploy_install
+    - pip3 install --user Pygments mkdocs mkdocs-material
+    - export PATH=$HOME/.local/bin:$PATH
+  script: &deploy_script
+    # Clone the gh-pages branch
+    - GH_PAGES_ROOTDIR=$HOME/gh-pages
+    - export GH_REPO_ORG=${TRAVIS_REPO_SLUG%*/*}
+    - export GH_REPO_NAME=${TRAVIS_REPO_SLUG#*/*}
+    - export GH_REPO_REF="github.com/$GH_REPO_ORG/$GH_REPO_NAME.git"
+    # Select the deploy folder
+    - if [ "$TRAVIS_BRANCH" = "master" ] ; then DEPLOY_FOLDER=$GH_PAGES_ROOTDIR ; fi
+    - if [ "$TRAVIS_BRANCH" = "devel" ] ; then DEPLOY_FOLDER=$GH_PAGES_ROOTDIR/devel ; fi
+    # Check if the gh-pages branch exists and clone it
+    - cd $TRAVIS_BUILD_DIR
+    - git ls-remote --heads --exit-code https://$GH_REPO_REF gh-pages || travis_terminate 1
+    - git clone -b gh-pages https://$GH_REPO_REF $GH_PAGES_ROOTDIR
+    # Push only the current branch
+    - cd $GH_PAGES_ROOTDIR
+    - git config push.default simple
+    # Disable GitHub jekyll generation
+    - touch $GH_PAGES_ROOTDIR/.nojekyll
+    # Generate documentation
+    - cd $TRAVIS_BUILD_DIR
+    - mkdir build
+    - cd build
+    - cmake .. -DBUILD_DOCS:BOOL=TRUE
+    - make dox || travis_terminate 1
+    - make mkdocs || travis_terminate 1
+    # Move the new doxygen documentation to the deploy folder
+    - rm -rf $DEPLOY_FOLDER/doxygen
+    - mv $DOXYGEN_INPUT_FOLDER/html $DEPLOY_FOLDER/doxygen
+    # Move the new mkdocs documentation to the deploy folder
+    - rm -rf $DEPLOY_FOLDER/mkdocs
+    - mv $MKDOCS_INPUT_FOLDER $DEPLOY_FOLDER/mkdocs
+    # Deploy the folder
+    - cd $GH_PAGES_ROOTDIR
+    - git remote add origin-botlogin https://$GIT_COMMITTER_USERNAME:$DEPLOY_TOKEN@$GH_REPO_REF
+    - git add --all
+    - COMMIT_AUTHOR="$(git --no-pager show -s --format='%an <%ae>' $TRAVIS_COMMIT)"
+    - >-
+      git commit -m "Automatic docs deployment Travis#${TRAVIS_BUILD_NUMBER}" \
+                 -m "Commit: https://github.com/$TRAVIS_REPO_SLUG/commit/$TRAVIS_COMMIT" \
+                 --author "$COMMIT_AUTHOR"
+    - git push --force origin-botlogin gh-pages
+
+# ======================
+# BUILD JOBS FROM STAGES
+# ======================
+
+jobs:
+  include:
+    # ---------
+    # STAGE OSX
+    # ---------
+    - &osx_template
+      stage: osx
+      os: osx
+      osx_image: xcode10.1
+      services:
+      before_install: skip
+      install: skip
+      before_script: skip
+      script: *osx_script
+      after_script: skip
+      after_failure: skip
+      after_success: skip
+      env:
+        TRAVIS_CMAKE_GENERATOR="Xcode"
+        TRAVIS_BUILD_TYPE="Debug"
+    - <<: *osx_template
+      compiler: clang
+      env:
+        TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
+        TRAVIS_BUILD_TYPE="Debug"
+    # -------------
+    # STAGE WINDOWS
+    # -------------
+    - &windows_template
+      stage: windows
+      os: windows
+      services:
+      before_install: skip
+      install: skip
+      before_script: skip
+      script: *windows_script
+      after_script: skip
+      after_failure: skip
+      after_success: skip
+      env:
+        TRAVIS_CMAKE_GENERATOR="Visual Studio 15 2017 Win64"
+        TRAVIS_BUILD_TYPE="Debug"
+    - <<: *windows_template
+      install: choco install ninja
+      env:
+        TRAVIS_CMAKE_GENERATOR="Ninja"
+        TRAVIS_BUILD_TYPE="Debug"
+    # ------------
+    # STAGE DEPLOY
+    # ------------
+    - stage: deploy
+      compiler:
+      cache:
+      services:
+      before_install: skip
+      install: *deploy_install
+      before_script: skip
+      script: *deploy_script
+      after_script: skip
+      after_failure: skip
+      after_success: skip
+      env:
+        GIT_COMMITTER_USERNAME=LOC2Bot
+        GIT_COMMITTER_NAME=LOC2Bot
+        GIT_COMMITTER_EMAIL=locomotion.control@gmail.com
+        DOXYGEN_INPUT_FOLDER=$TRAVIS_BUILD_DIR/build/doc/doxygen
+        MKDOCS_INPUT_FOLDER=$TRAVIS_BUILD_DIR/build/doc/mkdocs
+      addons:
+        apt:
+          packages:
+            - doxygen
+            - doxygen-doc
+            - doxygen-gui
+            - graphviz
+            - python3-pip
+
+# notifications:
+#  email:
+#    - whowantstobemantainedr@email.com
