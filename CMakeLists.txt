@@ -5,10 +5,10 @@
 cmake_minimum_required(VERSION 3.5)
 project(blockfactory LANGUAGES CXX VERSION 1.0)
 
-#if(BF_BUILD_DOCS)
-#    add_subdirectory(doc)
-#    return()
-#endif()
+if(BUILD_DOCS)
+    add_subdirectory(doc)
+    return()
+endif()
 
 # C++ standard
 set(CMAKE_CXX_STANDARD 14)
