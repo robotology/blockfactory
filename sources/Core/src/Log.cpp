@@ -25,7 +25,7 @@ public:
 };
 
 Log::Log()
-    : pImpl{new Log::impl()}
+    : pImpl(std::make_unique<Log::impl>())
 {}
 
 Log& Log::getSingleton()

@@ -119,7 +119,7 @@ Signal::Signal(const Signal& other)
 }
 
 Signal::Signal(const DataFormat& dataFormat, const DataType& dataType)
-    : pImpl{new impl(dataFormat, dataType)}
+    : pImpl(std::make_unique<impl>(dataFormat, dataType))
 {}
 
 Signal::Signal(Signal&& other)

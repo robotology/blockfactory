@@ -41,7 +41,7 @@ public:
 };
 
 CoderBlockInformation::CoderBlockInformation()
-    : pImpl{new CoderBlockInformation::impl()}
+    : pImpl(std::make_unique<CoderBlockInformation::impl>())
 {}
 
 CoderBlockInformation::~CoderBlockInformation() = default;

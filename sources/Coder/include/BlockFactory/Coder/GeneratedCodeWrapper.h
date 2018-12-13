@@ -74,7 +74,7 @@ bool blockfactory::coder::GeneratedCodeWrapper<T>::initialize()
         m_model.reset();
     }
 
-    m_model = std::unique_ptr<T>(new T());
+    m_model = std::make_unique<T>();
     m_model->initialize();
 
     if (modelFailed()) {

@@ -108,7 +108,7 @@ bool Parameters::impl::existIndex(const Parameters::ParamIndex& index) const
 // ==========
 
 Parameters::Parameters()
-    : pImpl{new impl()}
+    : pImpl(std::make_unique<impl>())
 {}
 
 // Defining the destructor as default here in the cpp avoids the usage
