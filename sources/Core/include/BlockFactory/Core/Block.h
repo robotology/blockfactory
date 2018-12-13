@@ -6,10 +6,11 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_BLOCK_H
-#define WBT_BLOCK_H
+#ifndef BLOCKFACTORY_CORE_BLOCK_H
+#define BLOCKFACTORY_CORE_BLOCK_H
 
 #include "BlockFactory/Core/Parameters.h"
+
 #include <string>
 #include <vector>
 
@@ -304,4 +305,4 @@ public:
     virtual bool output(const BlockInformation* blockInfo) = 0;
 };
 
-#endif // WBT_BLOCK_H
+#endif // BLOCKFACTORY_CORE_BLOCK_H

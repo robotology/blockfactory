@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_LOG_H
-#define WBT_LOG_H
+#ifndef BLOCKFACTORY_CORE_LOG_H
+#define BLOCKFACTORY_CORE_LOG_H
 
 #include <memory>
 #include <sstream>
@@ -118,4 +118,4 @@ public:
     void clear();
 };
 
-#endif // WBT_LOG_H
+#endif // BLOCKFACTORY_CORE_LOG_H

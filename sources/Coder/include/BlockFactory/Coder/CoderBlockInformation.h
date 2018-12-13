@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_CODERBLOCKINFORMATION_H
-#define WBT_CODERBLOCKINFORMATION_H
+#ifndef BLOCKFACTORY_CODER_CODERBLOCKINFORMATION_H
+#define BLOCKFACTORY_CODER_CODERBLOCKINFORMATION_H
 
 #include "BlockFactory/Core/BlockInformation.h"
 #include "BlockFactory/Core/Signal.h"
@@ -77,4 +77,4 @@ public:
     bool setOutputSignal(const PortIndex idx, void* address, const PortDimension& dims);
 };
 
-#endif // WBT_CODERBLOCKINFORMATION_H
+#endif // BLOCKFACTORY_CODER_CODERBLOCKINFORMATION_H

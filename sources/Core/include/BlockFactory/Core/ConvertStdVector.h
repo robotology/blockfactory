@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_CONVERTSTDVECTOR_H
-#define WBT_CONVERTSTDVECTOR_H
+#ifndef BLOCKFACTORY_CORE_CONVERTSTDVECTOR_H
+#define BLOCKFACTORY_CORE_CONVERTSTDVECTOR_H
 
 #include <string>
 #include <vector>
@@ -89,4 +89,4 @@ namespace blockfactory {
     } // namespace core
 } // namespace blockfactory
 
-#endif
+#endif // BLOCKFACTORY_CORE_CONVERTSTDVECTOR_H

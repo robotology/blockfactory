@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_PARAMETERS_H
-#define WBT_PARAMETERS_H
+#ifndef BLOCKFACTORY_CORE_PARAMETERS_H
+#define BLOCKFACTORY_CORE_PARAMETERS_H
 
 #include <memory>
 #include <string>
@@ -268,4 +268,4 @@ namespace blockfactory {
     } // namespace core
 } // namespace blockfactory
 
-#endif // WBT_PARAMETERS_H
+#endif // BLOCKFACTORY_CORE_PARAMETERS_H

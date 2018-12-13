@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_GENERATEDCODEWRAPPER_H
-#define WBT_GENERATEDCODEWRAPPER_H
+#ifndef BLOCKFACTORY_CODER_GENERATEDCODEWRAPPER_H
+#define BLOCKFACTORY_CODER_GENERATEDCODEWRAPPER_H
 
 #ifndef MODEL
 #error "MODEL option not specified"
@@ -130,4 +130,4 @@ std::string blockfactory::coder::GeneratedCodeWrapper<T>::getErrors() const
     return {};
 }
 
-#endif // WBT_GENERATEDCODEWRAPPER_H
+#endif // BLOCKFACTORY_CODER_GENERATEDCODEWRAPPER_H

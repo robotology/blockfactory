@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_SIMULINKBLOCKINFORMATION_H
-#define WBT_SIMULINKBLOCKINFORMATION_H
+#ifndef BLOCKFACTORY_MEX_SIMULINKBLOCKINFORMATION_H
+#define BLOCKFACTORY_MEX_SIMULINKBLOCKINFORMATION_H
 
 #include "AnyType.h"
 #include "BlockFactory/Core/BlockInformation.h"
@@ -119,4 +119,4 @@ public:
     bool getVectorAtIndex(const ParameterIndex idx, std::vector<double>& value) const;
 };
 
-#endif /* WBT_SIMULINKBLOCKINFORMATION_H */
+#endif /* BLOCKFACTORY_MEX_SIMULINKBLOCKINFORMATION_H */

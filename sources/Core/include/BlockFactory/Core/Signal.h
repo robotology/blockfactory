@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_SIGNAL_H
-#define WBT_SIGNAL_H
+#ifndef BLOCKFACTORY_CORE_SIGNAL_H
+#define BLOCKFACTORY_CORE_SIGNAL_H
 
 #include <memory>
 
@@ -271,4 +271,4 @@ namespace blockfactory {
     } // namespace core
 } // namespace blockfactory
 
-#endif // WBT_SIGNAL_H
+#endif // BLOCKFACTORY_CORE_SIGNAL_H

@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef WBT_PARAMETER_H
-#define WBT_PARAMETER_H
+#ifndef BLOCKFACTORY_CORE_PARAMETER_H
+#define BLOCKFACTORY_CORE_PARAMETER_H
 
 #include <string>
 #include <vector>
@@ -131,4 +131,4 @@ public:
     blockfactory::core::ParameterMetadata getMetadata() const { return m_metadata; }
 };
 
-#endif // WBT_PARAMETER_H
+#endif // BLOCKFACTORY_CORE_PARAMETER_H
