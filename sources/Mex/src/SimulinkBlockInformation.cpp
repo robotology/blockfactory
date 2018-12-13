@@ -11,7 +11,7 @@
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Parameters.h"
 #include "BlockFactory/Core/Signal.h"
-#include "MxAnyType.h"
+#include "BlockFactory/Mex/Private/SimulinkBlockInformationImpl.h"
 
 #include <memory>
 #include <ostream>
@@ -23,23 +23,9 @@
 using namespace blockfactory;
 using namespace blockfactory::mex;
 
-class SimulinkBlockInformation::Impl
-{
-public:
-    SimStruct* simstruct = nullptr;
-
-    std::string m_confBlockName;
-    std::vector<core::ParameterMetadata> m_paramsMetadata;
-
-    core::DataType mapSimulinkToPortType(const DTypeId typeId) const;
-    DTypeId mapPortTypeToSimulink(const core::DataType dataType) const;
-};
-
 SimulinkBlockInformation::SimulinkBlockInformation(SimStruct* S)
-    : pImpl{new Impl()}
-{
-    pImpl->simstruct = S;
-}
+    : pImpl(std::make_unique<impl::SimulinkBlockInformationImpl>(S))
+{}
 
 SimulinkBlockInformation::~SimulinkBlockInformation() = default;
 
@@ -55,230 +41,6 @@ bool SimulinkBlockInformation::optionFromKey(const std::string& key, double& opt
 
     bfError << "Unrecognized block option.";
     return false;
-}
-
-// PARAMETERS METHODS
-// ==================
-
-bool SimulinkBlockInformation::getStringParameterAtIndex(const ParameterIndex idx,
-                                                         std::string& value) const
-{
-    const mxArray* blockParam = ssGetSFcnParam(pImpl->simstruct, idx);
-    return MxAnyType(blockParam).asString(value);
-}
-
-bool SimulinkBlockInformation::getScalarParameterAtIndex(const ParameterIndex idx,
-                                                         double& value) const
-{
-    const mxArray* blockParam = ssGetSFcnParam(pImpl->simstruct, idx);
-    return MxAnyType(blockParam).asDouble(value);
-}
-
-bool SimulinkBlockInformation::getBooleanParameterAtIndex(const ParameterIndex idx,
-                                                          bool& value) const
-{
-    double tmpValue = 0;
-    const mxArray* blockParam = ssGetSFcnParam(pImpl->simstruct, idx);
-
-    // The Simulink mask often doesn't store boolean data from the mask as bool but as double.
-    // Calling asBool() will fail in this case. If this happens, asDouble() is used as fallback.
-    if (MxAnyType(blockParam).asBool(value)) {
-        return true;
-    }
-    else if (MxAnyType(blockParam).asDouble(tmpValue)) {
-        value = static_cast<bool>(tmpValue);
-        return true;
-    }
-
-    bfError << "Failed to parse bool parameter";
-    return false;
-}
-
-bool SimulinkBlockInformation::getCellAtIndex(const ParameterIndex idx, AnyCell& value) const
-{
-    const mxArray* blockParam = ssGetSFcnParam(pImpl->simstruct, idx);
-    return MxAnyType(blockParam).asAnyCell(value);
-}
-
-bool SimulinkBlockInformation::getStructAtIndex(const ParameterIndex idx, AnyStruct& value) const
-{
-    const mxArray* blockParam = ssGetSFcnParam(pImpl->simstruct, idx);
-    return MxAnyType(blockParam).asAnyStruct(value);
-}
-
-bool SimulinkBlockInformation::getVectorAtIndex(const ParameterIndex idx,
-                                                std::vector<double>& value) const
-{
-    const mxArray* blockParam = ssGetSFcnParam(pImpl->simstruct, idx);
-    return MxAnyType(blockParam).asVectorDouble(value);
-}
-
-bool SimulinkBlockInformation::getStringFieldAtIndex(const ParameterIndex idx,
-                                                     const std::string& fieldName,
-                                                     std::string& value) const
-{
-    AnyStruct s;
-
-    if (!getStructAtIndex(idx, s)) {
-        bfError << "Failed to get struct at index " << idx << ".";
-        return false;
-    }
-
-    if (s.find(fieldName) == s.end()) {
-        bfError << "Struct at index " << idx << " does not contain any " << fieldName << " field.";
-        return false;
-    }
-
-    return s.at(fieldName)->asString(value);
-}
-
-bool SimulinkBlockInformation::getScalarFieldAtIndex(const ParameterIndex idx,
-                                                     const std::string& fieldName,
-                                                     double& value) const
-{
-    AnyStruct s;
-
-    if (!getStructAtIndex(idx, s)) {
-        bfError << "Failed to get struct at index " << idx << ".";
-        return false;
-    }
-
-    if (s.find(fieldName) == s.end()) {
-        bfError << "Struct at index " << idx << " does not contain any " << fieldName << " field.";
-        return false;
-    }
-
-    return s.at(fieldName)->asDouble(value);
-}
-
-bool SimulinkBlockInformation::getBooleanFieldAtIndex(const ParameterIndex idx,
-                                                      const std::string& fieldName,
-                                                      bool& value) const
-{
-    AnyStruct s;
-
-    if (!getStructAtIndex(idx, s)) {
-        bfError << "Failed to get struct at index " << idx << ".";
-        return false;
-    }
-
-    if (s.find(fieldName) == s.end()) {
-        bfError << "Struct at index " << idx << " does not contain any " << fieldName << " field.";
-        return false;
-    }
-
-    return s.at(fieldName)->asBool(value);
-}
-
-bool SimulinkBlockInformation::getCellFieldAtIndex(const ParameterIndex idx,
-                                                   const std::string& fieldName,
-                                                   AnyCell& value) const
-{
-    AnyStruct s;
-
-    if (!getStructAtIndex(idx, s)) {
-        bfError << "Failed to get struct at index " << idx << ".";
-        return false;
-    }
-
-    if (s.find(fieldName) == s.end()) {
-        bfError << "Struct at index " << idx << " does not contain any " << fieldName << " field.";
-        return false;
-    }
-
-    return s.at(fieldName)->asAnyCell(value);
-}
-
-bool SimulinkBlockInformation::getVectorDoubleFieldAtIndex(const ParameterIndex idx,
-                                                           const std::string& fieldName,
-                                                           std::vector<double>& value) const
-{
-    AnyStruct s;
-
-    if (!getStructAtIndex(idx, s)) {
-        bfError << "Failed to get struct at index " << idx << ".";
-        return false;
-    }
-
-    if (s.find(fieldName) == s.end()) {
-        bfError << "Struct at index " << idx << " does not contain any " << fieldName << " field.";
-        return false;
-    }
-
-    return s.at(fieldName)->asVectorDouble(value);
-}
-
-// PORT INFORMATION SETTERS
-// ========================
-
-bool SimulinkBlockInformation::setNumberOfInputPorts(const unsigned numberOfPorts)
-{
-    return ssSetNumInputPorts(pImpl->simstruct, numberOfPorts);
-}
-
-bool SimulinkBlockInformation::setNumberOfOutputPorts(const unsigned numberOfPorts)
-{
-    return ssSetNumOutputPorts(pImpl->simstruct, numberOfPorts);
-}
-
-bool SimulinkBlockInformation::setInputPortVectorSize(const PortIndex idx, const VectorSize& size)
-{
-    if (size == core::Signal::DynamicSize) {
-        // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
-        // mdlSetDefaultPortDimensionInfo
-        return ssSetInputPortVectorDimension(pImpl->simstruct, idx, DYNAMICALLY_SIZED);
-    }
-
-    return ssSetInputPortVectorDimension(pImpl->simstruct, idx, size);
-}
-
-bool SimulinkBlockInformation::setInputPortMatrixSize(const PortIndex idx, const MatrixSize& size)
-{
-    // Refer to: https://it.mathworks.com/help/simulink/sfg/sssetoutputportmatrixdimensions.html
-    if (size.first == core::Signal::DynamicSize || size.second == core::Signal::DynamicSize) {
-        // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
-        // mdlSetDefaultPortDimensionInfo
-        ssSetInputPortMatrixDimensions(pImpl->simstruct, idx, DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
-    }
-
-    return ssSetInputPortMatrixDimensions(pImpl->simstruct, idx, size.first, size.first);
-}
-
-bool SimulinkBlockInformation::setOutputPortVectorSize(const PortIndex idx, const VectorSize& size)
-{
-    if (size == core::Signal::DynamicSize) {
-        // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
-        // mdlSetDefaultPortDimensionInfo
-        return ssSetOutputPortVectorDimension(pImpl->simstruct, idx, DYNAMICALLY_SIZED);
-    }
-
-    return ssSetOutputPortVectorDimension(pImpl->simstruct, idx, size);
-}
-
-bool SimulinkBlockInformation::setOutputPortMatrixSize(const PortIndex idx, const MatrixSize& size)
-{
-    // Refer to: https://it.mathworks.com/help/simulink/sfg/sssetinputportmatrixdimensions.html
-    if (size.first == core::Signal::DynamicSize || size.second == core::Signal::DynamicSize) {
-        // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
-        // mdlSetDefaultPortDimensionInfo
-        return ssSetOutputPortMatrixDimensions(
-            pImpl->simstruct, idx, DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
-    }
-
-    return ssSetOutputPortMatrixDimensions(pImpl->simstruct, idx, size.first, size.second);
-}
-
-bool SimulinkBlockInformation::setInputPortType(const PortIndex idx, const core::DataType type)
-{
-    ssSetInputPortDirectFeedThrough(pImpl->simstruct, idx, 1);
-    ssSetInputPortDataType(pImpl->simstruct, idx, pImpl->mapPortTypeToSimulink(type));
-    return true;
-}
-
-bool SimulinkBlockInformation::setOutputPortType(const PortIndex idx, const core::DataType type)
-{
-    ssSetOutputPortDataType(pImpl->simstruct, idx, pImpl->mapPortTypeToSimulink(type));
-    return true;
 }
 
 // PORT INFORMATION GETTERS
@@ -447,59 +209,9 @@ SimulinkBlockInformation::getOutputPortMatrixSize(const PortIndex idx) const
     return {sizes[0], sizes[1]};
 }
 
-core::DataType SimulinkBlockInformation::Impl::mapSimulinkToPortType(const DTypeId typeId) const
-{
-    switch (typeId) {
-        case SS_DOUBLE:
-            return core::DataType::DOUBLE;
-        case SS_SINGLE:
-            return core::DataType::SINGLE;
-        case SS_INT8:
-            return core::DataType::INT8;
-        case SS_UINT8:
-            return core::DataType::UINT8;
-        case SS_INT16:
-            return core::DataType::INT16;
-        case SS_UINT16:
-            return core::DataType::UINT16;
-        case SS_INT32:
-            return core::DataType::INT32;
-        case SS_UINT32:
-            return core::DataType::UINT32;
-        case SS_BOOLEAN:
-            return core::DataType::BOOLEAN;
-        default:
-            return core::DataType::DOUBLE;
-    }
-}
-
-DTypeId SimulinkBlockInformation::Impl::mapPortTypeToSimulink(const core::DataType dataType) const
-{
-    switch (dataType) {
-        case core::DataType::DOUBLE:
-            return SS_DOUBLE;
-        case core::DataType::SINGLE:
-            return SS_SINGLE;
-        case core::DataType::INT8:
-            return SS_INT8;
-        case core::DataType::UINT8:
-            return SS_UINT8;
-        case core::DataType::INT16:
-            return SS_INT16;
-        case core::DataType::UINT16:
-            return SS_UINT16;
-        case core::DataType::INT32:
-            return SS_INT32;
-        case core::DataType::UINT32:
-            return SS_UINT32;
-        case core::DataType::BOOLEAN:
-            return SS_BOOLEAN;
-    }
-}
-
 bool SimulinkBlockInformation::addParameterMetadata(const core::ParameterMetadata& paramMD)
 {
-    for (auto md : pImpl->m_paramsMetadata) {
+    for (auto md : pImpl->paramsMetadata) {
         if (md.name == paramMD.name) {
             bfError << "Trying to store an already existing " << md.name << " parameter.";
             return false;
@@ -507,7 +219,7 @@ bool SimulinkBlockInformation::addParameterMetadata(const core::ParameterMetadat
     }
 
     // Add the new metadata to the block information
-    pImpl->m_paramsMetadata.push_back(paramMD);
+    pImpl->paramsMetadata.push_back(paramMD);
     return true;
 }
 
@@ -517,7 +229,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
         return md.rows == 1 && md.cols == 1;
     };
 
-    for (core::ParameterMetadata paramMD : pImpl->m_paramsMetadata) {
+    for (core::ParameterMetadata paramMD : pImpl->paramsMetadata) {
 
         bool ok;
 
@@ -561,7 +273,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::DOUBLE: {
                 if (metadataContainsScalarParam(paramMD)) {
                     double paramValue;
-                    if (!getScalarParameterAtIndex(paramMD.index, paramValue)) {
+                    if (!pImpl->getScalarParameterAtIndex(paramMD.index, paramValue)) {
                         bfError << "Failed to get scalar parameter at index " << paramMD.index
                                 << ".";
                         return false;
@@ -570,7 +282,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                 }
                 else {
                     std::vector<double> paramVector;
-                    if (!getVectorAtIndex(paramMD.index, paramVector)) {
+                    if (!pImpl->getVectorAtIndex(paramMD.index, paramVector)) {
                         bfError << "Failed to get vector parameter at index " << paramMD.index
                                 << ".";
                         return false;
@@ -587,7 +299,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::STRING: {
                 if (metadataContainsScalarParam(paramMD)) {
                     std::string paramValue;
-                    if (!getStringParameterAtIndex(paramMD.index, paramValue)) {
+                    if (!pImpl->getStringParameterAtIndex(paramMD.index, paramValue)) {
                         bfError << "Failed to get string parameter at index " << paramMD.index
                                 << ".";
                         return false;
@@ -606,7 +318,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::CELL_BOOL:
             case core::ParameterType::CELL_DOUBLE: {
                 AnyCell cell;
-                if (!getCellAtIndex(paramMD.index, cell)) {
+                if (!pImpl->getCellAtIndex(paramMD.index, cell)) {
                     bfError << "Failed to get cell parameter at index " << paramMD.index << ".";
                     return false;
                 }
@@ -630,7 +342,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             }
             case core::ParameterType::CELL_STRING: {
                 AnyCell cell;
-                if (!getCellAtIndex(paramMD.index, cell)) {
+                if (!pImpl->getCellAtIndex(paramMD.index, cell)) {
                     bfError << "Failed to get cell parameter at index " << paramMD.index << ".";
                     return false;
                 }
@@ -659,7 +371,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::STRUCT_DOUBLE: {
                 if (metadataContainsScalarParam(paramMD)) {
                     double paramValue;
-                    if (!getScalarFieldAtIndex(paramMD.index, paramMD.name, paramValue)) {
+                    if (!pImpl->getScalarFieldAtIndex(paramMD.index, paramMD.name, paramValue)) {
                         bfError << "Failed to get scalar field " << paramMD.name
                                 << " from the struct at index " << paramMD.index << ".";
                         return false;
@@ -668,7 +380,8 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                 }
                 else {
                     std::vector<double> paramVector;
-                    if (!getVectorDoubleFieldAtIndex(paramMD.index, paramMD.name, paramVector)) {
+                    if (!pImpl->getVectorDoubleFieldAtIndex(
+                            paramMD.index, paramMD.name, paramVector)) {
                         bfError << "Failed to get vector field " << paramMD.name
                                 << " from the struct at index " << paramMD.index << ".";
                         return false;
@@ -685,7 +398,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::STRUCT_STRING: {
                 if (metadataContainsScalarParam(paramMD)) {
                     std::string paramValue;
-                    if (!getStringFieldAtIndex(paramMD.index, paramMD.name, paramValue)) {
+                    if (!pImpl->getStringFieldAtIndex(paramMD.index, paramMD.name, paramValue)) {
                         bfError << "Failed to get string field " << paramMD.name
                                 << " from the struct at index " << paramMD.index << ".";
                         return false;
@@ -703,7 +416,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::STRUCT_CELL_DOUBLE: {
                 AnyCell cell;
                 std::vector<double> paramVector;
-                if (!getCellFieldAtIndex(paramMD.index, paramMD.name, cell)) {
+                if (!pImpl->getCellFieldAtIndex(paramMD.index, paramMD.name, cell)) {
                     bfError << "Failed to get cell field " << paramMD.name
                             << " from the struct at index " << paramMD.index << ".";
                     return false;
@@ -728,7 +441,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::STRUCT_CELL_STRING: {
                 AnyCell cell;
                 std::vector<std::string> paramVector;
-                if (!getCellFieldAtIndex(paramMD.index, paramMD.name, cell)) {
+                if (!pImpl->getCellFieldAtIndex(paramMD.index, paramMD.name, cell)) {
                     bfError << "Failed to get cell field " << paramMD.name
                             << " from the struct at index " << paramMD.index << ".";
                     return false;
@@ -761,7 +474,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
     // Remove the metadata of the parameters already parsed.
     // This is necessary for adding later more metadata and calling again this method
     // (storing again an already stored parameter raises an error).
-    pImpl->m_paramsMetadata.clear();
+    pImpl->paramsMetadata.clear();
 
     return true;
 }
@@ -769,111 +482,29 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
 bool SimulinkBlockInformation::setIOPortsData(const BlockInformation::IOData& ioData)
 {
     // Set the number of input ports
-    if (!setNumberOfInputPorts(ioData.input.size())) {
+    if (!pImpl->setNumberOfInputPorts(ioData.input.size())) {
         bfError << "Failed to set the number of input ports.";
         return false;
     }
 
     // Set the number of output ports
-    if (!setNumberOfOutputPorts(ioData.output.size())) {
+    if (!pImpl->setNumberOfOutputPorts(ioData.output.size())) {
         bfError << "Failed to set the number of output ports.";
         return false;
     }
 
     // Set the other input ports properties
     for (const auto& portData : ioData.input) {
-        if (!updateInputPortData(portData)) {
+        if (!pImpl->updateInputPortData(portData)) {
             return false;
         }
     }
 
     // Set the other output ports properties
     for (const auto& portData : ioData.output) {
-        if (!updateOutputPortData(portData)) {
+        if (!pImpl->updateOutputPortData(portData)) {
             return false;
         }
-    }
-
-    return true;
-}
-
-bool SimulinkBlockInformation::updateInputPortData(const BlockInformation::PortData& portData)
-{
-    // Get the port dimensions
-    const auto& portDimensions = std::get<BlockInformation::Port::Dimensions>(portData);
-    if (portDimensions.size() > 2) {
-        bfError << "Only vector (1D) and matrix (2D) input ports are supported.";
-        return false;
-    }
-
-    // Get the port index and type
-    const auto& portIndex = std::get<BlockInformation::Port::Index>(portData);
-    const auto& portDataType = std::get<BlockInformation::Port::DataType>(portData);
-
-    bool ok = false;
-
-    switch (portDimensions.size()) {
-        // 1D Vector
-        case 1: {
-            const VectorSize width = portDimensions.at(0);
-            ok = setInputPortVectorSize(portIndex, width)
-                 && setInputPortType(portIndex, portDataType);
-            break;
-        }
-            // 2D Matrix
-        case 2: {
-            const Rows rows = portDimensions.at(0);
-            const Cols cols = portDimensions.at(1);
-            ok = setInputPortMatrixSize(portIndex, {rows, cols})
-                 && setInputPortType(portIndex, portDataType);
-            break;
-        }
-    }
-
-    if (!ok) {
-        bfError << "Failed to configure input port with index " << portIndex << ".";
-        return false;
-    }
-
-    return true;
-}
-
-bool SimulinkBlockInformation::updateOutputPortData(const BlockInformation::PortData& portData)
-{
-    // Get the port dimensions
-    const auto portDimensions = std::get<BlockInformation::Port::Dimensions>(portData);
-    if (portDimensions.size() > 2) {
-        bfError << "Only vector (1D) and matrix (2D) output ports are supported.";
-        return false;
-    }
-
-    // Get the port index and type
-    const auto portIndex = std::get<BlockInformation::Port::Index>(portData);
-    const auto portDataType = std::get<BlockInformation::Port::DataType>(portData);
-
-    bool ok = false;
-
-    switch (portDimensions.size()) {
-        // 1D Vector
-        case 1: {
-            const VectorSize width = portDimensions.at(0);
-            ok = setOutputPortVectorSize(portIndex, width)
-                 && setOutputPortType(portIndex, portDataType);
-            break;
-        }
-            // 2D Matrix
-        case 2: {
-            const Rows rows = portDimensions.at(0);
-            const Cols cols = portDimensions.at(1);
-            ok = setOutputPortMatrixSize(portIndex, {rows, cols})
-                 && setOutputPortType(portIndex, portDataType);
-            break;
-        }
-    }
-
-    if (!ok) {
-        bfError << "Failed to configure output port with index " << portIndex << ".";
-        return false;
     }
 
     return true;

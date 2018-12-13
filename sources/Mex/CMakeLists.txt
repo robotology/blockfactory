@@ -2,6 +2,23 @@
 # This software may be modified and distributed under the terms of the
 # GNU Lesser General Public License v2.1 or any later version.
 
+add_library(SimulinkBlockInformationPrivate STATIC
+    src/SimulinkBlockInformationImpl.cpp
+    include/BlockFactory/Mex/Private/SimulinkBlockInformationImpl.h)
+
+target_link_libraries(SimulinkBlockInformationPrivate
+    PUBLIC
+    BlockFactory::Core
+    MxAnyType)
+
+# Needed to access Simulink C APIs
+target_compile_definitions(SimulinkBlockInformationPrivate PRIVATE "MATLAB_MEX_FILE")
+
+target_include_directories(SimulinkBlockInformationPrivate PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    ${Matlab_INCLUDE_DIRS}
+    ${Matlab_ROOT_DIR}/simulink/include)
+
 # Compile S-Function
 matlab_add_mex(
     NAME Mex
@@ -9,19 +26,19 @@ matlab_add_mex(
     SRC src/SimulinkBlockInformation.cpp
         include/BlockFactory/Mex/SimulinkBlockInformation.h
         src/BlockFactory.cpp
-    LINK_TO BlockFactory::Core MxAnyType shlibpp::shlibpp)
+    LINK_TO BlockFactory::Core shlibpp::shlibpp SimulinkBlockInformationPrivate)
 add_library(BlockFactory::Mex ALIAS Mex)
 
-target_compile_definitions(Mex PUBLIC "MATLAB_MEX_FILE")
+# Needed to access Simulink C APIs
+target_compile_definitions(Mex PRIVATE "MATLAB_MEX_FILE")
 
 target_include_directories(Mex PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    ${Matlab_INCLUDE_DIRS}
     ${Matlab_ROOT_DIR}/simulink/include)
 
 # Install S-Function
 install(
-    TARGETS Mex
+    TARGETS Mex SimulinkBlockInformationPrivate
     EXPORT BlockFactoryMexExport
     DESTINATION mex)
 
