@@ -30,9 +30,9 @@ if(MSVC)
 else()
     option(BUILD_SHARED_LIBS "Compile WBToolbox as a shared library" TRUE)
 endif()
-if(NOT BUILD_SHARED_LIBS)
-    set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-endif()
+
+# Build position independent code
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Tweak linker flags in Linux
 if(UNIX AND NOT APPLE)
