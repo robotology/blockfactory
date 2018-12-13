@@ -131,8 +131,7 @@ static void mdlInitializeSizes(SimStruct* S)
     ssSetNumSFcnParams(S, block->numberOfParameters());
     ssSetSFcnParamTunable(S, 0, false);
     for (unsigned i = 0; i < ssGetNumSFcnParams(S); ++i) {
-        bool tunable = false;
-        block->parameterAtIndexIsTunable(i, tunable);
+        bool tunable = block->parameterAtIndexIsTunable(i);
         ssSetSFcnParamTunable(S, i, tunable);
     }
 

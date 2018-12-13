@@ -25,9 +25,9 @@ std::vector<std::string> Block::additionalBlockOptions()
     return {};
 }
 
-void Block::parameterAtIndexIsTunable(unsigned /*index*/, bool& tunable)
+bool Block::parameterAtIndexIsTunable(unsigned /*index*/)
 {
-    tunable = false;
+    return false;
 }
 
 bool Block::checkParameters(const BlockInformation* /*blockInfo*/)

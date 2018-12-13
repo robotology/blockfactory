@@ -181,7 +181,7 @@ public:
      * @param[in]  index   Index of the parameter.
      * @param[out] tunable True if the parameter is tunable, false otherwise.
      */
-    virtual void parameterAtIndexIsTunable(unsigned index, bool& tunable);
+    virtual bool parameterAtIndexIsTunable(unsigned index);
 
     /**
      * @brief Parse the parameters stored into the BlockInformation object
