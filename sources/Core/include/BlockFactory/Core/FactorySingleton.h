@@ -22,33 +22,65 @@ namespace blockfactory {
     } // namespace core
 } // namespace blockfactory
 
+/**
+ * @brief Class for interfacing with shlibpp plugin library
+ *
+ * This helper class ease the integration of shlibpp within the BlockFactory framework. It is
+ * implemented with a singleton pattern.
+ *
+ * It can handle multiple plugin libraries together and provides support of destructing the related
+ * factory objects (and hence unloading the plugin) when all the extracted classes have been
+ * destroyed.
+ */
 class blockfactory::core::ClassFactorySingleton
 {
 private:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
     class Impl;
     std::unique_ptr<Impl> pImpl;
+#endif
 
 public:
     using ClassFactory = shlibpp::SharedLibraryClassFactory<blockfactory::core::Block>;
     using ClassFactoryPtr = std::shared_ptr<ClassFactory>;
 
-    // This is the name of the factory associated to the class
-    // specified during its registration
+    /// @brief Name of the factory associated to the class specified during its registration
     using ClassFactoryName = std::string;
 
-    // This is the name of the library object independent from the OS.
-    // E.g. Given "libFoo.so", this field would be "Foo".
+    /// @brief Name of the library object independent from the OS
+    ///
+    /// Given `libFoo.so`, this field would be `Foo`
     using ClassFactoryLibrary = std::string;
 
+    /// Contains the data that indentifies a specific factory contained in a plugin library
     using ClassFactoryData = std::pair<ClassFactoryLibrary, ClassFactoryName>;
 
     ClassFactorySingleton();
     ~ClassFactorySingleton() = default;
 
+    /**
+     * @brief Get the singleton instance of the object
+     *
+     * @return The reference to the singleton object
+     */
     static ClassFactorySingleton& getInstance();
-    //    ClassFactoryPtr getClassFactory(const ClassFactoryData& factorydata);
+
+    /**
+     * @brief Get a factory object associated to a registered class
+     *
+     * It will lazy-allocate the factory related to the registered class at the first query.
+     *
+     * @param factorydata The identifier of a factory object
+     * @return The pointer to the asked factory if it was loaded successfully, `nullptr` otherwise.
+     */
     ClassFactoryPtr getClassFactory(const ClassFactoryData& factorydata);
 
+    /**
+     * @brief Ask to destroy a factory identified by the factory data
+     *
+     * @param factorydata The identifier of a factory object
+     * @return True if the factory was destroyed, false otherwise
+     */
     bool destroyFactory(const ClassFactoryData& factorydata);
 };
 

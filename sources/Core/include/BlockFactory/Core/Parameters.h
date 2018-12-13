@@ -29,7 +29,7 @@ namespace blockfactory {
  *
  * This class can contain scalar and vector parameters of the supported types.
  *
- * @see wbt::Parameter, wbt::ParameterMetadata, wbt::ParameterType
+ * @see core::Parameter, core::ParameterMetadata, core::ParameterType
  */
 class blockfactory::core::Parameters
 {
@@ -53,14 +53,14 @@ public:
     /**
      * @brief Get the name of a stored parameter from its index.
      * @param index The index of the parameter.
-     * @return The name if the parameter exists, wbt::PARAM_INVALID_NAME otherwise.
+     * @return The name if the parameter exists, core::PARAM_INVALID_NAME otherwise.
      */
     ParamName getParamName(const ParamIndex& index) const;
 
     /**
      * @brief Get the index of a stored parameter from its name.
      * @param name The name of the parameter.
-     * @return The index if the parameter exists, wbt::PARAM_INVALID_INDEX otherwise.
+     * @return The index if the parameter exists, core::PARAM_INVALID_INDEX otherwise.
      */
     ParamIndex getParamIndex(const ParamName& name) const;
 
@@ -174,6 +174,7 @@ public:
      * @param name The name of the parameter.
      * @return The metadata associate with the parameter for success, a metadata with a stored name
      *         `dummy` otherwise.
+     * @todo Use std::optional as soon as we switch to C++17
      */
     blockfactory::core::ParameterMetadata getParameterMetadata(const ParamName& name);
 };

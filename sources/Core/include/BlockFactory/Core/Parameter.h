@@ -22,8 +22,8 @@ namespace blockfactory {
 } // namespace blockfactory
 
 /**
- * @brief Defines the types of parameters supported by wbt::Parameter
- * @see wbt::ParameterMetadata, wbt::Parameter
+ * @brief Defines the types of parameters supported by core::Parameter
+ * @see core::ParameterMetadata, core::Parameter
  */
 enum class blockfactory::core::ParameterType
 {
@@ -54,7 +54,7 @@ enum class blockfactory::core::ParameterType
  * A metadata must be constructed with an index and a name, and they cannot be changed afterwards.
  * Only bool, int, double or std::string types are currently supported.
  *
- * @see wbt::Parameter, wbt::ParameterType
+ * @see core::Parameter, core::ParameterType
  */
 class blockfactory::core::ParameterMetadata
 {
@@ -92,11 +92,11 @@ public:
  * @brief Class for storing a generic parameter
  *
  * A generic parameters can be either a scalar or a vector. Supported types are defined by the
- * wbt::ParameterType enum.Use wbt::ParameterMetadata to set these information.
+ * core::ParameterType enum. Use core::ParameterMetadata to set these information.
  *
  * @tparam The type of the container type. For vector parameters, T is the type of an element of the
  *         container.
- * @see wbt::Parameters, wbt::ParameterMetadata
+ * @see core::Parameters, core::ParameterMetadata
  */
 template <typename T>
 class blockfactory::core::Parameter

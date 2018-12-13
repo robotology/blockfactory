@@ -27,90 +27,75 @@ namespace blockfactory {
  * ### Rationale
  *
  * This class is aimed to wrap generic algorithms and it represents the most basic component of
- * `WB-Toolbox`.
+ * `BlockFactory`.
  *
- * The entire execution of an generic algorithm can be split in the following major steps:
+ * The entire execution of a generic algorithm can be split in the following major steps:
  *
- * - Initialization: implemented with Block::configureSizeAndPorts, Block::initialize
- * - Execution: implemented with Block::output
- * - Termination: implemented with Block::terminate
+ * - Initialization: implemented with core::Block::configureSizeAndPorts, core::Block::initialize
+ * - Execution: implemented with core::Block::output
+ * - Termination: implemented with core::Block::terminate
  *
- * Considering that the main aim of this toolbox at its beginning was its integration with Simulink,
- * it contains other methods for exposing the algorithm as a Simulink block.
+ * Considering that the main aim of this framework at its beginning was the integration with
+ * Simulink, it contains other methods for exposing the algorithm as a Simulink block.
  *
  * ### Main concept
  *
  * A generic application is the composition of many algorithms sharing and processing each other
- * data. Every algorithm is represented by a wbt::Block, and the data shared with other blocks is
- * carried by wbt::Signal.
+ * data. Every algorithm is represented by a core::Block, and the data shared with other blocks is
+ * carried by core::Signal.
  *
  * The block is generally unaware of the data that it will process, and it is only interested in
  * knowing how many input / output signals are connected, their size and data type. Blocks have the
- * concept of _ports_, which are the connections between external wbt::Signal and the block itself.
+ * concept of _ports_, which are the connections between external core::Signal and the block itself.
  *
  * @remark A signal can be plugged to more than one port.
  *
- * This kind of information is set by a wbt::BlockInformation object, and it can be specific to the
+ * This kind of information is set by a core::BlockInformation object, and it is specific to the
  * framework where the algorithm runs (e.g. standalone C++ code, Simulink, etc).
  *
  * Beyond this, an algorithm often needs parameters. This class provides functionalities to gather
- * them in a wbt::Parameters object.
+ * them in a core::Parameters object.
  *
  * ### Other information
  *
- * You can create a new block by deriving this class and implementing at least all the pure virtual
+ * You can create a new block by deriving from this class and implementing at least all the abstract
  * methods.
  *
- * @note This class and the entire toolbox assume that algorithms are represented as instantaneous
+ * @note This block interface assumes that algorithms are represented as instantaneous
  *       systems, there is no default storage capability between different sampling times. However,
- *       blocks can wrap generic classes which can retain data, outsourcing data persistence outside
- *       the framework given by `WB-Toolbox`.
- * \par
- * @note Despite some of the methods inside this class looks Simulink-dependent, objects of this
- *       class are completely generic. In fact, it only provides algorithm callbacks, and the
- *       setting of input / output data is demanded to the wbt::BlockInformation interface. For what
- *       concerns Simulink, a wbt::SimulinkBlockInformation implementation is provided.
- * \par
+ *       concrete blocks can have buffers that retain previous data. \par
+ * @note Despite some of the methods inside this class look Simulink-dependent, objects of this
+ *       class are completely generic. In fact, core::Block only provides algorithm callbacks, and
+ *       the operation to set input / output data is demanded to the core::BlockInformation
+ *       interface. For what concerns Simulink, a mex::SimulinkBlockInformation implementation is
+ *       provided. \par
  *
- * @see wbt::BlockInformation Class for providing information about signals and parameters.
- * @see wbt::WBBlock Specialization of wbt::Block which provides useful resources for developing
- *      whole-body blocks.
+ * @see core::BlockInformation Class for providing information about signals and parameters.
  *
  * @section block_parameters Block Parameters
  *
  * | Type | Index | Rows | Cols | Name |
  * | ---- | :---: | :--: | :--: | ---- |
- * | PARAM_STRING | 0 | 1 | 1 | "className" |
- *
- * @see wbt::ParameterMetadata::ParameterMetadata for the data types of these variables.
+ * | ParameterType::STRING | 0 | 1 | 1 | "className" |
+ * | ParameterType::STRING | 1 | 1 | 1 | "libName"   |
  */
 class blockfactory::core::Block
 {
 protected:
-    /// Container for block's parameter. You can get this member using Block::getParameters
+    /// Container for block parameters. You can get this member using Block::getParameters
     Parameters m_parameters;
 
 public:
-    /**
-     * @brief Create and returns a new Block object of the specified class
-     *
-     * If the class does not exist returns `nullptr`.
-     *
-     * @param blockClassName The derived class name to be instantiated.
-     * @return The newly created Block object or `nullptr`.
-     */
-    //    static wbt::Block* instantiateBlockWithClassName(const std::string& blockClassName);
-
     /**
      * @brief Destructor
      */
     virtual ~Block() = default;
 
     /**
-     * Static variable matching Block::numberOfParameters. It might be useful to define parametric
-     * constants for parameter indices in child blocks.
+     * @brief Number of parameters of core::Block
      *
-     * @see WBBlock::NumberOfParameters
+     * Static variable matching Block::numberOfParameters. It might be useful to define
+     * parametric constants for parameter indices in child blocks.
      */
     static constexpr unsigned NumberOfParameters = 2;
 
@@ -118,6 +103,8 @@ public:
      * @brief Returns the number of configuration parameters needed by this block
      *
      * @return The number of parameters.
+     *
+     * @see Block::NumberOfParameters
      */
     virtual unsigned numberOfParameters();
 
@@ -178,29 +165,29 @@ public:
      *
      * @note For the time being tunable parameters are not used in this toolbox.
      *
-     * @param[in]  index   Index of the parameter.
-     * @param[out] tunable True if the parameter is tunable, false otherwise.
+     * @param index Index of the parameter.
+     * @return True if the parameter is tunable, false otherwise.
      */
     virtual bool parameterAtIndexIsTunable(unsigned index);
 
     /**
-     * @brief Parse the parameters stored into the BlockInformation object
+     * @brief Parse the parameters stored into the core::BlockInformation object
      *
      * Implement this method to create the metadata of the parameters your block needs (using
-     * wbt::ParameterMetadata), store them into the blockInfo object with
-     * BlockInformation::addParameterMetadata, and parse them using
-     * BlockInformation::parseParameters.
+     * core::ParameterMetadata), store them into the blockInfo object with
+     * core::BlockInformation::addParameterMetadata, and parse them using
+     * core::BlockInformation::parseParameters.
      *
      * An example of the implementation is the following:
      *
      * ```cpp
-     * bool Jacobian::parseParameters(BlockInformation* blockInfo)
+     * bool MyBlock::parseParameters(BlockInformation* blockInfo)
      * {
-     *     ParameterMetadata frameMetadata(PARAM_STRING, PARAM_IDX_FRAME, 1, 1, "frame");
-     *     bool ok = blockInfo->addParameterMetadata(frameMetadata);
+     *     ParameterMetadata fooMetadata(PARAM_STRING, PARAM_IDX_FRAME, 1, 1, "foo");
+     *     bool ok = blockInfo->addParameterMetadata(fooMetadata);
      *
      *     if (!ok) {
-     *         bfError << "Failed to store parameters metadata.";
+     *         bfError << "Failed to store parameter metadata.";
      *         return false;
      *     }
 
@@ -210,7 +197,7 @@ public:
      *
      * @param blockInfo The pointer to a BlockInformation object.
      * @return True for success, false otherwise.
-     * @see BlockInformation::addParameterMetadata, BlockInformation::parseParameters
+     * @see core::BlockInformation::addParameterMetadata, core::BlockInformation::parseParameters
      */
     virtual bool parseParameters(BlockInformation* blockInfo);
 
@@ -218,9 +205,9 @@ public:
      * @brief Gather all the stored parameters
      *
      * After the parameters have been successfully stored and parsed using the
-     * Block::parseParameter, you can gather them using this method.
+     * core::Block::parseParameter, you can gather them using this method.
      *
-     * @param[out] params A wbt::Parameters object containing block's parameters.
+     * @param[out] params A core::Parameters object containing block parameters.
      * @return bool True for success, false otherwise.
      */
     bool getParameters(blockfactory::core::Parameters& params) const;
@@ -228,27 +215,29 @@ public:
     /**
      * @brief Configure the input and output ports
      *
-     * Implement this method to set information about number and size of input and output signals.
+     * Implement this method to set information about number and size of input and output ports.
      * The terminology `port` comes as Simulink inheritage, and it marks the connection of a signal
-     * (which resides in some buffer in the program memory) to the block's input or output.
+     * (which resides in some buffer in the program memory) to the block input or output.
      *
-     * These information can be used later (e.g. in the Block::initialize and Block::output) for
-     * preallocating resources and accessing data knowing its size in advance.
+     * These information will be used later (e.g. in the core::Block::initialize and
+     * core::Block::output) for preallocating resources and accessing data knowing its size in
+     * advance.
      *
-     * @note If the size is not known at this stage (Signal::DynamicSize), at latest it should be
-     *       set in the Block::initialize step
+     * @note If the size is not known (core::Signal::DynamicSize) during this configuring phase, at
+     * latest it should be set in the core::Block::initialize method.
      * @warning Do not allocate any data in this stage! Object are destroyed afterwards and created
-     *          again before the Block::initialize step. Every allocated memory and stored values
-     *          will be deleted. Only information stored in `blockInfo` will persist.
+     *          again before the core::Block::initialize step. All allocated memory and stored
+     *          values will be deleted. Only information stored in `blockInfo` will persist.
      *
      * @param blockInfo The pointer to a BlockInformation object.
      * @return True if the block was configured successfully, false otherwise.
-     * @see BlockInformation::setNumberOfInputPorts, BlockInformation::setInputPortVectorSize
+     * @see core::BlockInformation::setNumberOfInputPorts,
+     *      core::BlockInformation::setInputPortVectorSize
      */
     virtual bool configureSizeAndPorts(BlockInformation* blockInfo);
 
     /**
-     * Never called.
+     * @brief Never called.
      *
      * @param blockInfo The pointer to a BlockInformation object.
      * @return True for success, false otherwise.
@@ -267,13 +256,13 @@ public:
     virtual bool initialize(BlockInformation* blockInfo);
 
     /**
-     * @brief Initialize block's initial conditions
+     * @brief Initialize block initial conditions
      *
-     * Implement this method to specify block's initial conditions. Its execution will happen after
-     * Block::initialize and before the first call of Block::output. The default is an empty
-     * implementation.
+     * Implement this method to specify block initial conditions. Its execution will happen after
+     * block::Block::initialize and before the first call of core::Block::output. The default is an
+     * empty implementation.
      *
-     * @note this function is also called on a reset event. In Simulink, an example is when the
+     * @note This function is also called on a reset event. In Simulink, an example is when the
      *       block resides in an enabled subsystem.
      *
      * @param blockInfo The pointer to a BlockInformation object.

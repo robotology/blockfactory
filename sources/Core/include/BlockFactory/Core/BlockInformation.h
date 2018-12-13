@@ -38,24 +38,24 @@ namespace iDynTree {
 #endif
 
 /**
- * @brief Abstract class for storing generic Block properties
+ * @brief Abstract class for storing generic core::Block properties
  *
- * BlockInformation provides an interface for handling implementation-specific properties such as
- * input / output number, size and type, number of parameters, ...
+ * core::BlockInformation provides an interface for handling implementation-specific properties such
+ * as input / output number, size and type, number of parameters, ...
  *
- * A wbt::Block needs to know on what kind of data it operates, and retrieving this information is
+ * A core::Block needs to know on what kind of data it operates, and retrieving this information is
  * often specific on the framework on top of which blocks run. In order to allow using the same
- * Block class from different frameworks (e.g. Simulink, C++, etc), different implementation of this
- * interface can be developed to provide a transparent translation of such functionalities.
+ * core::Block class from different frameworks (e.g. Simulink, C++, etc), different implementation
+ * of this interface can be developed to provide a transparent translation of such functionalities.
  *
- * As an example, take the BlockInformation::parseParameters. In Simulink parameters are read from
- * block's masks and Matlab provides a library for reading them. The SimulinkBlockInformation
- * implementation will be linked against that library. However, if you want to call the same Block
- * class (which is just a wrapper of an algorithm) from a pure C++ main, parameters are read e.g.
- * from an xml file. In this case, BlockInformation::parseParameters will parse the xml and fill the
- * wbt::Parameters argument.
+ * As an example, take the core::BlockInformation::parseParameters. In Simulink, parameters are read
+ * from the block masks and Matlab provides APIs for reading them. The mex::SimulinkBlockInformation
+ * implementation will use those APIs. However, if you want to call the same block class (which is
+ * just a wrapper of an algorithm) from a pure C++ main, parameters are read e.g. from an xml file.
+ * In this case, core::BlockInformation::parseParameters will parse the xml and fill the
+ * core::Parameters argument.
  *
- * @see wbt::Block, wbt::Parameters, wbt::Signal
+ * @see core::Block, core::Parameters, core::Signal
  */
 class blockfactory::core::BlockInformation
 {
@@ -92,6 +92,8 @@ public:
      * @param[in]  key Identifier of the block option.
      * @param[out] option Implementation-specific block option.
      * @return True if the option has been converted, false otherwise.
+     *
+     * @see mdlInitializeSizes
      */
     virtual bool optionFromKey(const std::string& key, double& option) const = 0;
 
@@ -100,9 +102,9 @@ public:
     // ==================
 
     /**
-     * @brief Parse the wbt::Block's parameters
+     * @brief Parse the core::Block parameters
      *
-     * This method allows defining how to gather block's parameters from a specific implementation.
+     * This method allows defining how to gather block parameters from a specific implementation.
      *
      * @param[out] parameters A container filled with the parsed parameters.
      * @return True for success, false otherwise.
@@ -112,11 +114,12 @@ public:
     /**
      * @brief Add a parameter metadata
      *
-     * In order to parse parameters with BlockInformation::parseParameters, adding in advance their
-     * metadata can strongly simplify the entire process.
+     * In order to gather parameters from the running engine, the block must pass their metadata.
      *
      * @param paramMD The metadata to add.
      * @return True for success, false otherwise.
+     *
+     * @see core::BlockInformation::parseParameters
      */
     virtual bool addParameterMetadata(const blockfactory::core::ParameterMetadata& paramMD) = 0;
 
@@ -129,15 +132,18 @@ public:
     /**
      * @brief Set input / output ports data
      *
-     * Specify I/O ports data such as BlockInformation::PortIndex, BlockInformation::PortDimension,
-     * and wbt::DataType storing the information in a BlockInformation::IOData structure.
+     * Specify I/O ports data such as core::BlockInformation::PortIndex,
+     * core::BlockInformation::PortDimension, and core::DataType storing the information in a
+     * core::BlockInformation::IOData structure.
      *
      * @param ioData The structure containing I/O ports data.
      * @return True for success, false otherwise.
      *
-     * @see setNumberOfInputPorts, setInputPortVectorSize, setInputPortMatrixSize,
-     *      setInputPortDataType
-     * @note This method automatically sets the number of inputs and outputs.
+     * @see core::BlockInformation::setNumberOfInputPorts,
+     *      core::BlockInformation::setInputPortVectorSize,
+     *      core::BlockInformation::setInputPortMatrixSize,
+     *      core::BlockInformation::setInputPortDataType
+     * @note This method should also automatically set the number of inputs and outputs.
      */
     virtual bool setIOPortsData(const IOData& ioData) = 0;
 

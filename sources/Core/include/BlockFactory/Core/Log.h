@@ -70,7 +70,7 @@ public:
     /**
      * @brief Get the Log singleton
      *
-     * There is only one instance in the whole program of this class.
+     * There is only one instance of this class in the whole process.
      *
      * @return The log singleton.
      */
