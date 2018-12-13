@@ -14,7 +14,10 @@
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Signal.h"
 
+// This is a typedef. We could forward declare it but since it might
+// change it is better keeping this include here.
 #include <simstruc.h>
+
 #include <string>
 #include <vector>
 
@@ -27,18 +30,15 @@ namespace blockfactory {
 class blockfactory::mex::SimulinkBlockInformation final : public core::BlockInformation
 {
 private:
-    SimStruct* simstruct;
-    std::string m_confBlockName;
-    std::vector<core::ParameterMetadata> m_paramsMetadata;
-
-    core::DataType mapSimulinkToPortType(const DTypeId typeId) const;
-    DTypeId mapPortTypeToSimulink(const core::DataType dataType) const;
-
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    class Impl;
+    std::unique_ptr<Impl> pImpl;
+#endif
 public:
     using ParameterIndex = unsigned;
 
     SimulinkBlockInformation(SimStruct* simstruct);
-    ~SimulinkBlockInformation() override = default;
+    ~SimulinkBlockInformation() override;
 
     // BLOCK OPTIONS METHODS
     // =====================
