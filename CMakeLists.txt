@@ -66,15 +66,15 @@ if(${CMAKE_VERSION} VERSION_LESS 3.7)
         MX_LIBRARY
         ENG_LIBRARY
         MAIN_PROGRAM)
-    if(NOT CMAKE_MINIMUM_REQUIRED_VERSION VERSION_LESS 3.7)
-      message(AUTHOR_WARNING "CMake minimum required version greater than 3.7. You can remove this.")
-    endif()
 else()
     find_package(Matlab COMPONENTS
         MX_LIBRARY
         ENG_LIBRARY
         MAIN_PROGRAM
         SIMULINK)
+    if(NOT CMAKE_MINIMUM_REQUIRED_VERSION VERSION_LESS 3.7)
+      message(AUTHOR_WARNING "CMake minimum required version greater than 3.7. You can remove this.")
+    endif()
 endif()
 
 if(NOT USES_MATLAB)
