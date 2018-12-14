@@ -58,6 +58,7 @@ nav:
     - Documentation [master]: https://robotology.github.io/blockfactory/doxygen/
     #- Documentation [devel]: https://robotology.github.io/blockfactory/devel/doxygen/
     - Tutorials:
+        - Introduction: 'tutorial_intro.md'
         - Create a new library: 'create_new_library.md'
         - Autogenerate C++ code: 'autogenerate_code.md'
     - About: 'about.md'
