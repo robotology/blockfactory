@@ -317,7 +317,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::CELL_INT:
             case core::ParameterType::CELL_BOOL:
             case core::ParameterType::CELL_DOUBLE: {
-                AnyCell cell;
+                mxpp::MxCell cell;
                 if (!pImpl->getCellAtIndex(paramMD.index, cell)) {
                     bfError << "Failed to get cell parameter at index " << paramMD.index << ".";
                     return false;
@@ -341,7 +341,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                 break;
             }
             case core::ParameterType::CELL_STRING: {
-                AnyCell cell;
+                mxpp::MxCell cell;
                 if (!pImpl->getCellAtIndex(paramMD.index, cell)) {
                     bfError << "Failed to get cell parameter at index " << paramMD.index << ".";
                     return false;
@@ -414,7 +414,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
             case core::ParameterType::STRUCT_CELL_INT:
             case core::ParameterType::STRUCT_CELL_BOOL:
             case core::ParameterType::STRUCT_CELL_DOUBLE: {
-                AnyCell cell;
+                mxpp::MxCell cell;
                 std::vector<double> paramVector;
                 if (!pImpl->getCellFieldAtIndex(paramMD.index, paramMD.name, cell)) {
                     bfError << "Failed to get cell field " << paramMD.name
@@ -439,7 +439,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                 break;
             }
             case core::ParameterType::STRUCT_CELL_STRING: {
-                AnyCell cell;
+                mxpp::MxCell cell;
                 std::vector<std::string> paramVector;
                 if (!pImpl->getCellFieldAtIndex(paramMD.index, paramMD.name, cell)) {
                     bfError << "Failed to get cell field " << paramMD.name

@@ -9,8 +9,8 @@
 #ifndef BLOCKFACTORY_MEX_IMPL_SIMULINKBLOCKINFORMATIONIMPL_H
 #define BLOCKFACTORY_MEX_IMPL_SIMULINKBLOCKINFORMATIONIMPL_H
 
-#include "AnyType.h"
 #include "BlockFactory/Core/BlockInformation.h"
+#include "mxpp/MxArray.h"
 
 #include <simstruc.h>
 
@@ -81,8 +81,8 @@ public:
     // CELL / STRUCT / VECTOR PARAMETERS
     // =================================
 
-    bool getCellAtIndex(const ParameterIndex idx, AnyCell& value) const;
-    bool getStructAtIndex(const ParameterIndex idx, AnyStruct& value) const;
+    bool getCellAtIndex(const ParameterIndex idx, mxpp::MxCell& value) const;
+    bool getStructAtIndex(const ParameterIndex idx, mxpp::MxStruct& value) const;
     bool getVectorAtIndex(const ParameterIndex idx, std::vector<double>& value) const;
 
     // ===========================
@@ -100,7 +100,7 @@ public:
                                 bool& value) const;
     bool getCellFieldAtIndex(const ParameterIndex idx,
                              const std::string& fieldName,
-                             AnyCell& value) const;
+                             mxpp::MxCell& value) const;
     bool getVectorDoubleFieldAtIndex(const ParameterIndex idx,
                                      const std::string& fieldName,
                                      std::vector<double>& value) const;

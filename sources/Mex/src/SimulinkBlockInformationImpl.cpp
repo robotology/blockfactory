@@ -10,7 +10,6 @@
 #include "BlockFactory/Core/Log.h"
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Signal.h"
-#include "MxAnyType.h"
 
 #include <simstruc.h>
 
@@ -239,7 +238,7 @@ bool SimulinkBlockInformationImpl::getScalarParameterAtIndex(const ParameterInde
                                                              double& value) const
 {
     const mxArray* blockParam = ssGetSFcnParam(simstruct, idx);
-    return MxAnyType(blockParam).asDouble(value);
+    return mxpp::MxArray(blockParam).asDouble(value);
 }
 
 bool SimulinkBlockInformationImpl::getBooleanParameterAtIndex(const ParameterIndex idx,
@@ -250,10 +249,10 @@ bool SimulinkBlockInformationImpl::getBooleanParameterAtIndex(const ParameterInd
 
     // The Simulink mask often doesn't store boolean data from the mask as bool but as double.
     // Calling asBool() will fail in this case. If this happens, asDouble() is used as fallback.
-    if (MxAnyType(blockParam).asBool(value)) {
+    if (mxpp::MxArray(blockParam).asBool(value)) {
         return true;
     }
-    else if (MxAnyType(blockParam).asDouble(tmpValue)) {
+    else if (mxpp::MxArray(blockParam).asDouble(tmpValue)) {
         value = static_cast<bool>(tmpValue);
         return true;
     }
@@ -266,31 +265,32 @@ bool SimulinkBlockInformationImpl::getStringParameterAtIndex(const ParameterInde
                                                              std::string& value) const
 {
     const mxArray* blockParam = ssGetSFcnParam(simstruct, idx);
-    return MxAnyType(blockParam).asString(value);
+    return mxpp::MxArray(blockParam).asString(value);
 }
 
 // =================================
 // CELL / STRUCT / VECTOR PARAMETERS
 // =================================
 
-bool SimulinkBlockInformationImpl::getCellAtIndex(const ParameterIndex idx, AnyCell& value) const
+bool SimulinkBlockInformationImpl::getCellAtIndex(const ParameterIndex idx,
+                                                  mxpp::MxCell& value) const
 {
     const mxArray* blockParam = ssGetSFcnParam(simstruct, idx);
-    return MxAnyType(blockParam).asAnyCell(value);
+    return mxpp::MxArray(blockParam).asMxCell(value);
 }
 
 bool SimulinkBlockInformationImpl::getStructAtIndex(const ParameterIndex idx,
-                                                    AnyStruct& value) const
+                                                    mxpp::MxStruct& value) const
 {
     const mxArray* blockParam = ssGetSFcnParam(simstruct, idx);
-    return MxAnyType(blockParam).asAnyStruct(value);
+    return mxpp::MxArray(blockParam).asMxStruct(value);
 }
 
 bool SimulinkBlockInformationImpl::getVectorAtIndex(const ParameterIndex idx,
                                                     std::vector<double>& value) const
 {
     const mxArray* blockParam = ssGetSFcnParam(simstruct, idx);
-    return MxAnyType(blockParam).asVectorDouble(value);
+    return mxpp::MxArray(blockParam).asVectorDouble(value);
 }
 
 // ===========================
@@ -301,7 +301,7 @@ bool SimulinkBlockInformationImpl::getStringFieldAtIndex(const ParameterIndex id
                                                          const std::string& fieldName,
                                                          std::string& value) const
 {
-    AnyStruct s;
+    mxpp::MxStruct s;
 
     if (!getStructAtIndex(idx, s)) {
         bfError << "Failed to get struct at index " << idx << ".";
@@ -320,7 +320,7 @@ bool SimulinkBlockInformationImpl::getScalarFieldAtIndex(const ParameterIndex id
                                                          const std::string& fieldName,
                                                          double& value) const
 {
-    AnyStruct s;
+    mxpp::MxStruct s;
 
     if (!getStructAtIndex(idx, s)) {
         bfError << "Failed to get struct at index " << idx << ".";
@@ -339,7 +339,7 @@ bool SimulinkBlockInformationImpl::getBooleanFieldAtIndex(const ParameterIndex i
                                                           const std::string& fieldName,
                                                           bool& value) const
 {
-    AnyStruct s;
+    mxpp::MxStruct s;
 
     if (!getStructAtIndex(idx, s)) {
         bfError << "Failed to get struct at index " << idx << ".";
@@ -356,9 +356,9 @@ bool SimulinkBlockInformationImpl::getBooleanFieldAtIndex(const ParameterIndex i
 
 bool SimulinkBlockInformationImpl::getCellFieldAtIndex(const ParameterIndex idx,
                                                        const std::string& fieldName,
-                                                       AnyCell& value) const
+                                                       mxpp::MxCell& value) const
 {
-    AnyStruct s;
+    mxpp::MxStruct s;
 
     if (!getStructAtIndex(idx, s)) {
         bfError << "Failed to get struct at index " << idx << ".";
@@ -370,14 +370,14 @@ bool SimulinkBlockInformationImpl::getCellFieldAtIndex(const ParameterIndex idx,
         return false;
     }
 
-    return s.at(fieldName)->asAnyCell(value);
+    return s.at(fieldName)->asMxCell(value);
 }
 
 bool SimulinkBlockInformationImpl::getVectorDoubleFieldAtIndex(const ParameterIndex idx,
                                                                const std::string& fieldName,
                                                                std::vector<double>& value) const
 {
-    AnyStruct s;
+    mxpp::MxStruct s;
 
     if (!getStructAtIndex(idx, s)) {
         bfError << "Failed to get struct at index " << idx << ".";

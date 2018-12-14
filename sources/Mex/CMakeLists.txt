@@ -9,7 +9,7 @@ add_library(SimulinkBlockInformationPrivate STATIC
 target_link_libraries(SimulinkBlockInformationPrivate
     PUBLIC
     BlockFactory::Core
-    MxAnyType)
+    mxpp)
 
 # Needed to access Simulink C APIs
 target_compile_definitions(SimulinkBlockInformationPrivate PRIVATE "MATLAB_MEX_FILE")
@@ -47,6 +47,6 @@ install_basic_package_files(BlockFactoryMex
     COMPATIBILITY AnyNewerVersion
     EXPORT BlockFactoryMexExport
     FIRST_TARGET Mex
-    DEPENDENCIES BlockFactoryCore MxAnyType shlibpp
+    DEPENDENCIES BlockFactoryCore mxpp shlibpp
     NAMESPACE BlockFactory::
     NO_CHECK_REQUIRED_COMPONENTS_MACRO)
