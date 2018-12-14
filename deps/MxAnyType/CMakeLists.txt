@@ -2,7 +2,7 @@
 # This software may be modified and distributed under the terms of the
 # GNU Lesser General Public License v2.1 or any later version.
 
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.5)
 project(MxAnyType LANGUAGES CXX VERSION 0.1)
 
 # Configure the project
@@ -11,6 +11,9 @@ project(MxAnyType LANGUAGES CXX VERSION 0.1)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(GNUInstallDirs)
+
+# Build position independent code
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Export all symbols in Windows
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -31,13 +34,12 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
 
 # Add the target
 add_library(MxAnyType
-    include/AnyType.h
     include/MxAnyType.h
     src/MxAnyType.cpp)
 
 set_target_properties(MxAnyType PROPERTIES
         VERSION ${PROJECT_VERSION}
-        PUBLIC_HEADER include/AnyType.h)
+        PUBLIC_HEADER include/MxAnyType.h)
 
 # Find Matlab resources
 find_package(Matlab REQUIRED MX_LIBRARY)

@@ -9,95 +9,80 @@
 #ifndef MXANYTYPE_H
 #define MXANYTYPE_H
 
-#include "AnyType.h"
-
-#include <matrix.h>
-
-#include <cassert>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
 
-class MxAnyType;
+namespace mxpp {
+    class MxArray;
+    using MxArrayPtr = std::shared_ptr<MxArray>;
+    using MxCell = std::vector<MxArrayPtr>;
+    using MxStructKey = std::string;
+    using MxStruct = std::unordered_map<MxStructKey, MxArrayPtr>;
+} // namespace mxpp
 
-// If needed in the future
-// class MxAnyCell : public AnyCell {};
-// class MxAnyStruct : public AnyStruct {};
+struct mxArray_tag;
+using mxArray = struct mxArray_tag;
 
-struct MxArrayMetadata
-{
-    mxClassID id;
-    bool isScalar;
-    size_t rows;
-    size_t cols;
-    size_t nElem;
-    size_t nDims;
-    std::vector<size_t> dims;
-};
-
-class MxAnyType : public AnyType
+/**
+ * @brief Slim wrapper of mxArray
+ *
+ * This class wraps a `mxArray` opaque pointer, which is the fundamental type underlying Matlab
+ * data.
+ *
+ * @see https://mathworks.com/help/matlab/apiref/mxarray.html
+ * @note It only supports reading data from a `mxArray*`, not writing.
+ */
+class mxpp::MxArray
 {
 private:
-    const mxArray* mx;
-    MxArrayMetadata md;
-    bool validate;
-
-    // TODO: https://it.mathworks.com/help/matlab/apiref/mxgetscalar.html returns a double always
-    bool asScalar(double& d);
-    bool validateClassId(mxClassID id1, mxClassID id2);
+    class Impl;
+    std::unique_ptr<Impl> pImpl;
 
 public:
-    MxAnyType() = delete;
-    MxAnyType(const mxArray* m, bool validateId = false);
-    ~MxAnyType() override = default;
-    MxAnyType(const MxAnyType& mxAnyType);
+    MxArray() = delete;
+    explicit MxArray(const mxArray* m, bool validateId = false);
+
+    ~MxArray();
+    explicit MxArray(const MxArray& mxAnyType);
 
     void enableClassIDValidation();
 
-    // STRING / CHARS
-    // ==============
+    // Character
+    bool asString(std::string& s);
 
-    bool asString(std::string& s) override;
+    // Unsigned integer
+    bool asUInt(unsigned& i);
+    // bool asUInt8(uint8_t& i);
+    // bool asUInt16(uint16_t& i);
+    // bool asUInt32(uint32_t& i);
+    // bool asUInt64(uint64_t& i);
 
-    // SCALAR TYPES
-    // ============
+    // Integer
+    bool asInt(int& i);
+    // bool asInt8(int8_t& i);
+    // bool asInt16(int16_t& i);
+    bool asInt32(int32_t& i);
+    // bool asInt64(int64_t& i);
 
-    // Generic casting
-    // ---------------
+    // Boolean
+    bool asBool(bool& b);
 
-    bool asInt(int& i) override;
-    bool asUInt(unsigned& i) override;
+    // Floating point
+    bool asDouble(double& d);
 
-    // Specific casting
-    // ----------------
+    // Struct
+    bool asMxStruct(MxStruct& s);
 
-    bool asInt32(int32_t& i) override;
+    // Cell
+    bool asMxCell(MxCell& cell);
 
-    // TODO: complete with all the other scalar types
-    // bool asInt64(int64_t& i) override
-    // {
-    //     double buffer;
-    //     if (!asScalar(buffer)) return false;
-    //     i = static_cast<int64_t>(buffer);
-    //     return validateClassId(md.id, mxINT64_CLASS);
-    // }
+    // Vector
+    // TODO: valarray? And matrices?
+    bool asVectorDouble(std::vector<double>& vec);
 
-    bool asDouble(double& d) override;
-    bool asBool(bool& b) override;
-
-    // COMPOSITE DATA TYPES
-    // ====================
-
-    bool asAnyStruct(AnyStruct& s) override;
-    bool asAnyCell(AnyCell& cell) override;
-
-    // MATRIX
-    // ======
-
-    // VECTOR
-    // ======
-
-    bool asVectorDouble(std::vector<double>& vec) override;
+    // TODO: Matrix
 };
 
 #endif // MXANYTYPE_H
