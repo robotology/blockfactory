@@ -11,7 +11,9 @@ cache:
 
 stages:
   - test # Default stage with job matrix
-  - windows
+  # Disable windows if there are secrete variables, waiting a fix from Travis CI
+  - name: windows
+    if: env(DEPLOY_TOKEN) IS blank
   - osx
   - name: deploy
     if: fork = false AND branch IN (master, devel) AND type != pull_request AND env(DEPLOY_TOKEN) IS present
