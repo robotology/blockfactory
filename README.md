@@ -1,5 +1,7 @@
 # BlockFactory
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/25547902678b4d92804d40712035ec29)](https://app.codacy.com/app/diegoferigo/blockfactory?utm_source=github.com&utm_medium=referral&utm_content=robotology/blockfactory&utm_campaign=Badge_Grade_Dashboard)
+
 BlockFactory is a framework for dataflow programming that allows **wrapping C and C++ algorithms**. It provides an abstraction inspired by Simulink where algorithms are represented as _blocks_ that can exchange data through _signals_.
 
 Users of this project can easily wrap their algorithms inside the provided software interfaces obtaining C++ classes that can be executed by generic _engines_. BlockFactory implements and provides full support of the following engines:
