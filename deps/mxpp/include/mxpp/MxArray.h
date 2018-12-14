@@ -6,8 +6,8 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#ifndef MXANYTYPE_H
-#define MXANYTYPE_H
+#ifndef MXPP_MXARRAY_H
+#define MXPP_MXARRAY_H
 
 #include <memory>
 #include <string>
@@ -85,4 +85,4 @@ public:
     // TODO: Matrix
 };
 
-#endif // MXANYTYPE_H
+#endif // MXPP_MXARRAY_H

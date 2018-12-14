@@ -6,7 +6,7 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#include "MxAnyType.h"
+#include "mxpp/MxArray.h"
 
 #include <cassert>
 #include <matrix.h>

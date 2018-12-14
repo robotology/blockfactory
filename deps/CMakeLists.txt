@@ -3,7 +3,7 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 if(USES_MATLAB)
-    add_subdirectory(MxAnyType)
+    add_subdirectory(mxpp)
 endif()
 
 add_subdirectory(sharedlibpp)

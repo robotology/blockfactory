@@ -3,7 +3,7 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 cmake_minimum_required(VERSION 3.5)
-project(MxAnyType LANGUAGES CXX VERSION 0.1)
+project(mxpp LANGUAGES CXX VERSION 0.1)
 
 # Configure the project
 # =====================
@@ -33,23 +33,23 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
 # =================
 
 # Add the target
-add_library(MxAnyType
-    include/MxAnyType.h
-    src/MxAnyType.cpp)
+add_library(mxpp
+    include/mxpp/MxArray.h
+    src/MxArray.cpp)
 
-set_target_properties(MxAnyType PROPERTIES
+set_target_properties(mxpp PROPERTIES
         VERSION ${PROJECT_VERSION}
-        PUBLIC_HEADER include/MxAnyType.h)
+        PUBLIC_HEADER include/mxpp/MxArray.h)
 
 # Find Matlab resources
 find_package(Matlab REQUIRED MX_LIBRARY)
-target_include_directories(MxAnyType SYSTEM PRIVATE "${Matlab_INCLUDE_DIRS}")
-target_link_libraries(MxAnyType ${Matlab_MX_LIBRARY})
+target_include_directories(mxpp SYSTEM PRIVATE "${Matlab_INCLUDE_DIRS}")
+target_link_libraries(mxpp ${Matlab_MX_LIBRARY})
 
 # Setup the include directories
-target_include_directories(MxAnyType PUBLIC
+target_include_directories(mxpp PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/MxAnyType>)
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Build tests
 # ===========
@@ -59,16 +59,16 @@ target_include_directories(MxAnyType PUBLIC
 # Install
 # =======
 
-install(TARGETS MxAnyType
-        EXPORT MxAnyTypeExport
+install(TARGETS mxpp
+        EXPORT mxppExport
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-        PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/MxAnyType")
+        PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/mxpp")
 
 include(InstallBasicPackageFiles)
-install_basic_package_files(MxAnyType
+install_basic_package_files(mxpp
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
-    EXPORT MxAnyTypeExport
+    EXPORT mxppExport
     NO_CHECK_REQUIRED_COMPONENTS_MACRO)
