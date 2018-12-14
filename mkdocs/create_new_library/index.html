@@ -222,13 +222,11 @@
         
       
         
-      
-        
   
   
     <li class="md-tabs__item">
       
-        <a href="./" title="Tutorials" class="md-tabs__link md-tabs__link--active">
+        <a href="../tutorial_intro/" title="Tutorials" class="md-tabs__link md-tabs__link--active">
           Tutorials
         </a>
       
@@ -325,34 +323,34 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href="https://robotology.github.io/blockfactory/devel/doxygen/" title="Documentation [devel]" class="md-nav__link">
-      Documentation [devel]
-    </a>
-  </li>
-
-    
-      
-      
-      
-
   
 
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
     
-    <label class="md-nav__link" for="nav-5">
+    <label class="md-nav__link" for="nav-4">
       Tutorials
     </label>
     <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
-      <label class="md-nav__title" for="nav-5">
+      <label class="md-nav__title" for="nav-4">
         Tutorials
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tutorial_intro/" title="Introduction" class="md-nav__link">
+      Introduction
+    </a>
+  </li>
+
         
           
           
@@ -1059,10 +1057,10 @@
 <p>You already learned that Blocks are no more than regular C++ classes. They are not an exception, in fact all the components discussed until now are mapped to C++ classes or interfaces (<a href="https://en.cppreference.com/w/cpp/language/abstract_class">abstract classes</a>).</p>
 <p>The following resources provide further information about them:</p>
 <ul>
-<li>Blocks are implementations of the <a href="https://robotology.github.io/blockfactory/doxygen/classwbt_1_1_block.html"><code>blockfactory::core::Block</code></a> interface</li>
-<li>BlockInformation is defined in the  <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_block_information.html"><code>blockfactory::core::BlockInformation</code></a> interface</li>
-<li>Signals are mapped to the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_signal.html"><code>blockfactory::core::Signal</code></a> class</li>
-<li>Blocks parameters are mapped to the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_parameter.html"><code>blockfactory::core::Parameter</code></a> class</li>
+<li>Blocks are implementations of the <a href="https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_block.html"><code>blockfactory::core::Block</code></a> interface</li>
+<li>BlockInformation is defined in the  <a href="https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_block_information.html"><code>blockfactory::core::BlockInformation</code></a> interface</li>
+<li>Signals are mapped to the <a href="https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_signal.html"><code>blockfactory::core::Signal</code></a> class</li>
+<li>Blocks parameters are mapped to the <a href="https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_parameter.html"><code>blockfactory::core::Parameter</code></a> class</li>
 </ul>
 <p>We need the following folder structure for the C++ project. Create already the empty files so the project can compile from the very first attempt.</p>
 <div class="highlight"><pre><span></span>.
@@ -1216,7 +1214,7 @@ cmake --build .
 
 <p>The <code>./src/SignalMath.cpp</code> file is more interesting, let's split it in chunks.</p>
 <h4 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h4>
-<p>If you recall, BlockInformation is used by the Block for interfacing with the Engine. When this code is executed inside Simulink, the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_simulink_block_information.html"><code>blockfactory::core::SimulinkBlockInformation</code></a> implementation will perform the required operations calling Simulink APIs.</p>
+<p>If you recall, BlockInformation is used by the Block for interfacing with the Engine. When this code is executed inside Simulink, the <a href="https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1mex_1_1_simulink_block_information.html"><code>blockfactory::core::SimulinkBlockInformation</code></a> implementation will perform the required operations calling Simulink APIs.</p>
 <div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;SignalMath.h&quot;</span><span class="cp"></span>
 
 <span class="cp">#include</span> <span class="cpf">&lt;BlockFactory/Core/Log.h&gt;</span><span class="cp"></span>
@@ -1268,7 +1266,7 @@ cmake --build .
 <ol>
 <li>The base class needs to be configured. It needs some parameters (e.g. the class name and the library name) and this call asks the Engine to parse them.</li>
 <li>The ports of the Block need to be defined. In this example the size is set as dynamic so that it accepts signals with any width.</li>
-<li>The <a href="https://robotology.github.io/wb-toolbox/doxygen/structwbt_1_1_block_information_1_1_i_o_data.html"><code>blockfactory::core::BlockInformation::IOData</code></a> class is used to store the data of all the ports. It is a <code>struct</code> containing two <code>std::vectors</code>.</li>
+<li>The <a href="https://robotology.github.io/blockfactory/doxygen/structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html"><code>blockfactory::core::BlockInformation::IOData</code></a> class is used to store the data of all the ports. It is a <code>struct</code> containing two <code>std::vectors</code>.</li>
 <li>The data is then sent to the Engine through the BlockInformation interface.</li>
 </ol>
 <div class="admonition info">
@@ -1380,7 +1378,7 @@ cmake --build .
 </pre></div>
 
 <h4 id="output">Output<a class="headerlink" href="#output" title="Permanent link">&para;</a></h4>
-<p>The <code>output</code> method is where the real algorithm is implemented. The Signals are firstly gathered from the Engine using their index. The classes <code>blockfactory::core::InputSignalPtr</code> and <code>blockfactory::core::OutputSignalPtr</code> are particular <code>typedef</code> of the <a href="https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_signal.html"><code>blockfactory::core::Signal</code></a> class and they have the same methods. In the <code>for</code> loop the configured operation is performed and the result stored in the output signal.</p>
+<p>The <code>output</code> method is where the real algorithm is implemented. The Signals are firstly gathered from the Engine using their index. The classes <code>blockfactory::core::InputSignalPtr</code> and <code>blockfactory::core::OutputSignalPtr</code> are particular <code>typedef</code> of the <a href="https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_signal.html"><code>blockfactory::core::Signal</code></a> class and they have the same methods. In the <code>for</code> loop the configured operation is performed and the result stored in the output signal.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Note that input signals are read-only and accessed in C++ as <code>const</code> object. You can store data only to the output signals objects.</p>
@@ -1430,7 +1428,7 @@ cmake --build .
 
 <h4 id="terminate">Terminate<a class="headerlink" href="#terminate" title="Permanent link">&para;</a></h4>
 <p>Given the simplicity of our Block, the <code>terminate</code> step is a dummy implementation. This method is reported just for the sake of clarity. It can be omitted since <code>blockfactory::core::Block::terminate</code> already provides the same dummy implementation.</p>
-<div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">terminate</span><span class="p">(</span><span class="k">const</span> <span class="n">wbt</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="cm">/*blockInfo*/</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="kt">bool</span> <span class="n">SignalMath</span><span class="o">::</span><span class="n">terminate</span><span class="p">(</span><span class="k">const</span> <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">*</span> <span class="cm">/*blockInfo*/</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
@@ -1584,7 +1582,7 @@ cmake --build .
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
         
-          <a href="../install/" title="Install" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../tutorial_intro/" title="Introduction" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-flex__cell md-flex__cell--shrink">
               <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
             </div>
@@ -1593,7 +1591,7 @@ cmake --build .
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Install
+                Introduction
               </span>
             </div>
           </a>
