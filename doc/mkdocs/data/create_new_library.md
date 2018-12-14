@@ -110,10 +110,10 @@ You already learned that Blocks are no more than regular C++ classes. They are n
 
 The following resources provide further information about them:
 
-- Blocks are implementations of the [`blockfactory::core::Block`](https://robotology.github.io/blockfactory/doxygen/classwbt_1_1_block.html) interface
-- BlockInformation is defined in the  [`blockfactory::core::BlockInformation`](https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_block_information.html) interface
-- Signals are mapped to the [`blockfactory::core::Signal`](https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_signal.html) class
-- Blocks parameters are mapped to the [`blockfactory::core::Parameter`](https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_parameter.html) class
+- Blocks are implementations of the [`blockfactory::core::Block`](https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_block.html) interface
+- BlockInformation is defined in the  [`blockfactory::core::BlockInformation`](https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_block_information.html) interface
+- Signals are mapped to the [`blockfactory::core::Signal`](https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_signal.html) class
+- Blocks parameters are mapped to the [`blockfactory::core::Parameter`](https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_parameter.html) class
 
 We need the following folder structure for the C++ project. Create already the empty files so the project can compile from the very first attempt.
 
@@ -280,7 +280,7 @@ The `./src/SignalMath.cpp` file is more interesting, let's split it in chunks.
 
 #### Parameters
 
-If you recall, BlockInformation is used by the Block for interfacing with the Engine. When this code is executed inside Simulink, the [`blockfactory::core::SimulinkBlockInformation`](https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_simulink_block_information.html) implementation will perform the required operations calling Simulink APIs.
+If you recall, BlockInformation is used by the Block for interfacing with the Engine. When this code is executed inside Simulink, the [`blockfactory::core::SimulinkBlockInformation`](https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1mex_1_1_simulink_block_information.html) implementation will perform the required operations calling Simulink APIs.
 
 ```cpp
 #include "SignalMath.h"
@@ -335,7 +335,7 @@ The configuration of the Block is performed in the following steps:
 
 1. The base class needs to be configured. It needs some parameters (e.g. the class name and the library name) and this call asks the Engine to parse them.
 2. The ports of the Block need to be defined. In this example the size is set as dynamic so that it accepts signals with any width.
-3. The [`blockfactory::core::BlockInformation::IOData`](https://robotology.github.io/wb-toolbox/doxygen/structwbt_1_1_block_information_1_1_i_o_data.html) class is used to store the data of all the ports. It is a `struct` containing two `std::vectors`.
+3. The [`blockfactory::core::BlockInformation::IOData`](https://robotology.github.io/blockfactory/doxygen/structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html) class is used to store the data of all the ports. It is a `struct` containing two `std::vectors`.
 4. The data is then sent to the Engine through the BlockInformation interface.
 
 !!! info
@@ -447,7 +447,7 @@ bool SignalMath::initialize(blockfactory::core::BlockInformation* blockInfo)
 
 #### Output
 
-The `output` method is where the real algorithm is implemented. The Signals are firstly gathered from the Engine using their index. The classes `blockfactory::core::InputSignalPtr` and `blockfactory::core::OutputSignalPtr` are particular `typedef` of the [`blockfactory::core::Signal`](https://robotology.github.io/wb-toolbox/doxygen/classwbt_1_1_signal.html) class and they have the same methods. In the `for` loop the configured operation is performed and the result stored in the output signal.
+The `output` method is where the real algorithm is implemented. The Signals are firstly gathered from the Engine using their index. The classes `blockfactory::core::InputSignalPtr` and `blockfactory::core::OutputSignalPtr` are particular `typedef` of the [`blockfactory::core::Signal`](https://robotology.github.io/blockfactory/doxygen/classblockfactory_1_1core_1_1_signal.html) class and they have the same methods. In the `for` loop the configured operation is performed and the result stored in the output signal.
 
 !!! note
     Note that input signals are read-only and accessed in C++ as `const` object. You can store data only to the output signals objects.
@@ -501,7 +501,7 @@ bool SignalMath::output(const blockfactory::core::BlockInformation* blockInfo)
 Given the simplicity of our Block, the `terminate` step is a dummy implementation. This method is reported just for the sake of clarity. It can be omitted since `blockfactory::core::Block::terminate` already provides the same dummy implementation.
 
 ```cpp
-bool SignalMath::terminate(const wbt::BlockInformation* /*blockInfo*/)
+bool SignalMath::terminate(const blockfactory::core::BlockInformation* /*blockInfo*/)
 {
     return true;
 }

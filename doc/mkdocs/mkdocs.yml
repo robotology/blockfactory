@@ -56,7 +56,7 @@ nav:
     - Home: 'index.md'
     - Install: 'install.md'
     - Documentation [master]: https://robotology.github.io/blockfactory/doxygen/
-    - Documentation [devel]: https://robotology.github.io/blockfactory/devel/doxygen/
+    #- Documentation [devel]: https://robotology.github.io/blockfactory/devel/doxygen/
     - Tutorials:
         - Create a new library: 'create_new_library.md'
         - Autogenerate C++ code: 'autogenerate_code.md'
