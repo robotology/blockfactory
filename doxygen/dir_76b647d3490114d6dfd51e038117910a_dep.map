@@ -1,7 +1,7 @@
-<map id="/root/blockfactory/sources/Mex/include/BlockFactory" name="/root/blockfactory/sources/Mex/include/BlockFactory">
+<map id="/home/travis/build/robotology/blockfactory/sources/Mex/include/BlockFactory" name="/home/travis/build/robotology/blockfactory/sources/Mex/include/BlockFactory">
 <area shape="rect" id="node2" href="dir_0e7e3574509e2e029ca480769369e5c5.html" title="Mex" alt="" coords="37,63,109,111"/>
 <area shape="rect" id="node3" href="dir_407a341dfc1ab98d6ef3a4f1b7c76942.html" title="Core" alt="" coords="37,159,109,207"/>
-<area shape="rect" id="edge1-headlabel" href="dir_000012_000005.html" title="3" alt="" coords="78,133,86,147"/>
-<area shape="rect" id="clust2" href="dir_76b647d3490114d6dfd51e038117910a.html" alt="" coords="27,52,243,121"/>
-<area shape="rect" id="clust1" href="dir_7ddb3bfe69e57bc8db014daae6b4716b.html" title="include" alt="" coords="16,16,253,132"/>
+<area shape="rect" id="edge1-headlabel" href="dir_000012_000005.html" title="4" alt="" coords="77,133,86,148"/>
+<area shape="rect" id="clust2" href="dir_76b647d3490114d6dfd51e038117910a.html" alt="" coords="27,52,248,121"/>
+<area shape="rect" id="clust1" href="dir_7ddb3bfe69e57bc8db014daae6b4716b.html" title="include" alt="" coords="16,16,259,132"/>
 </map>

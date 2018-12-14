@@ -5,6 +5,6 @@ var searchData=
   ['initializebufferfromcontiguouszerocopy',['initializeBufferFromContiguousZeroCopy',['../classblockfactory_1_1core_1_1_signal.html#afe963f095fab14b6e000fc606f080fb3',1,'blockfactory::core::Signal']]],
   ['initializebufferfromnoncontiguous',['initializeBufferFromNonContiguous',['../classblockfactory_1_1core_1_1_signal.html#a2c545d8f2f8246bd4a8a5c7327fa8fde',1,'blockfactory::core::Signal']]],
   ['initializeinitialconditions',['initializeInitialConditions',['../classblockfactory_1_1core_1_1_block.html#a8bef9368694c2b596e0ff007dc940e68',1,'blockfactory::core::Block']]],
-  ['isscalar',['isScalar',['../classblockfactory_1_1core_1_1_parameter.html#a5e3702af4d674f22258686db6959a068',1,'blockfactory::core::Parameter']]],
-  ['isvalid',['isValid',['../classblockfactory_1_1core_1_1_signal.html#a05c252ed0e578e1d0f2569ee0f928cef',1,'blockfactory::core::Signal']]]
+  ['isscalar',['isScalar',['../classblockfactory_1_1core_1_1_parameter.html#a02ffbc347d6c82bcfe17f357ee3c84bd',1,'blockfactory::core::Parameter']]],
+  ['isvalid',['isValid',['../classblockfactory_1_1core_1_1_signal.html#aba4b21d827c3677f02ce2aa44dac2008',1,'blockfactory::core::Signal']]]
 ];

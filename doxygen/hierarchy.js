@@ -13,5 +13,6 @@ var hierarchy =
     [ "blockfactory::core::ParameterMetadata", "classblockfactory_1_1core_1_1_parameter_metadata.html", null ],
     [ "blockfactory::core::Parameters", "classblockfactory_1_1core_1_1_parameters.html", null ],
     [ "blockfactory::core::BlockInformation::Port", "structblockfactory_1_1core_1_1_block_information_1_1_port.html", null ],
-    [ "blockfactory::core::Signal", "classblockfactory_1_1core_1_1_signal.html", null ]
+    [ "blockfactory::core::Signal", "classblockfactory_1_1core_1_1_signal.html", null ],
+    [ "blockfactory::mex::impl::SimulinkBlockInformationImpl", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html", null ]
 ];

@@ -16,6 +16,5 @@ var classblockfactory_1_1coder_1_1_coder_block_information =
     [ "setInputSignal", "classblockfactory_1_1coder_1_1_coder_block_information.html#a451a2f6b31f718faf0b13fc1d16a3ccd", null ],
     [ "setIOPortsData", "classblockfactory_1_1coder_1_1_coder_block_information.html#ae50502f8a7d1d80e740c15ced9f83274", null ],
     [ "setOutputSignal", "classblockfactory_1_1coder_1_1_coder_block_information.html#afbe231a5bd4a0e51316b7d07b155d901", null ],
-    [ "storeRTWParameters", "classblockfactory_1_1coder_1_1_coder_block_information.html#a9fba96ff4dea1b9c97c21622d545f9ce", null ],
-    [ "pImpl", "classblockfactory_1_1coder_1_1_coder_block_information.html#a91e4baeec6f1c460e7dbca654494f434", null ]
+    [ "storeRTWParameters", "classblockfactory_1_1coder_1_1_coder_block_information.html#a9fba96ff4dea1b9c97c21622d545f9ce", null ]
 ];

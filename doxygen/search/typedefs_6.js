@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vectorsize',['VectorSize',['../classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c',1,'blockfactory::core::BlockInformation']]]
+  ['rows',['Rows',['../classblockfactory_1_1core_1_1_block_information.html#a5754fd354ec3debda99c9ff78339c3d2',1,'blockfactory::core::BlockInformation']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['inputsignalptr',['InputSignalPtr',['../namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf',1,'blockfactory::core']]]
+  ['datatype',['DataType',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a984f787bba0aa25505122655d6c4003a',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]]
 ];

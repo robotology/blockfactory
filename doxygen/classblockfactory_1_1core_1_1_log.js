@@ -13,9 +13,8 @@ var classblockfactory_1_1core_1_1_log =
     [ "clear", "classblockfactory_1_1core_1_1_log.html#a0314f8040290b58033e86991cacc6d2e", null ],
     [ "clearErrors", "classblockfactory_1_1core_1_1_log.html#a81b9f097e0210b06a21e6d433bc7f929", null ],
     [ "clearWarnings", "classblockfactory_1_1core_1_1_log.html#a753aaeb7309dcd704240805c7421390c", null ],
-    [ "getErrors", "classblockfactory_1_1core_1_1_log.html#a3e6d53cf9c9cbceda4e9131b79081295", null ],
+    [ "getErrors", "classblockfactory_1_1core_1_1_log.html#a481c0127478659553379fec78df58241", null ],
     [ "getLogStringStream", "classblockfactory_1_1core_1_1_log.html#a7604b68728f442b1797cc0055bb276eb", null ],
     [ "getSingleton", "classblockfactory_1_1core_1_1_log.html#a36b8c749fb4462d935d168ac9225c762", null ],
-    [ "getWarnings", "classblockfactory_1_1core_1_1_log.html#a6bc7ab7e2f5f08007b71d841ccace73f", null ],
-    [ "pImpl", "classblockfactory_1_1core_1_1_log.html#ae9761fc0cca7dc04873ece5946949bce", null ]
+    [ "getWarnings", "classblockfactory_1_1core_1_1_log.html#af2c84c2500b8a9ae892183a2604fb5f4", null ]
 ];
