@@ -205,6 +205,7 @@ jobs:
             - doxygen-gui
             - graphviz
             - python3-pip
+            - python3-setuptools
 
 # notifications:
 #  email:
