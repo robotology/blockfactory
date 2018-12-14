@@ -1,6 +1,8 @@
 # BlockFactory
 
+[![Build Status (Linux/macOS) (master)](https://img.shields.io/travis/com/robotology/blockfactory/master.svg?logo=travis&label=master)](https://travis-ci.com/robotology/blockfactory)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/25547902678b4d92804d40712035ec29)](https://app.codacy.com/app/diegoferigo/blockfactory?utm_source=github.com&utm_medium=referral&utm_content=robotology/blockfactory&utm_campaign=Badge_Grade_Dashboard)
+[![License](https://img.shields.io/badge/license-LGPL-19c2d8.svg)](https://github.com/robotology/blockfactory/blob/master/LICENSE)
 
 BlockFactory is a framework for dataflow programming that allows **wrapping C and C++ algorithms**. It provides an abstraction inspired by Simulink where algorithms are represented as _blocks_ that can exchange data through _signals_.
 
@@ -25,7 +27,7 @@ Despite its roots in robotics, now BlockFactory is very generic! You can use it 
 
 ### Where to start
 
-- Website
-- Documentation
-- Tutorial
+- [Website](https://robotology.github.io/blockfactory/)
+- [Documentation](https://robotology.github.io/blockfactory/doxygen/)
+- [Tutorial](https://robotology.github.io/blockfactory/mkdocs/tutorial_intro/)
 
