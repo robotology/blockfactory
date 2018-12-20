@@ -53,21 +53,20 @@ bool SignalMath::configureSizeAndPorts(blockfactory::core::BlockInformation* blo
     }
 
     // Create data about input and output ports.
-    blockfactory::core::BlockInformation::PortData input1;
-    blockfactory::core::BlockInformation::PortData input2;
-    blockfactory::core::BlockInformation::PortData output;
+    blockfactory::core::BlockInformation::PortData input1{
+        /*portIndex=*/0,
+        std::vector<int>{blockfactory::core::Signal::DynamicSize},
+        blockfactory::core::DataType::DOUBLE};
 
-    input1 = {/*portIndex=*/0,
-              std::vector<int>{blockfactory::core::Signal::DynamicSize},
-              blockfactory::core::DataType::DOUBLE};
+    blockfactory::core::BlockInformation::PortData input2{
+        /*portIndex=*/1,
+        std::vector<int>{blockfactory::core::Signal::DynamicSize},
+        blockfactory::core::DataType::DOUBLE};
 
-    input2 = {/*portIndex=*/1,
-              std::vector<int>{blockfactory::core::Signal::DynamicSize},
-              blockfactory::core::DataType::DOUBLE};
-
-    output = {/*portIndex=*/0,
-              std::vector<int>{blockfactory::core::Signal::DynamicSize},
-              blockfactory::core::DataType::DOUBLE};
+    blockfactory::core::BlockInformation::PortData output{
+        /*portIndex=*/0,
+        std::vector<int>{blockfactory::core::Signal::DynamicSize},
+        blockfactory::core::DataType::DOUBLE};
 
     // Populate a structure with the overall input / output data
     blockfactory::core::BlockInformation::IOData ioData;
