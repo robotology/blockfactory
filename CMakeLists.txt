@@ -14,6 +14,10 @@ endif()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Add custom functions / macros
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+
 # Build type
 if(NOT CMAKE_CONFIGURATION_TYPES)
     if(NOT CMAKE_BUILD_TYPE)
@@ -44,6 +48,29 @@ if(UNIX AND NOT APPLE)
     endif()
 endif()
 
+# Settings for RPATH
+if(NOT MSVC)
+    option(WBT_ENABLE_RPATH "Enable RPATH installation" TRUE)
+    mark_as_advanced(WBT_ENABLE_RPATH)
+endif()
+
+# Enable RPATH
+include(AddInstallRPATHSupport)
+add_install_rpath_support(BIN_DIRS ${CMAKE_INSTALL_PREFIX}/bin
+                          LIB_DIRS ${CMAKE_INSTALL_PREFIX}/mex ${CMAKE_INSTALL_PREFIX}/lib
+                          DEPENDS WBT_ENABLE_RPATH
+                          USE_LINK_PATH)
+
+option(FORCE_COLORED_OUTPUT "Always produce ANSI-colored output (GNU/Clang only)." TRUE)
+mark_as_advanced(FORCE_COLORED_OUTPUT)
+if(${FORCE_COLORED_OUTPUT})
+    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+       add_compile_options(-fdiagnostics-color=always)
+    elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+       add_compile_options(-fcolor-diagnostics)
+    endif()
+endif()
+
 # Export all symbols in Windows
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
@@ -57,9 +84,6 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
-
-# Add custom functions / macros
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 if(${CMAKE_VERSION} VERSION_LESS 3.7)
     find_package(Matlab COMPONENTS
