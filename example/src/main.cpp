@@ -1,5 +1,4 @@
 #include "AutogenerationExample.h"
-#include "BlockFactory/Coder/GeneratedCodeWrapper.h"
 
 #include <algorithm>
 #include <cstdlib>
