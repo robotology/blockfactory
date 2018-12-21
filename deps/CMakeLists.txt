@@ -7,4 +7,3 @@ if(USES_MATLAB)
 endif()
 
 add_subdirectory(sharedlibpp)
-#add_subdirectory(thrift)

@@ -17,7 +17,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Add custom functions / macros
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-
 # Build type
 if(NOT CMAKE_CONFIGURATION_TYPES)
     if(NOT CMAKE_BUILD_TYPE)
@@ -30,9 +29,9 @@ endif()
 
 # Libraries type
 if(MSVC)
-    option(BUILD_SHARED_LIBS "Compile WBToolbox as a shared library" FALSE)
+    option(BUILD_SHARED_LIBS "Compile BlockFactory as a shared library" FALSE)
 else()
-    option(BUILD_SHARED_LIBS "Compile WBToolbox as a shared library" TRUE)
+    option(BUILD_SHARED_LIBS "Compile BlockFactory as a shared library" TRUE)
 endif()
 
 # Build position independent code
@@ -50,15 +49,15 @@ endif()
 
 # Settings for RPATH
 if(NOT MSVC)
-    option(WBT_ENABLE_RPATH "Enable RPATH installation" TRUE)
-    mark_as_advanced(WBT_ENABLE_RPATH)
+    option(ENABLE_RPATH "Enable RPATH installation" TRUE)
+    mark_as_advanced(ENABLE_RPATH)
 endif()
 
 # Enable RPATH
 include(AddInstallRPATHSupport)
 add_install_rpath_support(BIN_DIRS ${CMAKE_INSTALL_PREFIX}/bin
                           LIB_DIRS ${CMAKE_INSTALL_PREFIX}/mex ${CMAKE_INSTALL_PREFIX}/lib
-                          DEPENDS WBT_ENABLE_RPATH
+                          DEPENDS ENABLE_RPATH
                           USE_LINK_PATH)
 
 option(FORCE_COLORED_OUTPUT "Always produce ANSI-colored output (GNU/Clang only)." TRUE)
@@ -109,7 +108,7 @@ add_subdirectory(deps)
 add_subdirectory(sources)
 
 if(NOT BUILD_EXAMPLE)
-    option(BUILD_EXAMPLE "Compile also Matlab-related components" OFF)
+    option(BUILD_EXAMPLE "Compile the examples and tutorials" OFF)
 endif()
 
 if(BUILD_EXAMPLE)
