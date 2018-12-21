@@ -27,3 +27,8 @@ CMakeLists.txt.*
 .DS_Store
 Copy_of_*
 slprj
+*.mat
+*.tmw
+*.dmr
+*.mk
+
