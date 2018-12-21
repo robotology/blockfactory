@@ -23,11 +23,11 @@
 #include <tmwtypes.h>
 
 #include <cassert>
+#include <cstdint>
+#include <cstdio>
 #include <iostream>
 #include <map>
 #include <memory>
-#include <stdint.h>
-#include <stdio.h>
 #include <string>
 #include <utility>
 #include <vector>
