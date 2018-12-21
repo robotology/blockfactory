@@ -13,6 +13,9 @@ target_link_libraries(SimulinkBlockInformationPrivate
 
 # Needed to access Simulink C APIs
 target_compile_definitions(SimulinkBlockInformationPrivate PRIVATE "MATLAB_MEX_FILE")
+target_compile_warnings(SimulinkBlockInformationPrivate
+    WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
+    DEPENDS ENABLE_WARNINGS)
 
 target_include_directories(SimulinkBlockInformationPrivate PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -31,6 +34,9 @@ add_library(BlockFactory::Mex ALIAS Mex)
 
 # Needed to access Simulink C APIs
 target_compile_definitions(Mex PRIVATE "MATLAB_MEX_FILE")
+target_compile_warnings(Mex
+    WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
+    DEPENDS ENABLE_WARNINGS)
 
 target_include_directories(Mex PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

@@ -22,6 +22,10 @@ target_include_directories(Coder PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
+target_compile_warnings(Coder
+    WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
+    DEPENDS ENABLE_WARNINGS)
+
 # CMake macro and functions
 install(
     FILES

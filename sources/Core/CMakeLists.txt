@@ -38,6 +38,10 @@ set_target_properties(Core PROPERTIES
     PUBLIC_HEADER "${CORE_PUBLIC_HDR}"
     OUTPUT_NAME "BlockFactoryCore")
 
+target_compile_warnings(Core
+    WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
+    DEPENDS ENABLE_WARNINGS)
+
 install(
     TARGETS Core
     EXPORT BlockFactoryCoreExport
