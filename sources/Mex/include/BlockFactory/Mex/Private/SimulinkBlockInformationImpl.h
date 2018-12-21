@@ -60,8 +60,8 @@ public:
 
     bool updateInputPortData(const PortData& portData);
     bool updateOutputPortData(const PortData& portData);
-    bool setNumberOfInputPorts(const unsigned numberOfPorts);
-    bool setNumberOfOutputPorts(const unsigned numberOfPorts);
+    bool setNumberOfInputPorts(const size_t numberOfPorts);
+    bool setNumberOfOutputPorts(const size_t numberOfPorts);
     bool setInputPortType(const PortIndex idx, const DataType type);
     bool setOutputPortType(const PortIndex idx, const DataType type);
     bool setInputPortVectorSize(const PortIndex idx, const VectorSize& size);

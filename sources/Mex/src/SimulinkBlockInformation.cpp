@@ -140,6 +140,8 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
             return {};
         }
     }
+
+    return {};
 }
 
 core::OutputSignalPtr SimulinkBlockInformation::getOutputPortSignal(const PortIndex idx,
@@ -225,7 +227,7 @@ bool SimulinkBlockInformation::addParameterMetadata(const core::ParameterMetadat
 
 bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
 {
-    auto metadataContainsScalarParam = [](const core::ParameterMetadata& md) -> const bool {
+    auto metadataContainsScalarParam = [](const core::ParameterMetadata& md) -> bool {
         return md.rows == 1 && md.cols == 1;
     };
 
@@ -245,7 +247,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
         // This is necessary in the pipeline for storing the metadata in the RTW file, which should
         // not have any dynamic size.
         const bool hasDynSizeColumns = (paramMD.cols == core::ParameterMetadata::DynamicSize);
-        auto handleDynSizeColumns = [](int& sizeToUpdate, const int& realSize) -> const bool {
+        auto handleDynSizeColumns = [](int& sizeToUpdate, const int& realSize) -> bool {
             if (realSize == core::ParameterMetadata::DynamicSize) {
                 bfError << "Trying to store the cols of a dynamically sized parameters, but the "
                         << "metadata does not specify a valid size. Probably the block didn't "
@@ -288,7 +290,8 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                         return false;
                     }
                     if (hasDynSizeColumns) {
-                        if (!handleDynSizeColumns(paramMD.cols, paramVector.size())) {
+                        if (!handleDynSizeColumns(paramMD.cols,
+                                                  static_cast<int>(paramVector.size()))) {
                             return false;
                         }
                     }
@@ -333,7 +336,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                     paramVector.push_back(value);
                 }
                 if (hasDynSizeColumns) {
-                    if (!handleDynSizeColumns(paramMD.cols, paramVector.size())) {
+                    if (!handleDynSizeColumns(paramMD.cols, static_cast<int>(paramVector.size()))) {
                         return false;
                     }
                 }
@@ -357,7 +360,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                     paramVector.push_back(value);
                 }
                 if (hasDynSizeColumns) {
-                    if (!handleDynSizeColumns(paramMD.cols, paramVector.size())) {
+                    if (!handleDynSizeColumns(paramMD.cols, static_cast<int>(paramVector.size()))) {
                         return false;
                     }
                 }
@@ -387,7 +390,8 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                         return false;
                     }
                     if (hasDynSizeColumns) {
-                        if (!handleDynSizeColumns(paramMD.cols, paramVector.size())) {
+                        if (!handleDynSizeColumns(paramMD.cols,
+                                                  static_cast<int>(paramVector.size()))) {
                             return false;
                         }
                     }
@@ -431,7 +435,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                     paramVector.push_back(value);
                 }
                 if (hasDynSizeColumns) {
-                    if (!handleDynSizeColumns(paramMD.cols, paramVector.size())) {
+                    if (!handleDynSizeColumns(paramMD.cols, static_cast<int>(paramVector.size()))) {
                         return false;
                     }
                 }
@@ -456,7 +460,7 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
                     paramVector.push_back(value);
                 }
                 if (hasDynSizeColumns) {
-                    if (!handleDynSizeColumns(paramMD.cols, paramVector.size())) {
+                    if (!handleDynSizeColumns(paramMD.cols, static_cast<int>(paramVector.size()))) {
                         return false;
                     }
                 }

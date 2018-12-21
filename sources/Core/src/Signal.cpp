@@ -10,10 +10,10 @@
 #include "BlockFactory/Core/Log.h"
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <map>
 #include <ostream>
-#include <stddef.h>
-#include <stdint.h>
 #include <typeinfo>
 
 using namespace blockfactory::core;
@@ -234,7 +234,7 @@ bool Signal::set(const unsigned index, const double data)
         }
         case DataType::SINGLE: {
             float* buffer = static_cast<float*>(pImpl->bufferPtr);
-            buffer[index] = data;
+            buffer[index] = static_cast<float>(data);
             break;
         }
         default:

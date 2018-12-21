@@ -8,6 +8,7 @@
 
 #include "BlockFactory/Core/Log.h"
 
+#include <cassert>
 #include <vector>
 
 using namespace blockfactory::core;
@@ -49,6 +50,7 @@ std::stringstream& Log::getLogStringStream(const Log::Type& type,
                     pImpl->warningsSStream.emplace_back(new std::stringstream);
                     return *pImpl->warningsSStream.back();
             }
+            break;
         case Log::Verbosity::DEBUG:
             switch (type) {
                 case Log::Type::ERROR: {
@@ -66,7 +68,13 @@ std::stringstream& Log::getLogStringStream(const Log::Type& type,
                     return ss;
                 }
             }
+            break;
     }
+
+    // This should never happen. It is here to avoid compiler warnings.
+    assert(false);
+    std::stringstream* dummy = nullptr;
+    return *dummy;
 }
 
 std::string

@@ -68,6 +68,8 @@ DTypeId SimulinkBlockInformationImpl::mapPortTypeToSimulink(const core::DataType
         case core::DataType::BOOLEAN:
             return SS_BOOLEAN;
     }
+
+    return {};
 }
 
 // =============
@@ -156,14 +158,14 @@ bool SimulinkBlockInformationImpl::updateOutputPortData(const BlockInformation::
     return true;
 }
 
-bool SimulinkBlockInformationImpl::setNumberOfInputPorts(const unsigned numberOfPorts)
+bool SimulinkBlockInformationImpl::setNumberOfInputPorts(const size_t numberOfPorts)
 {
-    return ssSetNumInputPorts(simstruct, numberOfPorts);
+    return ssSetNumInputPorts(simstruct, static_cast<int>(numberOfPorts));
 }
 
-bool SimulinkBlockInformationImpl::setNumberOfOutputPorts(const unsigned numberOfPorts)
+bool SimulinkBlockInformationImpl::setNumberOfOutputPorts(const size_t numberOfPorts)
 {
-    return ssSetNumOutputPorts(simstruct, numberOfPorts);
+    return ssSetNumOutputPorts(simstruct, static_cast<int>(numberOfPorts));
 }
 
 bool SimulinkBlockInformationImpl::setInputPortType(const PortIndex idx, const core::DataType type)

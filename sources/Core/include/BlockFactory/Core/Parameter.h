@@ -120,8 +120,8 @@ public:
         , m_metadata(md)
     {}
     Parameter(const ParamVector& valueVec, const blockfactory::core::ParameterMetadata& md)
-        : m_valueVector(valueVec)
-        , m_isScalar(false)
+        : m_isScalar(false)
+        , m_valueVector(valueVec)
         , m_metadata(md)
     {}
 

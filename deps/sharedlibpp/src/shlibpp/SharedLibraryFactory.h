@@ -14,7 +14,7 @@
 
 namespace shlibpp {
 
-class SharedLibraryClassApi;
+struct SharedLibraryClassApi;
 
 /**
  * A wrapper for a named factory method in a named shared library.

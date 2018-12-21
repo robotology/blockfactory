@@ -11,7 +11,8 @@
 #include "BlockFactory/Core/Log.h"
 #include "BlockFactory/Core/Parameter.h"
 
-#include <stddef.h>
+#include <cassert>
+#include <cstddef>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -164,7 +165,7 @@ unsigned Parameters::getNumberOfParameters() const
     const size_t numDoubleParams = pImpl->paramsDouble.size();
     const size_t numStringParams = pImpl->paramsString.size();
 
-    return numIntParams + numBoolParams + numDoubleParams + numStringParams;
+    return static_cast<unsigned>(numIntParams + numBoolParams + numDoubleParams + numStringParams);
 }
 
 std::vector<Parameter<int>> Parameters::getIntParameters() const
@@ -241,6 +242,10 @@ ParameterMetadata Parameters::getParameterMetadata(const ParamName& name)
         case ParameterType::STRUCT_CELL_STRING:
             return pImpl->paramsString.at(name).getMetadata();
     }
+
+    // This should never happen. It is here to avoid compiler warnings.
+    assert(false);
+    return {ParameterType::INT, 0, 0, 0, "dummy"};
 }
 
 // =========
