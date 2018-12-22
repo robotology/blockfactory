@@ -144,7 +144,7 @@ public:
      *
      * i.e. `x[i+1] = f(x[i])`
      *
-     * @param blockInfo A BlockInformation object.
+     * @param blockInfo The pointer to a BlockInformation object.
      * @return True for success, false otherwise.
      */
     virtual bool updateDiscreteState(const BlockInformation* blockInfo);
@@ -152,7 +152,7 @@ public:
     /**
      * @brief Update the internal continuous state
      *
-     * @param blockInfo The SimStruct structure.
+     * @param blockInfo The pointer to a BlockInformation object.
      * @return True for success, false otherwise.
      */
     virtual bool stateDerivative(const BlockInformation* blockInfo);
