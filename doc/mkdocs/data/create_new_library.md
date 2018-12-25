@@ -1,6 +1,6 @@
 # How to create a new library
 
-This guide describes how to use the core infrastructure of the Whole Body Toolbox for creating a new toolbox **Toolbox Example**. It will contain a single block _Signal math_ with the following specifications:
+This guide describes how to use BlockFactory for creating a new toolbox **Toolbox Example**. It will contain a single block _Signal math_ with the following specifications:
 
 - Accepts two input signals
 - Performs element-wise operations: sum, subtraction, multiplication
