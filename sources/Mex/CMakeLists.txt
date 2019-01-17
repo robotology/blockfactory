@@ -38,6 +38,9 @@ target_compile_warnings(Mex
     WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
     DEPENDS ENABLE_WARNINGS)
 
+# Fix https://github.com/robotology/blockfactory/issues/13
+target_compile_options(Mex PRIVATE -Wno-format-overflow)
+
 target_include_directories(Mex PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     ${Matlab_ROOT_DIR}/simulink/include)
