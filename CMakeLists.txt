@@ -119,14 +119,6 @@ endif()
 add_subdirectory(deps)
 add_subdirectory(sources)
 
-if(NOT BUILD_EXAMPLE)
-    option(BUILD_EXAMPLE "Compile the examples and tutorials" OFF)
-endif()
-
-if(BUILD_EXAMPLE)
-    add_subdirectory(example)
-endif()
-
 if(USES_MATLAB)
     add_subdirectory(matlab)
 endif()
