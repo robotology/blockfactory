@@ -591,6 +591,8 @@ parameterTypeToString(const blockfactory::core::ParameterType& type)
         case blockfactory::core::ParameterType::STRUCT_CELL_STRING:
             return {"ParameterType::STRUCT_CELL_STRING", "std::string"};
     }
+
+    return {};
 }
 
 template <typename T>
