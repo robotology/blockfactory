@@ -3,26 +3,26 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 set(CODER_HDR
-    include/BlockFactory/Coder/CoderBlockInformation.h
-    include/BlockFactory/Coder/GeneratedCodeWrapper.h)
+    include/BlockFactory/SimulinkCoder/CoderBlockInformation.h
+    include/BlockFactory/SimulinkCoder/GeneratedCodeWrapper.h)
 
 set(CODER_SRC
     src/CoderBlockInformation.cpp)
 
-add_library(Coder ${CODER_HDR} ${CODER_SRC})
-add_library(BlockFactory::Coder ALIAS Coder)
+add_library(SimulinkCoder ${CODER_HDR} ${CODER_SRC})
+add_library(BlockFactory::SimulinkCoder ALIAS SimulinkCoder)
 
-set_target_properties(Coder PROPERTIES
+set_target_properties(SimulinkCoder PROPERTIES
     VERSION ${PROJECT_VERSION}
     PUBLIC_HEADER "${CODER_HDR}"
-    OUTPUT_NAME "BlockFactoryCoder")
+    OUTPUT_NAME "BlockFactorySimulinkCoder")
 
-target_link_libraries(Coder PUBLIC BlockFactory::Core)
-target_include_directories(Coder PUBLIC
+target_link_libraries(SimulinkCoder PUBLIC BlockFactory::Core)
+target_include_directories(SimulinkCoder PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-target_compile_warnings(Coder
+target_compile_warnings(SimulinkCoder
     WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
     DEPENDS ENABLE_WARNINGS)
 
@@ -34,21 +34,21 @@ install(
     DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/BlockFactory/cmake")
 
 install(
-    TARGETS Coder
-    EXPORT BlockFactoryCoderExport
+    TARGETS SimulinkCoder
+    EXPORT BlockFactorySimulinkCoderExport
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/BlockFactory/Coder)
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/BlockFactory/SimulinkCoder)
 
 set(EXTRA_CONTENT
     "list(APPEND CMAKE_MODULE_PATH @CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_DATAROOTDIR@/BlockFactory/cmake)")
 
-install_basic_package_files(BlockFactoryCoder
+install_basic_package_files(BlockFactorySimulinkCoder
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
-    EXPORT BlockFactoryCoderExport
-    FIRST_TARGET Coder
+    EXPORT BlockFactorySimulinkCoderExport
+    FIRST_TARGET SimulinkCoder
     DEPENDENCIES BlockFactoryCore
     NAMESPACE BlockFactory::
     NO_CHECK_REQUIRED_COMPONENTS_MACRO

@@ -104,7 +104,7 @@
   %<LibAddToCommonIncludes("<BlockFactory/Core/Parameter.h>")>
   %<LibAddToCommonIncludes("<BlockFactory/Core/Parameters.h>")>
   %<LibAddToCommonIncludes("<BlockFactory/Core/FactorySingleton.h>")>
-  %<LibAddToCommonIncludes("<BlockFactory/Coder/CoderBlockInformation.h>")>
+  %<LibAddToCommonIncludes("<BlockFactory/SimulinkCoder/CoderBlockInformation.h>")>
 
 %endfunction
 

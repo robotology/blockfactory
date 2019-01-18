@@ -14,9 +14,9 @@
 
 BlockFactory provides three components, listed here below with their dependendencies. If a component dependency is not found, the component is not built. 
 
-|                  | `Core` | `Coder` | `Mex`                  |
-| ---------------- | ------ | ------- | ---------------------- |
-| **Dependencies** | ~      | ~       | - Matlab<br>- Simulink |
+|                  | `Core` | `SimulinkCoder` | `Simulink`             |
+| ---------------- | ------ | --------------- | ---------------------- |
+| **Dependencies** | ~      | ~               | - Matlab<br>- Simulink |
 
 !!! note
     Simulink Coder is not a build dependency of the `Coder` component. Of course, you must have it if you want to generate C++ code from a Simulink Model.

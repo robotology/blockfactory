@@ -8,17 +8,17 @@
 
 ### `Core`
 
-### `Mex`
+### `Simulink`
 
-### `Coder`
+### `SimulinkCoder`
 
 ## Bug Fixes
 
 ### `Core`
 
-### `Mex`
+### `Simulink`
 
-### `Coder`
+### `SimulinkCoder`
 
 ## Contributors
 

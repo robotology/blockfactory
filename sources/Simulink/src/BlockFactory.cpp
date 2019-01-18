@@ -14,7 +14,7 @@
 #include "BlockFactory/Core/Log.h"
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Parameters.h"
-#include "BlockFactory/Mex/SimulinkBlockInformation.h"
+#include "BlockFactory/Simulink/SimulinkBlockInformation.h"
 
 #include <matrix.h>
 #include <simstruc.h>

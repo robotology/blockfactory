@@ -4,7 +4,7 @@
 
 add_library(SimulinkBlockInformationPrivate STATIC
     src/SimulinkBlockInformationImpl.cpp
-    include/BlockFactory/Mex/Private/SimulinkBlockInformationImpl.h)
+    include/BlockFactory/Simulink/Private/SimulinkBlockInformationImpl.h)
 
 target_link_libraries(SimulinkBlockInformationPrivate
     PUBLIC
@@ -24,40 +24,40 @@ target_include_directories(SimulinkBlockInformationPrivate PRIVATE
 
 # Compile S-Function
 matlab_add_mex(
-    NAME Mex
+    NAME Simulink
     OUTPUT_NAME BlockFactory
     SRC src/SimulinkBlockInformation.cpp
-        include/BlockFactory/Mex/SimulinkBlockInformation.h
+        include/BlockFactory/Simulink/SimulinkBlockInformation.h
         src/BlockFactory.cpp
     LINK_TO BlockFactory::Core shlibpp::shlibpp SimulinkBlockInformationPrivate)
-add_library(BlockFactory::Mex ALIAS Mex)
+add_library(BlockFactory::Simulink ALIAS Simulink)
 
 # Needed to access Simulink C APIs
-target_compile_definitions(Mex PRIVATE "MATLAB_MEX_FILE")
-target_compile_warnings(Mex
+target_compile_definitions(Simulink PRIVATE "MATLAB_MEX_FILE")
+target_compile_warnings(Simulink
     WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
     DEPENDS ENABLE_WARNINGS)
 
 # Fix https://github.com/robotology/blockfactory/issues/13
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    target_compile_options(Mex PRIVATE -Wno-format-overflow)
+    target_compile_options(Simulink PRIVATE -Wno-format-overflow)
 endif()
 
-target_include_directories(Mex PUBLIC
+target_include_directories(Simulink PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     ${Matlab_ROOT_DIR}/simulink/include)
 
 # Install S-Function
 install(
-    TARGETS Mex SimulinkBlockInformationPrivate
-    EXPORT BlockFactoryMexExport
+    TARGETS Simulink SimulinkBlockInformationPrivate
+    EXPORT BlockFactorySimulinkExport
     DESTINATION mex)
 
-install_basic_package_files(BlockFactoryMex
+install_basic_package_files(BlockFactorySimulink
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
-    EXPORT BlockFactoryMexExport
-    FIRST_TARGET Mex
+    EXPORT BlockFactorySimulinkExport
+    FIRST_TARGET Simulink
     DEPENDENCIES BlockFactoryCore mxpp shlibpp
     NAMESPACE BlockFactory::
     NO_CHECK_REQUIRED_COMPONENTS_MACRO)

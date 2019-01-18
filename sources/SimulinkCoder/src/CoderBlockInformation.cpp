@@ -6,7 +6,7 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#include "BlockFactory/Coder/CoderBlockInformation.h"
+#include "BlockFactory/SimulinkCoder/CoderBlockInformation.h"
 #include "BlockFactory/Core/Log.h"
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Parameters.h"

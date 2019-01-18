@@ -2,8 +2,7 @@
 # This software may be modified and distributed under the terms of the
 # GNU Lesser General Public License v2.1 or any later version.
 
-find_package(BlockFactory COMPONENTS
-    BlockFactoryCoder REQUIRED)
+find_package(BlockFactory COMPONENTS SimulinkCoder REQUIRED)
 
 include(TargetFromGeneratedCode)
 
@@ -13,6 +12,3 @@ set(SIMULINK_MODEL_NAME "AutogenerationExample")
 target_from_generated_code(
     MODELNAME ${SIMULINK_MODEL_NAME}
     SOURCE_FOLDER ${CMAKE_CURRENT_SOURCE_DIR}/${SIMULINK_MODEL_NAME}_grt_rtw)
-
-#add_executable(${SIMULINK_MODEL_NAME}-main ${CMAKE_SOURCE_DIR}/src/driver.cpp)
-#target_link_libraries(${SIMULINK_MODEL_NAME}-main ${SIMULINK_MODEL_NAME})

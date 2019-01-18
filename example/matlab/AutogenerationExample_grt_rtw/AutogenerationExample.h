@@ -30,7 +30,7 @@
 #include <BlockFactory/Core/Parameter.h>
 #include <BlockFactory/Core/Parameters.h>
 #include <BlockFactory/Core/FactorySingleton.h>
-#include <BlockFactory/Coder/CoderBlockInformation.h>
+#include <BlockFactory/SimulinkCoder/CoderBlockInformation.h>
 #include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
