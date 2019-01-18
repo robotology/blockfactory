@@ -1,6 +1,6 @@
 # Toolbox Example
 
-This folder contains a simple toolbox with a test block. It can be used as starting point to create a new toolbox based on the machinery provided by Whole Body Toolbox.
+This folder contains a simple toolbox with a test block. It can be used as starting point to create a new toolbox based on the machinery provided by BlockFactory.
 
 It is also the result of the tutorial [Toolbox Example](https://robotology.github.io/wb-toolbox/mkdocs/create_new_library/).
 
