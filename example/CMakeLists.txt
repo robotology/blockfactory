@@ -32,7 +32,9 @@ endif()
 # Find the needed BlockFactory components:
 # - BlockFactoryCore contains the core classes such as Block and Signal
 # - BlockFactoryMex is required at runtime for loading the library from Simulink
-find_package(BlockFactory 1 REQUIRED COMPONENTS BlockFactoryCore BlockFactoryMex)
+find_package(BlockFactory
+    REQUIRED COMPONENTS BlockFactoryCore
+    OPTIONAL_COMPONENTS BlockFactoryMex)
 
 # Create the plugin library. This must be a SHARED library.
 add_library(ExampleToolbox SHARED
