@@ -39,7 +39,9 @@ target_compile_warnings(Mex
     DEPENDS ENABLE_WARNINGS)
 
 # Fix https://github.com/robotology/blockfactory/issues/13
-target_compile_options(Mex PRIVATE -Wno-format-overflow)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    target_compile_options(Mex PRIVATE -Wno-format-overflow)
+endif()
 
 target_include_directories(Mex PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
