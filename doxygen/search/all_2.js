@@ -18,7 +18,7 @@ var searchData=
   ['coderblockinformation',['CoderBlockInformation',['../classblockfactory_1_1coder_1_1_coder_block_information.html',1,'blockfactory::coder']]],
   ['coderblockinformation',['CoderBlockInformation',['../classblockfactory_1_1coder_1_1_coder_block_information.html#ab39e3acfffb9e0b50f225998f4621a22',1,'blockfactory::coder::CoderBlockInformation']]],
   ['coderblockinformation_2eh',['CoderBlockInformation.h',['../_coder_block_information_8h.html',1,'']]],
-  ['cols',['Cols',['../classblockfactory_1_1core_1_1_block_information.html#a9530a5d43495c7faf3fd72f105710ba9',1,'blockfactory::core::BlockInformation::Cols()'],['../classblockfactory_1_1core_1_1_parameter_metadata.html#a78caef181dfc6060d3a1b59ef0be61cd',1,'blockfactory::core::ParameterMetadata::cols()']]],
+  ['cols',['cols',['../classblockfactory_1_1core_1_1_parameter_metadata.html#a78caef181dfc6060d3a1b59ef0be61cd',1,'blockfactory::core::ParameterMetadata::cols()'],['../classblockfactory_1_1core_1_1_block_information.html#a9530a5d43495c7faf3fd72f105710ba9',1,'blockfactory::core::BlockInformation::Cols()']]],
   ['confblockname',['confBlockName',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#af4f3528db816b6178e459a0d5d67ecd7',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
   ['configuresizeandports',['configureSizeAndPorts',['../classblockfactory_1_1core_1_1_block.html#acfb40d2bd1d43f6e938452b198b6b5fd',1,'blockfactory::core::Block']]],
   ['contiguous',['CONTIGUOUS',['../classblockfactory_1_1core_1_1_signal.html#a86db56a3e074a33ca6330fd7d9688a9daaa2a4f4421c371b67e8cdbaa33b7d2fe',1,'blockfactory::core::Signal']]],

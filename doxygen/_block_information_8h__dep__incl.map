@@ -1,5 +1,5 @@
 <map id="/home/travis/build/robotology/blockfactory/sources/Core/include/BlockFactory/Core/BlockInformation.h" name="/home/travis/build/robotology/blockfactory/sources/Core/include/BlockFactory/Core/BlockInformation.h">
-<area shape="rect" id="node2" href="$_coder_block_information_8h.html" title="/home/travis/build\l/robotology/blockfactory\l/sources/Coder/include\l/BlockFactory/Coder/CoderBlockInformation.h" alt="" coords="5,124,315,195"/>
-<area shape="rect" id="node3" href="$_simulink_block_information_impl_8h.html" title="/home/travis/build\l/robotology/blockfactory\l/sources/Mex/include/BlockFactory\l/Mex/Private/SimulinkBlockInformationImpl.h" alt="" coords="339,124,643,195"/>
-<area shape="rect" id="node4" href="$_simulink_block_information_8h.html" title="/home/travis/build\l/robotology/blockfactory\l/sources/Mex/include/BlockFactory\l/Mex/SimulinkBlockInformation.h" alt="" coords="667,124,906,195"/>
+<area shape="rect" id="node2" href="$_simulink_block_information_impl_8h.html" title="/home/travis/build\l/robotology/blockfactory\l/sources/Simulink/include\l/BlockFactory/Simulink/Private\l/SimulinkBlockInformationImpl.h" alt="" coords="5,124,232,209"/>
+<area shape="rect" id="node3" href="$_simulink_block_information_8h.html" title="/home/travis/build\l/robotology/blockfactory\l/sources/Simulink/include\l/BlockFactory/Simulink/SimulinkBlock\lInformation.h" alt="" coords="256,124,512,209"/>
+<area shape="rect" id="node4" href="$_coder_block_information_8h.html" title="/home/travis/build\l/robotology/blockfactory\l/sources/SimulinkCoder\l/include/BlockFactory/SimulinkCoder\l/CoderBlockInformation.h" alt="" coords="536,124,787,209"/>
 </map>

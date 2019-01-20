@@ -1119,9 +1119,11 @@
 <span class="c"># ===========</span>
 
 <span class="c"># Find the needed BlockFactory components:</span>
-<span class="c"># - BlockFactoryCore contains the core classes such as Block and Signal</span>
-<span class="c"># - BlockFactoryMex is required at runtime for loading the library from Simulink</span>
-<span class="nb">find_package</span><span class="p">(</span><span class="s">BlockFactory</span> <span class="s">1</span> <span class="s">REQUIRED</span> <span class="s">COMPONENTS</span> <span class="s">BlockFactoryCore</span> <span class="s">BlockFactoryMex</span><span class="p">)</span>
+<span class="c"># - &quot;Core&quot; contains the core classes such as Block and Signal</span>
+<span class="c"># - &quot;Simulink&quot; is required at runtime for loading the library from Simulink</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">BlockFactory</span>
+    <span class="s">REQUIRED</span> <span class="s">COMPONENTS</span> <span class="s">Core</span>
+    <span class="s">OPTIONAL_COMPONENTS</span> <span class="s">Simulink</span><span class="p">)</span>
 
 <span class="c"># Create the plugin library. This must be a SHARED library.</span>
 <span class="nb">add_library</span><span class="p">(</span><span class="s">ExampleToolbox</span> <span class="s">SHARED</span>
