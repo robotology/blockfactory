@@ -3,10 +3,10 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 add_subdirectory(Core)
-add_subdirectory(Coder)
+add_subdirectory(SimulinkCoder)
 
 if(USES_MATLAB)
-    add_subdirectory(Mex)
+    add_subdirectory(Simulink)
 endif()
 
 # ========================
@@ -16,9 +16,9 @@ endif()
 # Dummy target
 add_library(BlockFactory INTERFACE)
 
-set(BLOCKFACTORY_DEPENDENCIES BlockFactoryCore BlockFactoryCoder)
+set(BLOCKFACTORY_DEPENDENCIES BlockFactoryCore BlockFactorySimulinkCoder)
 if (USES_MATLAB)
-    list(APPEND BLOCKFACTORY_DEPENDENCIES BlockFactoryMex)
+    list(APPEND BLOCKFACTORY_DEPENDENCIES BlockFactorySimulink)
 endif()
 
 install(

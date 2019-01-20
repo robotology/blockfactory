@@ -6,12 +6,12 @@
  * GNU Lesser General Public License v2.1 or any later version.
  */
 
-#include "BlockFactory/Mex/SimulinkBlockInformation.h"
+#include "BlockFactory/Simulink/SimulinkBlockInformation.h"
 #include "BlockFactory/Core/Log.h"
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Parameters.h"
 #include "BlockFactory/Core/Signal.h"
-#include "BlockFactory/Mex/Private/SimulinkBlockInformationImpl.h"
+#include "BlockFactory/Simulink/Private/SimulinkBlockInformationImpl.h"
 
 #include <memory>
 #include <ostream>
