@@ -19,27 +19,33 @@ BlockFactory provides three components, listed here below with their dependenden
 | **Dependencies** | ~      | ~               | - Matlab<br>- Simulink |
 
 !!! note
-    Simulink Coder is not a build dependency of the `Coder` component. Of course, you must have it if you want to generate C++ code from a Simulink Model.
+    Simulink Coder is not a build dependency of the `SimulinkCoder` component. Of course, you must have it if you want to generate C++ code from a Simulink model.
 
 ## Installation
 
-!!! warning
-    The following instructions are for Unix-like systems, but they work similarly on other operating systems.
+If all the dependencies are met, proceed with the following instructions:
 
-```sh
-git clone https://github.com/robotology/blockfactory.git
-mkdir -p blockfactory/build && cd blockfactory/build
-cmake .. -DCMAKE_INSTALL_PREFIX=<install-prefix>
-cmake --build . --config Release
-cmake --build . --config Release --target install
-```
+!!! example "From sources"
 
-!!! note
-    From now on, this guide refers to your install directory with the variable `<install-prefix>`. Every time you see this variable, you should substitute the absolute install path.
+    Substitute to `<install-prefix>` the absolute path where you want to install the project.
+
+    ````tab="GNU/Linux and macOS"
+    git clone https://github.com/robotology/blockfactory.git
+    mkdir -p blockfactory/build && cd blockfactory/build
+    cmake .. -DCMAKE_INSTALL_PREFIX=<install-prefix>
+    cmake --build .
+    cmake --build . --target install
+    ````
+
+    ````tab="Windows"
+    git clone https://github.com/robotology/blockfactory.git
+    mkdir -p blockfactory/build && cd blockfactory/build
+    cmake .. -DCMAKE_INSTALL_PREFIX=<install-prefix>
+    cmake --build . --config Release
+    cmake --build . --config Release --target install
+    ````
 
 ## Configuration
-
-### Simulink and Simulink Coder
 
 BlockFactory provides the support of:
 
