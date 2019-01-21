@@ -344,19 +344,6 @@
     Configuration
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#simulink-and-simulink-coder" title="Simulink and Simulink Coder" class="md-nav__link">
-    Simulink and Simulink Coder
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
       
@@ -505,19 +492,6 @@
     Configuration
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#simulink-and-simulink-coder" title="Simulink and Simulink Coder" class="md-nav__link">
-    Simulink and Simulink Coder
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
       
@@ -576,26 +550,33 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Simulink Coder is not a build dependency of the <code>Coder</code> component. Of course, you must have it if you want to generate C++ code from a Simulink Model.</p>
+<p>Simulink Coder is not a build dependency of the <code>SimulinkCoder</code> component. Of course, you must have it if you want to generate C++ code from a Simulink model.</p>
 </div>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The following instructions are for Unix-like systems, but they work similarly on other operating systems.</p>
-</div>
-<div class="highlight"><pre><span></span>git clone https://github.com/robotology/blockfactory.git
-mkdir -p blockfactory/build <span class="o">&amp;&amp;</span> <span class="nb">cd</span> blockfactory/build
-cmake .. -DCMAKE_INSTALL_PREFIX<span class="o">=</span>&lt;install-prefix&gt;
+<p>If all the dependencies are met, proceed with the following instructions:</p>
+<div class="admonition example">
+<p class="admonition-title">From sources</p>
+<p>Substitute to <code>&lt;install-prefix&gt;</code> the absolute path where you want to install the project.</p>
+<div class="superfences-tabs">
+<input name="__tabs_1" type="radio" id="__tab_1_0" checked="checked" />
+<label for="__tab_1_0">GNU/Linux and macOS</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>git clone https://github.com/robotology/blockfactory.git
+mkdir -p blockfactory/build &amp;&amp; cd blockfactory/build
+cmake .. -DCMAKE_INSTALL_PREFIX=&lt;install-prefix&gt;
+cmake --build .
+cmake --build . --target install
+</pre></div></div>
+<input name="__tabs_1" type="radio" id="__tab_1_1" />
+<label for="__tab_1_1">Windows</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>git clone https://github.com/robotology/blockfactory.git
+mkdir -p blockfactory/build &amp;&amp; cd blockfactory/build
+cmake .. -DCMAKE_INSTALL_PREFIX=&lt;install-prefix&gt;
 cmake --build . --config Release
 cmake --build . --config Release --target install
-</pre></div>
-
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>From now on, this guide refers to your install directory with the variable <code>&lt;install-prefix&gt;</code>. Every time you see this variable, you should substitute the absolute install path.</p>
+</pre></div></div>
+</div>
 </div>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
-<h3 id="simulink-and-simulink-coder">Simulink and Simulink Coder<a class="headerlink" href="#simulink-and-simulink-coder" title="Permanent link">&para;</a></h3>
 <p>BlockFactory provides the support of:</p>
 <ul>
 <li><strong>Simulink</strong> by shipping a generic <a href="https://it.mathworks.com/help/simulink/sfg/what-is-an-s-function.html">MEX Level-2 S-Function S-Functions</a></li>
