@@ -81,7 +81,7 @@ void Signal::impl::deleteBuffer()
 
     switch (portDataType) {
         case DataType::DOUBLE:
-            delete static_cast<double*>(bufferPtr);
+            delete[] static_cast<double*>(bufferPtr);
             bufferPtr = nullptr;
             return;
         default:
