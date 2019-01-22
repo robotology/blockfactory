@@ -24,7 +24,7 @@
 /* Model step function */
 void AutogenerationExampleModelClass::step()
 {
-    /* S-Function (BlockFactory): '<Root>/w//o mask' incorporates:
+    /* S-Function (BlockFactory): '<Root>/Signal Math' incorporates:
      *  Constant: '<Root>/Constant'
      *  Inport: '<Root>/Input2'
      *  Outport: '<Root>/Result'
@@ -33,12 +33,12 @@ void AutogenerationExampleModelClass::step()
         // Get the CoderBlockInformation from the PWork
         blockfactory::coder::CoderBlockInformation* blockInfo = nullptr;
         blockInfo = static_cast<blockfactory::coder::CoderBlockInformation*>(
-            AutogenerationExample_DW.womask_PWORK.blockPWork[1]);
+            AutogenerationExample_DW.SignalMath_PWORK.blockPWork[1]);
 
         // Get the Block from the PWork
         blockfactory::core::Block* blockPtr = nullptr;
         blockPtr = static_cast<blockfactory::core::Block*>(
-            AutogenerationExample_DW.womask_PWORK.blockPWork[0]);
+            AutogenerationExample_DW.SignalMath_PWORK.blockPWork[0]);
 
         // Calculate the output
         // --------------------
@@ -67,7 +67,7 @@ void AutogenerationExampleModelClass::step()
         }
     }
 
-    // End of S-Function Block: <Root>/w//o mask
+    // End of S-Function Block: <Root>/Signal Math
 }
 
 /* Model initialize function */
@@ -87,7 +87,7 @@ void AutogenerationExampleModelClass::initialize()
     /* external outputs */
     (void) memset(&AutogenerationExample_Y.Result[0], 0, 5U * sizeof(real_T));
 
-    /* Start for S-Function (BlockFactory): '<Root>/w//o mask' incorporates:
+    /* Start for S-Function (BlockFactory): '<Root>/Signal Math' incorporates:
      *  Constant: '<Root>/Constant'
      *  Inport: '<Root>/Input2'
      *  Outport: '<Root>/Result'
@@ -96,7 +96,7 @@ void AutogenerationExampleModelClass::initialize()
         // Create and store the CoderBlockInformation object
         blockfactory::coder::CoderBlockInformation* blockInfo =
             new blockfactory::coder::CoderBlockInformation();
-        AutogenerationExample_DW.womask_PWORK.blockPWork[1] = static_cast<void*>(blockInfo);
+        AutogenerationExample_DW.SignalMath_PWORK.blockPWork[1] = static_cast<void*>(blockInfo);
 
         // Initialize the parameters
         // -------------------------
@@ -106,13 +106,13 @@ void AutogenerationExampleModelClass::initialize()
             blockfactory::core::ParameterMetadata(
                 blockfactory::core::ParameterType::STRING, 2.0, 1.0, 1.0, "Operation"));
         params.storeParameter<std::string>(
-            "SignalMath",
-            blockfactory::core::ParameterMetadata(
-                blockfactory::core::ParameterType::STRING, 0.0, 1.0, 1.0, "className"));
-        params.storeParameter<std::string>(
             "ExampleToolbox",
             blockfactory::core::ParameterMetadata(
                 blockfactory::core::ParameterType::STRING, 1.0, 1.0, 1.0, "libName"));
+        params.storeParameter<std::string>(
+            "SignalMath",
+            blockfactory::core::ParameterMetadata(
+                blockfactory::core::ParameterType::STRING, 0.0, 1.0, 1.0, "className"));
 
         // Store the parameters in the CoderBlockInformation object
         blockInfo->storeRTWParameters(params);
@@ -121,15 +121,20 @@ void AutogenerationExampleModelClass::initialize()
         // ---------------------------------
 
         // Inputs
-        blockInfo->setInputSignal(
-            0, static_cast<void*>(&AutogenerationExample_P.Constant_Value[0]), {1, 5});
+        blockInfo->setInputPort({0, {1, 5}, blockfactory::core::DataType::DOUBLE}
 
-        blockInfo->setInputSignal(
-            1, static_cast<void*>(&AutogenerationExample_U.input2[0]), {1, 5});
+                                ,
+                                static_cast<void*>(&AutogenerationExample_P.Constant_Value[0]));
+        blockInfo->setInputPort({1, {1, 5}, blockfactory::core::DataType::DOUBLE}
+
+                                ,
+                                static_cast<void*>(&AutogenerationExample_U.input2[0]));
 
         // Outputs
-        blockInfo->setOutputSignal(
-            0, static_cast<void*>(&AutogenerationExample_Y.Result[0]), {1, 5});
+        blockInfo->setOutputPort({0, {1, 5}, blockfactory::core::DataType::DOUBLE}
+
+                                 ,
+                                 static_cast<void*>(&AutogenerationExample_Y.Result[0]));
 
         // Initialize the class
         // --------------------
@@ -250,16 +255,15 @@ void AutogenerationExampleModelClass::initialize()
         }
 
         // Store the block in the PWork vector
-        AutogenerationExample_DW.womask_PWORK.blockPWork[0] = static_cast<void*>(blockPtr);
+        AutogenerationExample_DW.SignalMath_PWORK.blockPWork[0] = static_cast<void*>(blockPtr);
     }
-
-    // End of S-Function Block: <Root>/w//o mask
+    // End of S-Function Block: <Root>/Signal Math
 }
 
 /* Model terminate function */
 void AutogenerationExampleModelClass::terminate()
 {
-    /* Terminate for S-Function (BlockFactory): '<Root>/w//o mask' incorporates:
+    /* Terminate for S-Function (BlockFactory): '<Root>/Signal Math' incorporates:
      *  Constant: '<Root>/Constant'
      *  Inport: '<Root>/Input2'
      *  Outport: '<Root>/Result'
@@ -268,12 +272,12 @@ void AutogenerationExampleModelClass::terminate()
         // Get the CoderBlockInformation from the PWork
         blockfactory::coder::CoderBlockInformation* blockInfo = nullptr;
         blockInfo = static_cast<blockfactory::coder::CoderBlockInformation*>(
-            AutogenerationExample_DW.womask_PWORK.blockPWork[1]);
+            AutogenerationExample_DW.SignalMath_PWORK.blockPWork[1]);
 
         // Get the Block from the PWork
         blockfactory::core::Block* blockPtr = nullptr;
         blockPtr = static_cast<blockfactory::core::Block*>(
-            AutogenerationExample_DW.womask_PWORK.blockPWork[0]);
+            AutogenerationExample_DW.SignalMath_PWORK.blockPWork[0]);
 
         // Get the block factory
         auto factory = blockfactory::core::ClassFactorySingleton::getInstance().getClassFactory(
@@ -376,7 +380,7 @@ void AutogenerationExampleModelClass::terminate()
         }
     }
 
-    // End of S-Function Block: <Root>/w//o mask
+    // End of S-Function Block: <Root>/Signal Math
 }
 
 /* Constructor */
