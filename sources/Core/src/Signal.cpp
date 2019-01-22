@@ -137,6 +137,12 @@ bool Signal::initializeBufferFromContiguousZeroCopy(const void* buffer)
         return false;
     }
 
+    if (pImpl->width <= 0) {
+        bfError << "Signal width unknown. Unable to initialize the buffer if the "
+                << "signal size is not set.";
+        return false;
+    }
+
     pImpl->bufferPtr = const_cast<void*>(buffer);
     return true;
 }
