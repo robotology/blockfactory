@@ -50,13 +50,33 @@ bool SimulinkBlockInformation::optionFromKey(const std::string& key, double& opt
 core::BlockInformation::VectorSize
 SimulinkBlockInformation::getInputPortWidth(const PortIndex idx) const
 {
-    return ssGetInputPortWidth(pImpl->simstruct, idx);
+    PortData portData = getInputPortData(idx);
+    PortDimension dims = std::get<Port::Dimensions>(portData);
+
+    if (dims.size() != 1) {
+        bfError << "Signal at index " << idx
+                << "does not contain a vector. Failed to get its size.";
+        assert(dims.size() != 1);
+        return {};
+    }
+
+    return dims[0];
 }
 
 core::BlockInformation::VectorSize
 SimulinkBlockInformation::getOutputPortWidth(const PortIndex idx) const
 {
-    return ssGetOutputPortWidth(pImpl->simstruct, idx);
+    PortData portData = getOutputPortData(idx);
+    PortDimension dims = std::get<Port::Dimensions>(portData);
+
+    if (dims.size() != 1) {
+        bfError << "Signal at index " << idx
+                << "does not contain a vector. Failed to get its size.";
+        assert(dims.size() != 1);
+        return {};
+    }
+
+    return dims[0];
 }
 
 core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortIndex idx,
