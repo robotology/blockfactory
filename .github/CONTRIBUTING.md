@@ -13,6 +13,7 @@ Keep in mind that the following are mostly guidelines, not strict rules. Use you
   - [C++](#c++)
   - [CMake](#cmake)
   - [Git](#git)
+- [Unit Test](#unit-test)
 - [Documentation](#documentation)
 - [Policies](#policies)
   - [Versioning](#versioning)
@@ -98,6 +99,21 @@ public:
 - Keep commits small and do one and only one thing in each commit, which should be documented with optional but appreciated commit description.
 - Use `rebase -i` and `amend` to rewrite your local history and keep it clean.
 - Never force-push on the `master` and `devel` branches unless there is a very good reason to do it.
+
+## Unit Test
+
+It is warmly recommended to include unit tests to PRs that add new features. Our CI pipeline already runs the existing tests on every commit, ensuring that the covered functionalities do not break.
+
+In order to execute tests on your local machine, follow these steps:
+
+```bash
+# From your build directory
+cmake -DBUILD_TESTING=ON ..
+# Run regular unit tests
+ctest --output-on-failure
+# Execute memcheck on the unit tests
+ctest -T memcheck --output-on-failure
+```
 
 ## Documentation
 

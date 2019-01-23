@@ -7,3 +7,7 @@ if(USES_MATLAB)
 endif()
 
 add_subdirectory(sharedlibpp)
+
+if(BUILD_TESTING)
+    add_subdirectory(catch)
+endif()

@@ -81,7 +81,7 @@ void Signal::impl::deleteBuffer()
 
     switch (portDataType) {
         case DataType::DOUBLE:
-            delete static_cast<double*>(bufferPtr);
+            delete[] static_cast<double*>(bufferPtr);
             bufferPtr = nullptr;
             return;
         default:
@@ -134,6 +134,12 @@ bool Signal::initializeBufferFromContiguousZeroCopy(const void* buffer)
     if (pImpl->dataFormat != DataFormat::CONTIGUOUS_ZEROCOPY) {
         bfError << "Trying to initialize a CONTIGUOUS_ZEROCOPY signal but the configured "
                 << "DataFormat does not match.";
+        return false;
+    }
+
+    if (pImpl->width <= 0) {
+        bfError << "Signal width unknown. Unable to initialize the buffer if the "
+                << "signal size is not set.";
         return false;
     }
 

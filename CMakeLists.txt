@@ -116,11 +116,21 @@ if(NOT USES_MATLAB)
     option(USES_MATLAB "Compile also Matlab-related components" ${Matlab_FOUND})
 endif()
 
+# Handle unit tests support
+option(BUILD_TESTING "Create tests using CMake" OFF)
+
 add_subdirectory(deps)
 add_subdirectory(sources)
 
 if(USES_MATLAB)
     add_subdirectory(matlab)
+endif()
+
+if(BUILD_TESTING)
+    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/cmake)
+    include(UnitTesting)
+
+    add_subdirectory(tests)
 endif()
 
 include(AddUninstallTarget)

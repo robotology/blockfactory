@@ -31,6 +31,7 @@ env:
     - TRAVIS_BUILD_TYPE="Debug" UBUNTU="xenial"
     - TRAVIS_BUILD_TYPE="Release" UBUNTU="bionic"
     - TRAVIS_BUILD_TYPE="Debug" UBUNTU="bionic"
+    - TRAVIS_BUILD_TYPE="Debug" UBUNTU="bionic" VALGRIND_TESTS=1
 
 # ===================
 # STAGE: test (linux)
