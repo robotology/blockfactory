@@ -68,6 +68,8 @@ public:
     bool setInputPortMatrixSize(const PortIndex idx, const MatrixSize& size);
     bool setOutputPortVectorSize(const PortIndex idx, const VectorSize& size);
     bool setOutputPortMatrixSize(const PortIndex idx, const MatrixSize& size);
+    PortData getInputPortData(const core::BlockInformation::PortIndex idx) const;
+    PortData getOutputPortData(const core::BlockInformation::PortIndex idx) const;
 
     // =================
     // SCALAR PARAMETERS

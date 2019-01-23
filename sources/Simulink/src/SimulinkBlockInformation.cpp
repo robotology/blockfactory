@@ -517,41 +517,11 @@ bool SimulinkBlockInformation::setIOPortsData(const BlockInformation::IOData& io
 core::BlockInformation::PortData
 SimulinkBlockInformation::getInputPortData(const BlockInformation::PortIndex idx) const
 {
-    const core::DataType dt =
-        pImpl->mapSimulinkToPortType(ssGetInputPortDataType(pImpl->simstruct, idx));
-    std::vector<int> portDimension;
-
-    switch (ssGetInputPortNumDimensions(pImpl->simstruct, idx)) {
-        case 1:
-            portDimension = {ssGetInputPortWidth(pImpl->simstruct, idx)};
-            break;
-        case 2: {
-            const auto dims = ssGetInputPortDimensions(pImpl->simstruct, idx);
-            portDimension = {dims[0], dims[1]};
-            break;
-        }
-    }
-
-    return std::make_tuple(idx, portDimension, dt);
+    return pImpl->getInputPortData(idx);
 }
 
 core::BlockInformation::PortData
 SimulinkBlockInformation::getOutputPortData(const BlockInformation::PortIndex idx) const
 {
-    const core::DataType dt =
-        pImpl->mapSimulinkToPortType(ssGetOutputPortDataType(pImpl->simstruct, idx));
-    std::vector<int> portDimension;
-
-    switch (ssGetOutputPortNumDimensions(pImpl->simstruct, idx)) {
-        case 1:
-            portDimension = {ssGetOutputPortWidth(pImpl->simstruct, idx)};
-            break;
-        case 2: {
-            const auto dims = ssGetOutputPortDimensions(pImpl->simstruct, idx);
-            portDimension = {dims[0], dims[1]};
-            break;
-        }
-    }
-
-    return std::make_tuple(idx, portDimension, dt);
+    return pImpl->getOutputPortData(idx);
 }

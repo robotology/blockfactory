@@ -11,6 +11,7 @@
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Signal.h"
 
+#include <cassert>
 #include <simstruc.h>
 
 using namespace blockfactory::core;
@@ -230,6 +231,64 @@ bool SimulinkBlockInformationImpl::setOutputPortMatrixSize(const PortIndex idx,
     }
 
     return ssSetOutputPortMatrixDimensions(simstruct, idx, size.first, size.second);
+}
+
+SimulinkBlockInformationImpl::PortData
+SimulinkBlockInformationImpl::getInputPortData(const BlockInformation::PortIndex idx) const
+{
+    std::vector<int> portDimension;
+
+    const core::DataType dt = mapSimulinkToPortType(ssGetInputPortDataType(simstruct, idx));
+
+    switch (ssGetInputPortNumDimensions(simstruct, idx)) {
+        case 1: {
+            auto width = ssGetInputPortWidth(simstruct, idx);
+            width == DYNAMICALLY_SIZED ? width = core::Signal::DynamicSize : true;
+            portDimension = {width};
+            break;
+        }
+        case 2: {
+            auto dims = ssGetInputPortDimensions(simstruct, idx);
+            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Signal::DynamicSize : true;
+            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Signal::DynamicSize : true;
+            portDimension = {dims[0], dims[1]};
+            break;
+        }
+        default:
+            bfError << "Unsupported number of port dimensions for port at index " << idx;
+            assert(false);
+    }
+
+    return std::make_tuple(idx, portDimension, dt);
+}
+
+SimulinkBlockInformationImpl::PortData
+SimulinkBlockInformationImpl::getOutputPortData(const BlockInformation::PortIndex idx) const
+{
+    std::vector<int> portDimension;
+
+    const core::DataType dt = mapSimulinkToPortType(ssGetOutputPortDataType(simstruct, idx));
+
+    switch (ssGetOutputPortNumDimensions(simstruct, idx)) {
+        case 1: {
+            auto width = ssGetOutputPortWidth(simstruct, idx);
+            width == DYNAMICALLY_SIZED ? width = core::Signal::DynamicSize : true;
+            portDimension = {width};
+            break;
+        }
+        case 2: {
+            auto dims = ssGetOutputPortDimensions(simstruct, idx);
+            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Signal::DynamicSize : true;
+            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Signal::DynamicSize : true;
+            portDimension = {dims[0], dims[1]};
+            break;
+        }
+        default:
+            bfError << "Unsupported number of port dimensions for port at index " << idx;
+            assert(false);
+    }
+
+    return std::make_tuple(idx, portDimension, dt);
 }
 
 // =================
