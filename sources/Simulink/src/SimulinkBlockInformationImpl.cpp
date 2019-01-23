@@ -233,6 +233,38 @@ bool SimulinkBlockInformationImpl::setOutputPortMatrixSize(const PortIndex idx,
     return ssSetOutputPortMatrixDimensions(simstruct, idx, size.first, size.second);
 }
 
+int SimulinkBlockInformationImpl::getNrOfInputPortElements(
+    const BlockInformation::PortIndex idx) const
+{
+    PortData portData = getInputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    int nrOfElements = 1;
+    for (int dim : dimensions) {
+        dim == Signal::DynamicSize ? dim = 0 : true;
+        nrOfElements *= dim;
+    }
+
+    return nrOfElements;
+}
+
+int SimulinkBlockInformationImpl::getNrOfOutputPortElements(
+    const BlockInformation::PortIndex idx) const
+{
+    PortData portData = getOutputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    int nrOfElements = 1;
+    for (int dim : dimensions) {
+        dim == Signal::DynamicSize ? dim = 0 : true;
+        nrOfElements *= dim;
+    }
+
+    return nrOfElements;
+}
+
 SimulinkBlockInformationImpl::PortData
 SimulinkBlockInformationImpl::getInputPortData(const BlockInformation::PortIndex idx) const
 {
