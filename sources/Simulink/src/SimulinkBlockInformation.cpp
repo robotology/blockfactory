@@ -35,13 +35,7 @@ SimulinkBlockInformation::~SimulinkBlockInformation() = default;
 
 bool SimulinkBlockInformation::optionFromKey(const std::string& key, double& option) const
 {
-    if (key == core::BlockOptionPrioritizeOrder) {
-        option = SS_OPTION_PLACE_ASAP;
-        return true;
-    }
-
-    bfError << "Unrecognized block option.";
-    return false;
+    return pImpl->optionFromKey(key, option);
 }
 
 // PORT INFORMATION GETTERS

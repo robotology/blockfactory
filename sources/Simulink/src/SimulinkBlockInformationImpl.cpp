@@ -21,6 +21,17 @@ SimulinkBlockInformationImpl::SimulinkBlockInformationImpl(SimStruct* ss)
     : simstruct(ss)
 {}
 
+bool SimulinkBlockInformationImpl::optionFromKey(const std::string& key, double& option) const
+{
+    if (key == core::BlockOptionPrioritizeOrder) {
+        option = SS_OPTION_PLACE_ASAP;
+        return true;
+    }
+
+    bfError << "Unrecognized block option.";
+    return false;
+}
+
 DataType SimulinkBlockInformationImpl::mapSimulinkToPortType(const DTypeId typeId) const
 {
     switch (typeId) {

@@ -54,6 +54,12 @@ public:
     SimulinkBlockInformationImpl(SimStruct* ss);
     ~SimulinkBlockInformationImpl() = default;
 
+    // =====================
+    // BLOCK OPTIONS METHODS
+    // =====================
+
+    bool optionFromKey(const std::string& key, double& option) const;
+
     // =============
     // PORTS METHODS
     // =============
