@@ -13,6 +13,7 @@
 #include "BlockFactory/Core/Signal.h"
 #include "BlockFactory/Simulink/Private/SimulinkBlockInformationImpl.h"
 
+#include <cassert>
 #include <memory>
 #include <ostream>
 #include <string>
@@ -188,27 +189,33 @@ core::OutputSignalPtr SimulinkBlockInformation::getOutputPortSignal(const PortIn
 core::BlockInformation::MatrixSize
 SimulinkBlockInformation::getInputPortMatrixSize(const PortIndex idx) const
 {
-    if (ssGetInputPortNumDimensions(pImpl->simstruct, idx) < 2) {
+    PortData portData = getInputPortData(idx);
+    PortDimension dims = std::get<Port::Dimensions>(portData);
+
+    if (dims.size() != 2) {
         bfError << "Signal at index " << idx
-                << "does not contain a matrix. Failed to gete its size.";
+                << "does not contain a matrix. Failed to get its size.";
+        assert(dims.size() != 2);
         return {};
     }
 
-    const int_T* sizes = ssGetInputPortDimensions(pImpl->simstruct, idx);
-    return {sizes[0], sizes[1]};
+    return {dims[0], dims[1]};
 }
 
 core::BlockInformation::MatrixSize
 SimulinkBlockInformation::getOutputPortMatrixSize(const PortIndex idx) const
 {
-    if (ssGetOutputPortNumDimensions(pImpl->simstruct, idx) < 2) {
+    PortData portData = getOutputPortData(idx);
+    PortDimension dims = std::get<Port::Dimensions>(portData);
+
+    if (dims.size() != 2) {
         bfError << "Signal at index " << idx
-                << "does not contain a matrix. Failed to gete its size.";
+                << "does not contain a matrix. Failed to get its size.";
+        assert(dims.size() != 2);
         return {};
     }
 
-    const int_T* sizes = ssGetOutputPortDimensions(pImpl->simstruct, idx);
-    return {sizes[0], sizes[1]};
+    return {dims[0], dims[1]};
 }
 
 bool SimulinkBlockInformation::addParameterMetadata(const core::ParameterMetadata& paramMD)
