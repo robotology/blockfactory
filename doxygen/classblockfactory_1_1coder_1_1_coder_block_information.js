@@ -13,8 +13,8 @@ var classblockfactory_1_1coder_1_1_coder_block_information =
     [ "getOutputPortWidth", "classblockfactory_1_1coder_1_1_coder_block_information.html#a45245e35559ff087a29db6453600a850", null ],
     [ "optionFromKey", "classblockfactory_1_1coder_1_1_coder_block_information.html#acb92c7aaf4cf3b38ac4b5c7660c1f8be", null ],
     [ "parseParameters", "classblockfactory_1_1coder_1_1_coder_block_information.html#aa110548a84495a2c2bac8011f9dffd74", null ],
-    [ "setInputSignal", "classblockfactory_1_1coder_1_1_coder_block_information.html#a451a2f6b31f718faf0b13fc1d16a3ccd", null ],
+    [ "setInputPort", "classblockfactory_1_1coder_1_1_coder_block_information.html#afdba39c052db7634962d6a8077439afb", null ],
     [ "setIOPortsData", "classblockfactory_1_1coder_1_1_coder_block_information.html#ae50502f8a7d1d80e740c15ced9f83274", null ],
-    [ "setOutputSignal", "classblockfactory_1_1coder_1_1_coder_block_information.html#afbe231a5bd4a0e51316b7d07b155d901", null ],
+    [ "setOutputPort", "classblockfactory_1_1coder_1_1_coder_block_information.html#afd8565a773c1371444e9597b4a300a02", null ],
     [ "storeRTWParameters", "classblockfactory_1_1coder_1_1_coder_block_information.html#a9fba96ff4dea1b9c97c21622d545f9ce", null ]
 ];

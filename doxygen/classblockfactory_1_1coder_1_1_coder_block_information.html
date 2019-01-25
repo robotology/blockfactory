@@ -165,10 +165,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afcd229bf1fd997a4f645e08e97b2aed7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9fba96ff4dea1b9c97c21622d545f9ce"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a9fba96ff4dea1b9c97c21622d545f9ce">storeRTWParameters</a> (const <a class="el" href="classblockfactory_1_1core_1_1_parameters.html">core::Parameters</a> &amp;parameters)</td></tr>
 <tr class="separator:a9fba96ff4dea1b9c97c21622d545f9ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a451a2f6b31f718faf0b13fc1d16a3ccd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a451a2f6b31f718faf0b13fc1d16a3ccd">setInputSignal</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx, void *address, const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">PortDimension</a> &amp;dims)</td></tr>
-<tr class="separator:a451a2f6b31f718faf0b13fc1d16a3ccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbe231a5bd4a0e51316b7d07b155d901"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#afbe231a5bd4a0e51316b7d07b155d901">setOutputSignal</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx, void *address, const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">PortDimension</a> &amp;dims)</td></tr>
-<tr class="separator:afbe231a5bd4a0e51316b7d07b155d901"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdba39c052db7634962d6a8077439afb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#afdba39c052db7634962d6a8077439afb">setInputPort</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a> &amp;portData, void *signalAddress)</td></tr>
+<tr class="separator:afdba39c052db7634962d6a8077439afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd8565a773c1371444e9597b4a300a02"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#afd8565a773c1371444e9597b4a300a02">setOutputPort</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a> &amp;portData, void *signalAddress)</td></tr>
+<tr class="separator:afd8565a773c1371444e9597b4a300a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classblockfactory_1_1core_1_1_block_information"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classblockfactory_1_1core_1_1_block_information')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classblockfactory_1_1core_1_1_block_information.html">blockfactory::core::BlockInformation</a></td></tr>
 <tr class="memitem:a4f42a294d358b7e8b28b76b5e5a1dc28 inherit pub_methods_classblockfactory_1_1core_1_1_block_information"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a4f42a294d358b7e8b28b76b5e5a1dc28">BlockInformation</a> ()=default</td></tr>
 <tr class="separator:a4f42a294d358b7e8b28b76b5e5a1dc28 inherit pub_methods_classblockfactory_1_1core_1_1_block_information"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -655,27 +655,21 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a451a2f6b31f718faf0b13fc1d16a3ccd"></a>
+<a class="anchor" id="afdba39c052db7634962d6a8077439afb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool blockfactory::coder::CoderBlockInformation::setInputSignal </td>
+          <td class="memname">bool blockfactory::coder::CoderBlockInformation::setInputPort </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
-          <td class="paramname"><em>idx</em>, </td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a> &amp;&#160;</td>
+          <td class="paramname"><em>portData</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">PortDimension</a> &amp;&#160;</td>
-          <td class="paramname"><em>dims</em>&#160;</td>
+          <td class="paramname"><em>signalAddress</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -725,27 +719,21 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="afbe231a5bd4a0e51316b7d07b155d901"></a>
+<a class="anchor" id="afd8565a773c1371444e9597b4a300a02"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">bool blockfactory::coder::CoderBlockInformation::setOutputSignal </td>
+          <td class="memname">bool blockfactory::coder::CoderBlockInformation::setOutputPort </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
-          <td class="paramname"><em>idx</em>, </td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a> &amp;&#160;</td>
+          <td class="paramname"><em>portData</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>address</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">PortDimension</a> &amp;&#160;</td>
-          <td class="paramname"><em>dims</em>&#160;</td>
+          <td class="paramname"><em>signalAddress</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
