@@ -20,6 +20,9 @@
 namespace blockfactory {
     namespace mex {
         namespace impl {
+            using ContiguousInputSignalRawPtr = const void*;
+            using NonContiguousInputSignalRawPtr = InputPtrsType;
+            using ContiguousOutputSignalRawPtr = void*;
             class SimulinkBlockInformationImpl;
         } // namespace impl
     } // namespace mex
@@ -78,6 +81,18 @@ public:
     int getNrOfOutputPortElements(const core::BlockInformation::PortIndex idx) const;
     PortData getInputPortData(const core::BlockInformation::PortIndex idx) const;
     PortData getOutputPortData(const core::BlockInformation::PortIndex idx) const;
+    bool isInputPortDynamicallySized(const PortIndex idx) const;
+    bool isOutputPortDynamicallySized(const PortIndex idx) const;
+
+    // ===============
+    // SIGNALS METHODS
+    // ===============
+
+    bool isInputSignalAtIdxContiguous(const PortIndex idx) const;
+    ContiguousInputSignalRawPtr getContiguousSignalRawPtrFromInputPort(const PortIndex idx) const;
+    NonContiguousInputSignalRawPtr
+    getNonContiguousSignalRawPtrFromInputPort(const PortIndex idx) const;
+    ContiguousOutputSignalRawPtr getSignalRawPtrFromOutputPort(const PortIndex idx) const;
 
     // =================
     // SCALAR PARAMETERS

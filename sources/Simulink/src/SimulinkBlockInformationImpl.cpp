@@ -334,6 +334,63 @@ SimulinkBlockInformationImpl::getOutputPortData(const BlockInformation::PortInde
     return std::make_tuple(idx, portDimension, dt);
 }
 
+bool SimulinkBlockInformationImpl::isInputPortDynamicallySized(const PortIndex idx) const
+{
+    PortData portData = getInputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    for (auto dim : dimensions) {
+        if (dim == core::Signal::DynamicSize) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool SimulinkBlockInformationImpl::isOutputPortDynamicallySized(const PortIndex idx) const
+{
+    PortData portData = getOutputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    for (auto dim : dimensions) {
+        if (dim == core::Signal::DynamicSize) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool SimulinkBlockInformationImpl::isInputSignalAtIdxContiguous(
+    const SimulinkBlockInformationImpl::PortIndex idx) const
+{
+    return ssGetInputPortRequiredContiguous(simstruct, idx);
+}
+
+ContiguousInputSignalRawPtr
+SimulinkBlockInformationImpl::getContiguousSignalRawPtrFromInputPort(const PortIndex idx) const
+{
+    auto ptr = ssGetInputPortSignal(simstruct, idx);
+    return idx >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
+}
+
+NonContiguousInputSignalRawPtr
+SimulinkBlockInformationImpl::getNonContiguousSignalRawPtrFromInputPort(const PortIndex idx) const
+{
+    auto ptr = ssGetInputPortSignalPtrs(simstruct, idx);
+    return idx >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
+}
+
+ContiguousOutputSignalRawPtr
+SimulinkBlockInformationImpl::getSignalRawPtrFromOutputPort(const PortIndex idx) const
+{
+    auto ptr = ssGetOutputPortSignal(simstruct, idx);
+    return idx >= ssGetNumOutputPorts(simstruct) ? nullptr : ptr;
+}
+
 // =================
 // SCALAR PARAMETERS
 // =================
