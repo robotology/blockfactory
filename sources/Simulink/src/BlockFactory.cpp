@@ -161,13 +161,23 @@ static void mdlInitializeSizes(SimStruct* S)
         return;
     }
 
-    for (auto i = 0; i < ssGetNumInputPorts(S); ++i) {
+    // TODO: Investigate about port reusability and local / global scoping:
+    //       https://it.mathworks.com/help/simulink/sfg/sssetinputportoptimopts.html
+    //       https://it.mathworks.com/help/simulink/sfg/sssetoutputportoptimopts.html
+    //       https://it.mathworks.com/help/rtw/ug/s-functions-for-multirate-multitasking-environments.html
+    // TODO: Allow modifying these options through optionFromKey() or similar functionality
+
+    for (int i = 0; i < ssGetNumInputPorts(S); ++i) {
         // Set explicitly the inputs port to be SS_NOT_REUSABLE_AND_GLOBAL (which actually
         // is already the default value). Since the toolbox supports contiguous input signals,
         // this option should not be changed.
         ssSetInputPortOptimOpts(S, i, SS_NOT_REUSABLE_AND_GLOBAL);
         // Set input signals to be allocated in a contiguous memory storage
         ssSetInputPortRequiredContiguous(S, i, true);
+    }
+
+    for (int i = 0; i < ssGetNumOutputPorts(S); ++i) {
+        ssSetOutputPortOptimOpts(S, i, SS_NOT_REUSABLE_AND_GLOBAL);
     }
 
     ssSetNumSampleTimes(S, 1);
