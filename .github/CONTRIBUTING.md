@@ -123,13 +123,14 @@ ctest -T memcheck --output-on-failure
    # From the root of the repository
    mkdir build_docs
    cd build_docs
-   cmake -DBUILD_DOCS:BOOL=TRUE ..
+   cmake -DBUILD_DOCS=ON ..
    make dox
+   # If there are any errors, fix them
    cd doc/doxygen/html
    python3 -m http.server
    # Browse to http://localhost:8000
    ```
-- Your PR should add a changelog in the [doc/release](/doc/release) file of the upcoming version.
+- Your PR should add a changelog in the [doc/release](/doc/release) file of the [upcoming version](#versioning) (minor release if the PR targets `master`, major release if it targets `devel`).
 
 ## Website
 
