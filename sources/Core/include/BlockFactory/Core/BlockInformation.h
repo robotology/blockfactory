@@ -31,12 +31,6 @@ namespace blockfactory {
     } // namespace core
 } // namespace blockfactory
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-namespace iDynTree {
-    class KinDynComputations;
-}
-#endif
-
 /**
  * @brief Abstract class for storing generic core::Block properties
  *
