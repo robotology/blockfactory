@@ -44,7 +44,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if(UNIX AND NOT APPLE)
     if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         get_filename_component(LINKER_BIN ${CMAKE_LINKER} NAME)
-            if(${LINKER_BIN} STREQUAL "ld")
+            if("${LINKER_BIN}" STREQUAL "ld")
                 set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--unresolved-symbols=report-all")
             endif()
     endif()
@@ -67,9 +67,9 @@ option(FORCE_COLORED_OUTPUT "Always produce ANSI-colored output (GNU/Clang only)
 mark_as_advanced(FORCE_COLORED_OUTPUT)
 if(${FORCE_COLORED_OUTPUT})
     if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-       add_compile_options(-fdiagnostics-color=always)
+        add_compile_options(-fdiagnostics-color=always)
     elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-       add_compile_options(-fcolor-diagnostics)
+        add_compile_options(-fcolor-diagnostics)
     endif()
 endif()
 
@@ -85,11 +85,11 @@ if(NOT DEFINED TREAT_WARNINGS_AS_ERRORS)
     endif()
 endif()
 
-# Export all symbols in Windows
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
-# Add a postfix to Windows libraries compiled in debug
 if(MSVC)
+    # Export all symbols in Windows
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+    # Add a postfix to Windows libraries compiled in debug
     set(CMAKE_DEBUG_POSTFIX "d")
 endif()
 
