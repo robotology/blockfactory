@@ -198,7 +198,9 @@
     %endif
     %%assign width = LibBlockInputSignalWidth(i)
     %assign address = LibBlockInputSignalAddr(i, "", "", 0)
-    blockInfo->setInputSignal(%<i>, static_cast<void*>(%<address>), {%<rows>, %<cols>});
+    blockInfo->setInputPort(
+        {%<i>, {%<rows>, %<cols>}, blockfactory::core::DataType::DOUBLE},
+        static_cast<void*>(%<address>));
     %endforeach
 
     // Outputs
@@ -215,8 +217,9 @@
     %endif
     %%assign width = LibBlockOutputSignalWidth(i)
     %assign address = LibBlockOutputSignalAddr(i, "", "", 0)
-    %%blockInfo->setOutputSignal(%<i>, static_cast<void*>(%<address>), %<width>);
-    blockInfo->setOutputSignal(%<i>, static_cast<void*>(%<address>), {%<rows>, %<cols>});
+    blockInfo->setOutputPort(
+        {%<i>, {%<rows>, %<cols>}, blockfactory::core::DataType::DOUBLE},
+        static_cast<void*>(%<address>));
     %endforeach
 
     // Initialize the class

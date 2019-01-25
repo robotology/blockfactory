@@ -73,8 +73,8 @@ public:
     // =============================
 
     bool storeRTWParameters(const core::Parameters& parameters);
-    bool setInputSignal(const PortIndex idx, void* address, const PortDimension& dims);
-    bool setOutputSignal(const PortIndex idx, void* address, const PortDimension& dims);
+    bool setInputPort(const PortData& portData, void* signalAddress);
+    bool setOutputPort(const PortData& portData, void* signalAddress);
 };
 
 #endif // BLOCKFACTORY_CODER_CODERBLOCKINFORMATION_H
