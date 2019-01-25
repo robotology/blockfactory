@@ -15,6 +15,7 @@ Keep in mind that the following are mostly guidelines, not strict rules. Use you
   - [Git](#git)
 - [Unit Test](#unit-test)
 - [Documentation](#documentation)
+- [Website](#website)
 - [Policies](#policies)
   - [Versioning](#versioning)
   - [Deprecations](#deprecations)
@@ -129,6 +130,26 @@ ctest -T memcheck --output-on-failure
    # Browse to http://localhost:8000
    ```
 - Your PR should add a changelog in the [doc/release](/doc/release) file of the upcoming version.
+
+## Website
+
+Our website is based on the [mkdocs](https://github.com/mkdocs/mkdocs) framework and the [mkdocs-material](https://github.com/squidfunk/mkdocs-material) theme.
+
+The easier way to modify a page of website is doing it directly from the website. In the top-right corner of every page, on the same line of the page title, you will find an pencil icon. If you click on the icon, the markdown file that creates the webpage opens in the GitHub web editor. Here you can modify the document and create a pull request.
+
+If the edits you want to submit are not trivial, or if you want to check how the website will be rendered, you need to clone the repository and modify with your favourite text editor the files inside the [`doc/mkdocs/data`](/doc/mkdocs/data) folder. Afterwards, you can generate and browse a local website executing the following commands:
+
+```bash
+# From the root of the repository
+mkdir build_website
+cd build_website
+cmake -DBUILD_DOCS:BOOL=ON ..
+make mkdocs
+# If there are any errors, fix them
+cd doc/mkdocs
+python3 -m http.server
+# Browse to http://localhost:8000
+```
 
 ## Policies
 
