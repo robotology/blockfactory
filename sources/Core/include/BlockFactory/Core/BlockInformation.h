@@ -92,8 +92,6 @@ public:
      * @param[in]  key Identifier of the block option.
      * @param[out] option Implementation-specific block option.
      * @return True if the option has been converted, false otherwise.
-     *
-     * @see mdlInitializeSizes
      */
     virtual bool optionFromKey(const std::string& key, double& option) const = 0;
 
