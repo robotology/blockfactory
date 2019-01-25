@@ -74,47 +74,50 @@ SimulinkBlockInformation::getOutputPortWidth(const PortIndex idx) const
 }
 
 core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortIndex idx,
-                                                                  const VectorSize size) const
+                                                                  const VectorSize /*size*/) const
 {
-    // Read if the signal is contiguous or non-contiguous
-    boolean_T isContiguous = ssGetInputPortRequiredContiguous(pImpl->simstruct, idx);
-    core::Signal::DataFormat sigDataFormat = isContiguous
-                                                 ? core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY
-                                                 : core::Signal::DataFormat::NONCONTIGUOUS;
+    // Get the PortData
+    PortData portData = getInputPortData(idx);
+    core::DataType dataType = std::get<Port::DataType>(portData);
 
-    // Check if the signal is dynamically sized (which means that the dimension
-    // cannot be read)
-    bool isDynamicallySized = (ssGetInputPortWidth(pImpl->simstruct, idx) == DYNAMICALLY_SIZED);
-
-    // Note that if the signal is dynamically sized, portWidth is necessary
-    if (isDynamicallySized && size == core::Signal::DynamicSize) {
-        bfError << "Trying to get a dynamically sized signal without specifying its size.";
+    // This can happen only if the Block attempts to get the Signal during the
+    // Block::configureSizeAndPorts step. This has undefined behavior, and it should not
+    // be allowed.
+    if (pImpl->isInputPortDynamicallySized(idx)) {
+        bfError << "The input port " << idx
+                << " has dynamic sizes. Probably the engine hasn't propagated them "
+                << "and the attached signal is not yet available.";
         return {};
     }
 
-    // Read the width of the signal if it is not provided as input and the signal is not
-    // dynamically sized
-    VectorSize signalSize = size;
-    if (!isDynamicallySized && size == core::Signal::DynamicSize) {
-        signalSize = ssGetInputPortWidth(pImpl->simstruct, idx);
-    }
+    // Read if the signal is contiguous or non-contiguous
+    boolean_T isContiguous = pImpl->isInputSignalAtIdxContiguous(idx);
+    auto signalDataFormat = isContiguous ? core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY
+                                         : core::Signal::DataFormat::NONCONTIGUOUS;
 
-    // Get the data type of the Signal if set (default: double)
-    DTypeId dataType = ssGetInputPortDataType(pImpl->simstruct, idx);
+    // Read the number of expected elements. This will match the buffer size of
+    // the associated Signal object.
+    int nrOfElements = pImpl->getNrOfInputPortElements(idx);
 
-    switch (sigDataFormat) {
+    switch (signalDataFormat) {
         case core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY: {
+            // Get the buffer pointer from Simulink
+            auto signalRawPtr = pImpl->getContiguousSignalRawPtrFromInputPort(idx);
+            if (!signalRawPtr) {
+                bfError << "Failed to get input signal at index " << idx << ".";
+            }
+
             // Initialize the signal
-            auto signal =
-                std::make_shared<core::Signal>(core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY,
-                                               pImpl->mapSimulinkToPortType(dataType));
-            signal->setWidth(signalSize);
+            auto signal = std::make_shared<core::Signal>(
+                core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY, dataType);
+
+            // Set the width
+            signal->setWidth(static_cast<unsigned>(nrOfElements));
 
             // Initialize signal's data
-            if (!signal->initializeBufferFromContiguousZeroCopy(
-                    ssGetInputPortSignal(pImpl->simstruct, idx))) {
-                bfError << "Failed to inititialize CONTIGUOUS_ZEROCOPY signal at index " << idx
-                        << ".";
+            if (!signal->initializeBufferFromContiguousZeroCopy(signalRawPtr)) {
+                bfError << "Failed to initialize CONTIGUOUS_ZEROCOPY signal connected to "
+                        << "input port at index " << idx << ".";
                 return {};
             }
 
@@ -124,18 +127,26 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
                 return {};
             }
 
-            return signal;
+            return std::move(signal);
         }
         case core::Signal::DataFormat::NONCONTIGUOUS: {
+            // Get the buffer pointer from Simulink
+            auto signalRawPtr = pImpl->getNonContiguousSignalRawPtrFromInputPort(idx);
+            if (!signalRawPtr) {
+                bfError << "Failed to get input signal at index " << idx << ".";
+            }
+
             // Initialize the signal
-            auto signal = std::make_shared<core::Signal>(core::Signal::DataFormat::NONCONTIGUOUS,
-                                                         pImpl->mapSimulinkToPortType(dataType));
-            signal->setWidth(signalSize);
+            auto signal =
+                std::make_shared<core::Signal>(core::Signal::DataFormat::NONCONTIGUOUS, dataType);
+
+            // Set the width
+            signal->setWidth(nrOfElements);
 
             // Initialize signal's data
-            InputPtrsType port = ssGetInputPortSignalPtrs(pImpl->simstruct, idx);
-            if (!signal->initializeBufferFromNonContiguous(static_cast<const void* const*>(port))) {
-                bfError << "Failed to inititialize NONCONTIGUOUS signal at index " << idx << ".";
+            if (!signal->initializeBufferFromNonContiguous(signalRawPtr)) {
+                bfError << "Failed to initialize NONCONTIGUOUS signal connected to "
+                        << "input port at index " << idx << ".";
                 return {};
             }
 
@@ -145,13 +156,13 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
                 return {};
             }
 
-            return signal;
+            return std::move(signal);
         }
         case core::Signal::DataFormat::CONTIGUOUS: {
             bfError << "Failed to inititialize CONTIGUOUS signal at index " << idx << "."
                     << std::endl
                     << "CONTIGUOUS input signals are not yet supported. "
-                    << "Use CONTIGUOUS_ZEROCOPY instead.";
+                    << "Use CONTIGUOUS_ZEROCOPY instead, they are more efficient.";
             return {};
         }
     }
@@ -160,40 +171,49 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
 }
 
 core::OutputSignalPtr SimulinkBlockInformation::getOutputPortSignal(const PortIndex idx,
-                                                                    const VectorSize size) const
+                                                                    const VectorSize /*size*/) const
 {
-    // Check if the signal is dynamically sized (which means that the dimension
-    // cannot be read)
-    bool isDynamicallySized = (ssGetOutputPortWidth(pImpl->simstruct, idx) == DYNAMICALLY_SIZED);
+    // Get the PortData
+    PortData portData = getOutputPortData(idx);
+    core::DataType dataType = std::get<Port::DataType>(portData);
 
-    // Note that if the signal is dynamically sized, portWidth is necessary
-    if (isDynamicallySized && size == core::Signal::DynamicSize) {
-        bfError << "Trying to get a dynamically sized signal without specifying its size.";
+    // This can happen only if the Block attempts to get the Signal during the
+    // Block::configureSizeAndPorts step. This has undefined behavior, and it should not
+    // be allowed.
+    if (pImpl->isOutputPortDynamicallySized(idx)) {
+        bfError << "The output port " << idx
+                << " has dynamic sizes. Probably the engine hasn't propagated them "
+                << "and the attached signal is not yet available.";
         return {};
     }
 
-    // Read the width of the signal if it is not provided as input and the signal is not
-    // dynamically sized
-    VectorSize signalSize = size;
-    if (!isDynamicallySized && size == core::Signal::DynamicSize) {
-        signalSize = ssGetOutputPortWidth(pImpl->simstruct, idx);
+    // Read the number of expected elements. This will match the buffer size of
+    // the associated Signal object.
+    int nrOfElements = pImpl->getNrOfOutputPortElements(idx);
+
+    // Get the buffer pointer from Simulink
+    auto signalRawPtr = pImpl->getSignalRawPtrFromOutputPort(idx);
+    if (!signalRawPtr) {
+        bfError << "Failed to get output signal at index " << idx << ".";
     }
 
-    // Get the data type of the Signal if set (default: double)
-    DTypeId dataType = ssGetOutputPortDataType(pImpl->simstruct, idx);
+    // Initialize the signal
+    auto signal =
+        std::make_shared<core::Signal>(core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY, dataType);
 
-    auto signal = std::make_shared<core::Signal>(core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY,
-                                                 pImpl->mapSimulinkToPortType(dataType));
-    signal->setWidth(signalSize);
+    // Set the width
+    signal->setWidth(static_cast<unsigned>(nrOfElements));
 
-    if (!signal->initializeBufferFromContiguousZeroCopy(
-            ssGetOutputPortSignal(pImpl->simstruct, idx))) {
-        bfError << "Failed to inititialize CONTIGUOUS_ZEROCOPY signal at index " << idx << ".";
+    // Initialize signal's data
+    if (!signal->initializeBufferFromContiguousZeroCopy(signalRawPtr)) {
+        bfError << "Failed to initialize CONTIGUOUS_ZEROCOPY signal connected to "
+                << "output port at index " << idx << ".";
         return {};
     }
 
+    // Check signal validity
     if (!signal->isValid()) {
-        bfError << "Output signal at index " << idx << " is not valid.";
+        bfError << "Input signal at index " << idx << " is not valid.";
         return {};
     }
 
