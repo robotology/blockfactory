@@ -58,8 +58,10 @@ endif()
 
 # Enable RPATH
 include(AddInstallRPATHSupport)
-add_install_rpath_support(BIN_DIRS ${CMAKE_INSTALL_PREFIX}/bin
-                          LIB_DIRS ${CMAKE_INSTALL_PREFIX}/mex ${CMAKE_INSTALL_PREFIX}/lib
+add_install_rpath_support(BIN_DIRS "${CMAKE_INSTALL_FULL_BINDIR}"
+                          LIB_DIRS
+                              "${CMAKE_INSTALL_FULL_LIBDIR}"
+                              "${CMAKE_INSTALL_PREFIX}/mex"
                           DEPENDS ENABLE_RPATH
                           USE_LINK_PATH)
 
