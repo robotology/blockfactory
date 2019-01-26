@@ -137,10 +137,6 @@ public:
      * @param ioData The structure containing I/O ports data.
      * @return True for success, false otherwise.
      *
-     * @see core::BlockInformation::setNumberOfInputPorts,
-     *      core::BlockInformation::setInputPortVectorSize,
-     *      core::BlockInformation::setInputPortMatrixSize,
-     *      core::BlockInformation::setInputPortDataType
      * @note This method should also automatically set the number of inputs and outputs.
      */
     virtual bool setIOPortsData(const IOData& ioData) = 0;
