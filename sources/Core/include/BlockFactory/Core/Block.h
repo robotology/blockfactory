@@ -231,8 +231,7 @@ public:
      *
      * @param blockInfo The pointer to a BlockInformation object.
      * @return True if the block was configured successfully, false otherwise.
-     * @see core::BlockInformation::setNumberOfInputPorts,
-     *      core::BlockInformation::setInputPortVectorSize
+     * @see core::BlockInformation::setIOPortsData
      */
     virtual bool configureSizeAndPorts(BlockInformation* blockInfo);
 
