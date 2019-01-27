@@ -17,7 +17,7 @@ var searchData=
   ['signal',['Signal',['../classblockfactory_1_1core_1_1_signal.html#a973f4a8d875f284fcd791f9b3f3afa1f',1,'blockfactory::core::Signal::Signal(const DataFormat &amp;dataFormat=DataFormat::CONTIGUOUS_ZEROCOPY, const DataType &amp;dataType=DataType::DOUBLE)'],['../classblockfactory_1_1core_1_1_signal.html#aa0704a8ba9462c529f253f5baddd1631',1,'blockfactory::core::Signal::Signal(const Signal &amp;other)'],['../classblockfactory_1_1core_1_1_signal.html#ab0a017e0148cb4c2cf71b63f817b9f29',1,'blockfactory::core::Signal::Signal(Signal &amp;&amp;other)']]],
   ['signal',['Signal',['../classblockfactory_1_1core_1_1_signal.html',1,'blockfactory::core']]],
   ['signal_2eh',['Signal.h',['../_signal_8h.html',1,'']]],
-  ['simstruct',['simstruct',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a39aad2716b80a4a9fc0145b4994deef8',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
+  ['simstruct',['simstruct',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a39aad2716b80a4a9fc0145b4994deef8',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl::simstruct()'],['../_simulink_block_information_8h.html#af29ccce4e465f3b5bf656a6d98d48e22',1,'SimStruct():&#160;SimulinkBlockInformation.h']]],
   ['simulinkblockinformation',['SimulinkBlockInformation',['../classblockfactory_1_1mex_1_1_simulink_block_information.html',1,'blockfactory::mex']]],
   ['simulinkblockinformation',['SimulinkBlockInformation',['../classblockfactory_1_1mex_1_1_simulink_block_information.html#a8c9b6238b4c618a9918df53235fef0e1',1,'blockfactory::mex::SimulinkBlockInformation']]],
   ['simulinkblockinformation_2eh',['SimulinkBlockInformation.h',['../_simulink_block_information_8h.html',1,'']]],

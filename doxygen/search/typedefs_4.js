@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['outputsignalptr',['OutputSignalPtr',['../namespaceblockfactory_1_1core.html#ac71090d8d50fd8c03318cb237d79a558',1,'blockfactory::core']]]
+  ['noncontiguousinputsignalrawptr',['NonContiguousInputSignalRawPtr',['../namespaceblockfactory_1_1mex_1_1impl.html#a0f79dca9b994df1d274dc918be2ed660',1,'blockfactory::mex::impl']]]
 ];

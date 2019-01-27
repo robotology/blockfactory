@@ -23,6 +23,8 @@ var searchData=
   ['configuresizeandports',['configureSizeAndPorts',['../classblockfactory_1_1core_1_1_block.html#acfb40d2bd1d43f6e938452b198b6b5fd',1,'blockfactory::core::Block']]],
   ['contiguous',['CONTIGUOUS',['../classblockfactory_1_1core_1_1_signal.html#a86db56a3e074a33ca6330fd7d9688a9daaa2a4f4421c371b67e8cdbaa33b7d2fe',1,'blockfactory::core::Signal']]],
   ['contiguous_5fzerocopy',['CONTIGUOUS_ZEROCOPY',['../classblockfactory_1_1core_1_1_signal.html#a86db56a3e074a33ca6330fd7d9688a9dadb3865bc84273ce6aa51b72d8cd4b9f4',1,'blockfactory::core::Signal']]],
+  ['contiguousinputsignalrawptr',['ContiguousInputSignalRawPtr',['../namespaceblockfactory_1_1mex_1_1impl.html#a819e0005896c986a25671ed0112d9f7d',1,'blockfactory::mex::impl']]],
+  ['contiguousoutputsignalrawptr',['ContiguousOutputSignalRawPtr',['../namespaceblockfactory_1_1mex_1_1impl.html#ae8e752290b8405659f31b20945b7ec7b',1,'blockfactory::mex::impl']]],
   ['convertstdvector',['convertStdVector',['../namespaceblockfactory_1_1core.html#a52127b82017a5c377e2c5bb4e2c8fabe',1,'blockfactory::core']]],
   ['convertstdvector_2eh',['ConvertStdVector.h',['../_convert_std_vector_8h.html',1,'']]],
   ['convertstdvector_3c_20bool_2c_20std_3a_3astring_20_3e',['convertStdVector&lt; bool, std::string &gt;',['../namespaceblockfactory_1_1core.html#a9d57c261ac68ebcfb9f0039fb7ee6b7d',1,'blockfactory::core']]],

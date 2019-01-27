@@ -14,6 +14,9 @@ var searchData=
   ['int32',['INT32',['../namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622ba6495adba09844fac8eeb0aba86e6f1bf',1,'blockfactory::core']]],
   ['int8',['INT8',['../namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622baee9d73311ff0658494edfff14c3ec1e3',1,'blockfactory::core']]],
   ['iodata',['IOData',['../structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html',1,'blockfactory::core::BlockInformation']]],
+  ['isinputportdynamicallysized',['isInputPortDynamicallySized',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a13c0d0fbb2275f8b66c58f53c15bfddd',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
+  ['isinputsignalatidxcontiguous',['isInputSignalAtIdxContiguous',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#ab23fc07f78b81b96c9f4355cffa1d9dc',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
+  ['isoutputportdynamicallysized',['isOutputPortDynamicallySized',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a899deed81d5afc80cbdcb876db17a32f',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
   ['isscalar',['isScalar',['../classblockfactory_1_1core_1_1_parameter.html#a02ffbc347d6c82bcfe17f357ee3c84bd',1,'blockfactory::core::Parameter']]],
   ['isvalid',['isValid',['../classblockfactory_1_1core_1_1_signal.html#aba4b21d827c3677f02ce2aa44dac2008',1,'blockfactory::core::Signal']]]
 ];
