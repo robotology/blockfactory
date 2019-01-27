@@ -42,5 +42,8 @@ if(NOT ${NAME}_FIND_QUIETLY)
     endforeach()
 endif()
 
+# Add the folder with the CMake files to the CMAKE_MODULE_PATH of the imported target scope
+list(APPEND CMAKE_MODULE_PATH @CMAKE_INSTALL_PREFIX@/@CMAKE_INSTALL_DATAROOTDIR@/BlockFactory/cmake)
+
 unset(NAME)
 unset(FOUND_COMPONENTS_LIST)
