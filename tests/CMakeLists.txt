@@ -6,7 +6,7 @@ add_library(Catch2Main main.cpp)
 target_link_libraries(Catch2Main Catch2::Catch2)
 
 include(BlockFactoryPlugin)
-add_blockfactory_block(
+register_blockfactory_block(
     BLOCK_NAME MockBlock
     PLUGIN_NAME MockPlugin
     SOURCES "Factory/MockPlugin.h"
@@ -16,3 +16,8 @@ add_blockfactory_plugin(MockPlugin)
 add_blockfactory_test(
     NAME Core
     SOURCES "Core/SignalUnitTest.cpp")
+
+add_blockfactory_test(
+    NAME Factory
+    SOURCES "Factory/FactoryUnitTest.cpp")
+target_compile_definitions(FactoryUnitTests PRIVATE TEST_EXTENDED_PLUGIN_PATH="$<TARGET_FILE_DIR:MockPlugin>")
