@@ -20,8 +20,6 @@ namespace blockfactory {
         class BlockInformation;
         class ParameterMetadata;
         class Parameters;
-        class Configuration;
-        class RobotInterface;
         class Signal;
         using InputSignalPtr = std::shared_ptr<const blockfactory::core::Signal>;
         using OutputSignalPtr = std::shared_ptr<blockfactory::core::Signal>;
