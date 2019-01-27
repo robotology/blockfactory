@@ -82,6 +82,13 @@ public:
      * @return True if the factory was destroyed, false otherwise
      */
     bool destroyFactory(const ClassFactoryData& factorydata);
+
+    /**
+     * @brief Add path to search for plugins
+     *
+     * @param path The new path to be added.
+     */
+    void extendPluginSearchPath(const std::string& path);
 };
 
 #endif
