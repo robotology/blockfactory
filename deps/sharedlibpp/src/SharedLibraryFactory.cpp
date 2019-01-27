@@ -10,7 +10,13 @@
 #include <shlibpp/SharedLibraryClassApi.h>
 #include <shlibpp/SharedLibrary.h>
 
+#include <cstdlib>
+#include <fstream>
+#include <string>
+#include <sstream>
 #include <sys/stat.h>
+#include <vector>
+
 #if defined(_WIN32)
 # define shlibpp_struct_stat struct _stat
 # define shlibpp_stat ::_stat
@@ -31,6 +37,10 @@ public:
     bool isValid() const;
     bool useFactoryFunction(void *factory);
 
+    void extendSearchPath(const std::string& path);
+    void readExtendedPathFromEnvironment();
+    std::string findLibraryInExtendedPath(const std::string& libraryName);
+
     SharedLibrary lib;
     SharedLibraryFactory::Status status;
     SharedLibraryClassApi api;
@@ -45,6 +55,9 @@ public:
     int32_t endCheck;
     int32_t systemVersion;
     const char* factoryName;
+
+    std::vector<std::string> extendedPath;
+    std::string pluginPathEnvVar = "SHLIBPP_PLUGIN_PATH";
 };
 
 
@@ -64,6 +77,24 @@ shlibpp::SharedLibraryFactory::Private::Private(int32_t startCheck,
     memset(&api, 0, sizeof(SharedLibraryClassApi));
 }
 
+std::string shlibpp::SharedLibraryFactory::Private::findLibraryInExtendedPath(const std::string& libraryName)
+{
+    std::size_t found = libraryName.find_first_of("\\/");
+    if (found != std::string::npos) {
+        return {};
+    }
+
+    for (const auto& path: extendedPath) {
+        std::string absolutePath = path + "/" + libraryName;
+
+        if (std::ifstream(absolutePath)) {
+            return absolutePath;
+        }
+    }
+
+    return {};
+}
+
 bool shlibpp::SharedLibraryFactory::Private::open(const char* dll_name)
 {
     returnValue = 0;
@@ -73,9 +104,17 @@ bool shlibpp::SharedLibraryFactory::Private::open(const char* dll_name)
     status = Status::None;
     error = "";
     api.startCheck = 0;
-    if (!lib.open(dll_name)) {
+
+    readExtendedPathFromEnvironment();
+    std::string pathToLib = findLibraryInExtendedPath(dll_name);
+
+    if (pathToLib.empty()) {
+        pathToLib = dll_name;
+    }
+
+    if (!lib.open(pathToLib.c_str())) {
         shlibpp_struct_stat dummy;
-        if (shlibpp_stat(dll_name, &dummy) != 0) {
+        if (shlibpp_stat(pathToLib.c_str(), &dummy) != 0) {
             status = Status::LibraryNotFound;
         } else {
             status = Status::LibraryNotLoaded;
@@ -138,6 +177,44 @@ bool shlibpp::SharedLibraryFactory::Private::useFactoryFunction(void *factory)
     return isValid();
 }
 
+void shlibpp::SharedLibraryFactory::Private::extendSearchPath(const std::string& path)
+{
+    std::string pathToAdd = path;
+
+    if (pathToAdd.back() == '/' || pathToAdd.back() == '\\') {
+        pathToAdd.pop_back();
+    }
+
+    for (const auto& storedPath : extendedPath) {
+        if (storedPath == pathToAdd) {
+            return;
+        }
+    }
+
+    extendedPath.push_back(pathToAdd);
+}
+
+void shlibpp::SharedLibraryFactory::Private::readExtendedPathFromEnvironment()
+{
+    std::string path;
+    auto content = std::getenv(pluginPathEnvVar.c_str());
+
+    if (!content) {
+        return;
+    }
+
+    std::stringstream envStream(content);
+
+#if defined(_WIN32)
+    char delim = ';';
+#else
+    char delim = ':';
+#endif
+
+    while (getline(envStream, path, delim)) {
+        extendSearchPath(path);
+    }
+}
 
 shlibpp::SharedLibraryFactory::SharedLibraryFactory(int32_t startCheck,
                                                     int32_t endCheck,
@@ -192,6 +269,16 @@ bool shlibpp::SharedLibraryFactory::open(const char* dll_name, const char* facto
     mPriv->systemVersion = SHLIBPP_DEFAULT_SYSTEM_VERSION;
     mPriv->factoryName = factoryName;
     return mPriv->open(dll_name);
+}
+
+void shlibpp::SharedLibraryFactory::setPluginPathEnvVarName(const std::string &env_var)
+{
+    mPriv->pluginPathEnvVar = env_var;
+}
+
+void shlibpp::SharedLibraryFactory::extendSearchPath(const std::string& path)
+{
+    mPriv->extendSearchPath(path);
 }
 
 bool shlibpp::SharedLibraryFactory::isValid() const
