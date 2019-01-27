@@ -11,6 +11,7 @@
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Signal.h"
 
+#include <cassert>
 #include <simstruc.h>
 
 using namespace blockfactory::core;
@@ -19,6 +20,17 @@ using namespace blockfactory::mex::impl;
 SimulinkBlockInformationImpl::SimulinkBlockInformationImpl(SimStruct* ss)
     : simstruct(ss)
 {}
+
+bool SimulinkBlockInformationImpl::optionFromKey(const std::string& key, double& option) const
+{
+    if (key == core::BlockOptionPrioritizeOrder) {
+        option = SS_OPTION_PLACE_ASAP;
+        return true;
+    }
+
+    bfError << "Unrecognized block option.";
+    return false;
+}
 
 DataType SimulinkBlockInformationImpl::mapSimulinkToPortType(const DTypeId typeId) const
 {
@@ -230,6 +242,153 @@ bool SimulinkBlockInformationImpl::setOutputPortMatrixSize(const PortIndex idx,
     }
 
     return ssSetOutputPortMatrixDimensions(simstruct, idx, size.first, size.second);
+}
+
+int SimulinkBlockInformationImpl::getNrOfInputPortElements(
+    const BlockInformation::PortIndex idx) const
+{
+    PortData portData = getInputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    int nrOfElements = 1;
+    for (int dim : dimensions) {
+        dim == Signal::DynamicSize ? dim = 0 : true;
+        nrOfElements *= dim;
+    }
+
+    return nrOfElements;
+}
+
+int SimulinkBlockInformationImpl::getNrOfOutputPortElements(
+    const BlockInformation::PortIndex idx) const
+{
+    PortData portData = getOutputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    int nrOfElements = 1;
+    for (int dim : dimensions) {
+        dim == Signal::DynamicSize ? dim = 0 : true;
+        nrOfElements *= dim;
+    }
+
+    return nrOfElements;
+}
+
+SimulinkBlockInformationImpl::PortData
+SimulinkBlockInformationImpl::getInputPortData(const BlockInformation::PortIndex idx) const
+{
+    std::vector<int> portDimension;
+
+    const core::DataType dt = mapSimulinkToPortType(ssGetInputPortDataType(simstruct, idx));
+
+    switch (ssGetInputPortNumDimensions(simstruct, idx)) {
+        case 1: {
+            auto width = ssGetInputPortWidth(simstruct, idx);
+            width == DYNAMICALLY_SIZED ? width = core::Signal::DynamicSize : true;
+            portDimension = {width};
+            break;
+        }
+        case 2: {
+            auto dims = ssGetInputPortDimensions(simstruct, idx);
+            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Signal::DynamicSize : true;
+            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Signal::DynamicSize : true;
+            portDimension = {dims[0], dims[1]};
+            break;
+        }
+        default:
+            bfError << "Unsupported number of port dimensions for port at index " << idx;
+            assert(false);
+    }
+
+    return std::make_tuple(idx, portDimension, dt);
+}
+
+SimulinkBlockInformationImpl::PortData
+SimulinkBlockInformationImpl::getOutputPortData(const BlockInformation::PortIndex idx) const
+{
+    std::vector<int> portDimension;
+
+    const core::DataType dt = mapSimulinkToPortType(ssGetOutputPortDataType(simstruct, idx));
+
+    switch (ssGetOutputPortNumDimensions(simstruct, idx)) {
+        case 1: {
+            auto width = ssGetOutputPortWidth(simstruct, idx);
+            width == DYNAMICALLY_SIZED ? width = core::Signal::DynamicSize : true;
+            portDimension = {width};
+            break;
+        }
+        case 2: {
+            auto dims = ssGetOutputPortDimensions(simstruct, idx);
+            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Signal::DynamicSize : true;
+            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Signal::DynamicSize : true;
+            portDimension = {dims[0], dims[1]};
+            break;
+        }
+        default:
+            bfError << "Unsupported number of port dimensions for port at index " << idx;
+            assert(false);
+    }
+
+    return std::make_tuple(idx, portDimension, dt);
+}
+
+bool SimulinkBlockInformationImpl::isInputPortDynamicallySized(const PortIndex idx) const
+{
+    PortData portData = getInputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    for (auto dim : dimensions) {
+        if (dim == core::Signal::DynamicSize) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool SimulinkBlockInformationImpl::isOutputPortDynamicallySized(const PortIndex idx) const
+{
+    PortData portData = getOutputPortData(idx);
+    BlockInformation::PortDimension dimensions =
+        std::get<BlockInformation::Port::Dimensions>(portData);
+
+    for (auto dim : dimensions) {
+        if (dim == core::Signal::DynamicSize) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool SimulinkBlockInformationImpl::isInputSignalAtIdxContiguous(
+    const SimulinkBlockInformationImpl::PortIndex idx) const
+{
+    return ssGetInputPortRequiredContiguous(simstruct, idx);
+}
+
+ContiguousInputSignalRawPtr
+SimulinkBlockInformationImpl::getContiguousSignalRawPtrFromInputPort(const PortIndex idx) const
+{
+    auto ptr = ssGetInputPortSignal(simstruct, idx);
+    return idx >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
+}
+
+NonContiguousInputSignalRawPtr
+SimulinkBlockInformationImpl::getNonContiguousSignalRawPtrFromInputPort(const PortIndex idx) const
+{
+    auto ptr = ssGetInputPortSignalPtrs(simstruct, idx);
+    return idx >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
+}
+
+ContiguousOutputSignalRawPtr
+SimulinkBlockInformationImpl::getSignalRawPtrFromOutputPort(const PortIndex idx) const
+{
+    auto ptr = ssGetOutputPortSignal(simstruct, idx);
+    return idx >= ssGetNumOutputPorts(simstruct) ? nullptr : ptr;
 }
 
 // =================

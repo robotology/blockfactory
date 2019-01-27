@@ -13,10 +13,6 @@
 #include "BlockFactory/Core/Parameter.h"
 #include "BlockFactory/Core/Signal.h"
 
-// This is a typedef. We could forward declare it but since it might
-// change it is better keeping this include here.
-#include <simstruc.h>
-
 #include <string>
 #include <vector>
 
@@ -28,6 +24,9 @@ namespace blockfactory {
         } // namespace impl
     } // namespace mex
 } // namespace blockfactory
+
+// Forward declare SimStruct
+typedef struct SimStruct_tag SimStruct;
 
 /**
  * @brief Simulink implementation of block information
