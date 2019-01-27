@@ -5,6 +5,14 @@
 add_library(Catch2Main main.cpp)
 target_link_libraries(Catch2Main Catch2::Catch2)
 
+include(BlockFactoryPlugin)
+add_blockfactory_block(
+    BLOCK_NAME MockBlock
+    PLUGIN_NAME MockPlugin
+    SOURCES "Factory/MockPlugin.h"
+            "Factory/MockPlugin.cpp")
+add_blockfactory_plugin(MockPlugin)
+
 add_blockfactory_test(
     NAME Core
     SOURCES "Core/SignalUnitTest.cpp")
