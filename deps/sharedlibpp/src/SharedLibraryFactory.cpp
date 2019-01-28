@@ -25,6 +25,12 @@
 # define shlibpp_stat ::stat
 #endif
 
+#if defined(WIN32) || defined(_WIN32)
+#define PATH_SEPARATOR "\\"
+#else
+#define PATH_SEPARATOR "/"
+#endif
+
 class shlibpp::SharedLibraryFactory::Private
 {
 public:
@@ -85,7 +91,7 @@ std::string shlibpp::SharedLibraryFactory::Private::findLibraryInExtendedPath(co
     }
 
     for (const auto& path: extendedPath) {
-        std::string absolutePath = path + "/" + libraryName;
+        std::string absolutePath = path + PATH_SEPARATOR + libraryName;
 
         if (std::ifstream(absolutePath)) {
             return absolutePath;
