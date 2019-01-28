@@ -25,6 +25,12 @@ install(
     TARGETS BlockFactory
     EXPORT BlockFactoryExport)
 
+# Install CMake utilites provided
+install(
+    FILES
+    "${PROJECT_SOURCE_DIR}/cmake/BlockFactoryPlugin.cmake"
+    DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/BlockFactory/cmake")
+
 install_basic_package_files(BlockFactory
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
