@@ -31,10 +31,9 @@ if(NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Libraries type
-if(MSVC)
-    option(BUILD_SHARED_LIBS "Compile BlockFactory as a shared library" FALSE)
-else()
-    option(BUILD_SHARED_LIBS "Compile BlockFactory as a shared library" TRUE)
+option(BUILD_SHARED_LIBS "Compile BlockFactory as a shared library" TRUE)
+if(MSVC AND NOT ${BUILD_SHARED_LIBS})
+    message(FATAL_ERROR "BUILD_SHARED_LIBS=OFF is not currently supported on Windows")
 endif()
 
 # Build position independent code
