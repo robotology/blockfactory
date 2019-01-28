@@ -141,7 +141,15 @@ void ClassFactorySingleton::extendPluginSearchPath(const std::string& path)
 std::string platformSpecificLibName(const std::string& library)
 {
 #if defined(_WIN32)
-    return library + "dll";
+#if _MSC_VER && !__INTEL_COMPILER
+#if defined(NDEBUG)
+    return library + ".dll";
+#else
+    return library + "d.dll";
+#endif
+#else
+    return "lib" + library + ".dll";
+#endif
 #elif defined(__linux__)
     return "lib" + library + ".so";
 #elif defined(__APPLE__)
