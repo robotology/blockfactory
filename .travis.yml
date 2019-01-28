@@ -29,9 +29,9 @@ env:
   matrix:
     - TRAVIS_BUILD_TYPE="Release" UBUNTU="xenial"
     - TRAVIS_BUILD_TYPE="Debug" UBUNTU="xenial"
-    - TRAVIS_BUILD_TYPE="Release" UBUNTU="bionic"
-    - TRAVIS_BUILD_TYPE="Debug" UBUNTU="bionic"
-    - TRAVIS_BUILD_TYPE="Debug" UBUNTU="bionic" VALGRIND_TESTS=1
+    - TRAVIS_BUILD_TYPE="Release" UBUNTU="bionic" BUILD_TESTING=1
+    - TRAVIS_BUILD_TYPE="Debug" UBUNTU="bionic" BUILD_TESTING=1
+    - TRAVIS_BUILD_TYPE="Debug" UBUNTU="bionic" BUILD_TESTING=1 VALGRIND_TESTS=1
 
 # ===================
 # STAGE: test (linux)
@@ -147,11 +147,13 @@ jobs:
       after_failure: skip
       after_success: skip
       env:
+        BUILD_TESTING=1
         TRAVIS_CMAKE_GENERATOR="Xcode"
         TRAVIS_BUILD_TYPE="Debug"
     - <<: *osx_template
       compiler: clang
       env:
+        BUILD_TESTING=1
         TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
         TRAVIS_BUILD_TYPE="Debug"
     # -------------
@@ -171,12 +173,14 @@ jobs:
       after_failure: skip
       after_success: skip
       env:
+        BUILD_TESTING=1
         TRAVIS_CMAKE_GENERATOR="Visual Studio 15 2017"
         TRAVIS_CMAKE_ARCHITECTURE="x64"
         TRAVIS_BUILD_TYPE="Debug"
     - <<: *windows_template
       install: choco install ninja
       env:
+        BUILD_TESTING=1
         TRAVIS_CMAKE_GENERATOR="Ninja"
         TRAVIS_BUILD_TYPE="Debug"
     # ------------
