@@ -112,7 +112,7 @@ else()
         ENG_LIBRARY
         MAIN_PROGRAM
         SIMULINK)
-    if(NOT CMAKE_MINIMUM_REQUIRED_VERSION VERSION_LESS 3.7)
+    if(NOT ${CMAKE_MINIMUM_REQUIRED_VERSION} VERSION_LESS 3.7)
       message(AUTHOR_WARNING "CMake minimum required version greater than 3.7. You can remove this.")
     endif()
 endif()

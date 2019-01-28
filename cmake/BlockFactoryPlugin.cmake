@@ -99,8 +99,8 @@ function(install_blockfactory_plugin)
         PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${plugin_name}/Block")
 endfunction()
 
-if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.13)
-    if(NOT CMAKE_MINIMUM_REQUIRED_VERSION VERSION_LESS 3.13)
+if(NOT ${CMAKE_VERSION} VERSION_LESS 3.13)
+    if(NOT ${CMAKE_MINIMUM_REQUIRED_VERSION} VERSION_LESS 3.13)
       message(AUTHOR_WARNING
           "This version of CMake comes with an improved version of target_sources. "
           "Consider to switch the logic substituting global properties.")
