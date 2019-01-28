@@ -42,8 +42,8 @@ TEST_CASE("Load plugin", "[Factory][Plugin]")
     {
         // Load with right parameters, but the linker should not find the plugin library
         // since the folder is not in the search path
-        auto factory = factorySingleton.getClassFactory({mockPluginName, mockBlockName});
-        REQUIRE(factory == nullptr);
+        //        auto factory = factorySingleton.getClassFactory({mockPluginName, mockBlockName});
+        //        REQUIRE(factory == nullptr);
     }
 
     // Extend the plugin search path
