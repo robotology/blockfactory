@@ -19,10 +19,25 @@ include(CTest)
 include(Catch)
 enable_testing()
 
-function(add_blockfactory_test name unit_test_files)
+function(add_blockfactory_test)
+    set(options)
+    set(oneValueArgs NAME)
+    set(multiValueArgs SOURCES)
+
+    set(prefix "abf")
+
+    cmake_parse_arguments(${prefix}
+        "${options}"
+        "${oneValueArgs}"
+        "${multiValueArgs}"
+        ${ARGN})
+
+    set(name ${${prefix}_NAME})
+    set(unit_test_files ${${prefix}_SOURCES})
+
     set(targetname ${name}UnitTests)
     add_executable(${targetname}
-        ${unit_test_files})
+        "${unit_test_files}")
 
     target_link_libraries(${targetname} PRIVATE Catch2Main BlockFactory::Core)
     catch_discover_tests(${targetname} EXTRA_ARGS "--use-colour yes")

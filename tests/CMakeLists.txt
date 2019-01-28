@@ -5,4 +5,6 @@
 add_library(Catch2Main main.cpp)
 target_link_libraries(Catch2Main Catch2::Catch2)
 
-add_blockfactory_test(Core "Core/SignalUnitTest.cpp")
+add_blockfactory_test(
+    NAME Core
+    SOURCES "Core/SignalUnitTest.cpp")
