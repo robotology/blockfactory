@@ -41,44 +41,40 @@ bool SimulinkBlockInformation::optionFromKey(const std::string& key, double& opt
 // PORT INFORMATION GETTERS
 // ========================
 
-core::BlockInformation::VectorSize
-SimulinkBlockInformation::getInputPortWidth(const PortIndex idx) const
+core::Port::Size::Vector
+SimulinkBlockInformation::getInputPortWidth(const core::Port::Index idx) const
 {
-    PortData portData = getInputPortData(idx);
-    PortDimension dims = std::get<Port::Dimensions>(portData);
+    core::Port::Info portInfo = getInputPortInfo(idx);
 
-    if (dims.size() != 1) {
-        bfError << "Signal at index " << idx
+    if (portInfo.dimension.size() != 1) {
+        bfError << "Input port at index " << idx
                 << "does not contain a vector. Failed to get its size.";
-        assert(dims.size() != 1);
+        assert(portInfo.dimension.size() != 1);
         return {};
     }
 
-    return dims[0];
+    return portInfo.dimension[0];
 }
 
-core::BlockInformation::VectorSize
-SimulinkBlockInformation::getOutputPortWidth(const PortIndex idx) const
+core::Port::Size::Vector
+SimulinkBlockInformation::getOutputPortWidth(const core::Port::Index idx) const
 {
-    PortData portData = getOutputPortData(idx);
-    PortDimension dims = std::get<Port::Dimensions>(portData);
+    core::Port::Info portInfo = getOutputPortInfo(idx);
 
-    if (dims.size() != 1) {
-        bfError << "Signal at index " << idx
+    if (portInfo.dimension.size() != 1) {
+        bfError << "Output port at index " << idx
                 << "does not contain a vector. Failed to get its size.";
-        assert(dims.size() != 1);
+        assert(portInfo.dimension.size() != 1);
         return {};
     }
 
-    return dims[0];
+    return portInfo.dimension[0];
 }
 
-core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortIndex idx,
-                                                                  const VectorSize /*size*/) const
+core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const core::Port::Index idx) const
 {
     // Get the PortData
-    PortData portData = getInputPortData(idx);
-    core::DataType dataType = std::get<Port::DataType>(portData);
+    core::Port::Info portInfo = getInputPortInfo(idx);
 
     // This can happen only if the Block attempts to get the Signal during the
     // Block::configureSizeAndPorts step. This has undefined behavior, and it should not
@@ -97,7 +93,7 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
 
     // Read the number of expected elements. This will match the buffer size of
     // the associated Signal object.
-    int nrOfElements = pImpl->getNrOfInputPortElements(idx);
+    size_t nrOfElements = pImpl->getNrOfInputPortElements(idx);
 
     switch (signalDataFormat) {
         case core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY: {
@@ -109,13 +105,10 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
 
             // Initialize the signal
             auto signal = std::make_shared<core::Signal>(
-                core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY, dataType);
-
-            // Set the width
-            signal->setWidth(static_cast<unsigned>(nrOfElements));
+                core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY, portInfo.dataType);
 
             // Initialize signal's data
-            if (!signal->initializeBufferFromContiguousZeroCopy(signalRawPtr)) {
+            if (!signal->initializeBufferFromContiguousZeroCopy(signalRawPtr, nrOfElements)) {
                 bfError << "Failed to initialize CONTIGUOUS_ZEROCOPY signal connected to "
                         << "input port at index " << idx << ".";
                 return {};
@@ -137,14 +130,11 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
             }
 
             // Initialize the signal
-            auto signal =
-                std::make_shared<core::Signal>(core::Signal::DataFormat::NONCONTIGUOUS, dataType);
-
-            // Set the width
-            signal->setWidth(nrOfElements);
+            auto signal = std::make_shared<core::Signal>(core::Signal::DataFormat::NONCONTIGUOUS,
+                                                         portInfo.dataType);
 
             // Initialize signal's data
-            if (!signal->initializeBufferFromNonContiguous(signalRawPtr)) {
+            if (!signal->initializeBufferFromNonContiguous(signalRawPtr, nrOfElements)) {
                 bfError << "Failed to initialize NONCONTIGUOUS signal connected to "
                         << "input port at index " << idx << ".";
                 return {};
@@ -170,12 +160,11 @@ core::InputSignalPtr SimulinkBlockInformation::getInputPortSignal(const PortInde
     return {};
 }
 
-core::OutputSignalPtr SimulinkBlockInformation::getOutputPortSignal(const PortIndex idx,
-                                                                    const VectorSize /*size*/) const
+core::OutputSignalPtr
+SimulinkBlockInformation::getOutputPortSignal(const core::Port::Index idx) const
 {
     // Get the PortData
-    PortData portData = getOutputPortData(idx);
-    core::DataType dataType = std::get<Port::DataType>(portData);
+    core::Port::Info portInfo = getOutputPortInfo(idx);
 
     // This can happen only if the Block attempts to get the Signal during the
     // Block::configureSizeAndPorts step. This has undefined behavior, and it should not
@@ -189,7 +178,7 @@ core::OutputSignalPtr SimulinkBlockInformation::getOutputPortSignal(const PortIn
 
     // Read the number of expected elements. This will match the buffer size of
     // the associated Signal object.
-    int nrOfElements = pImpl->getNrOfOutputPortElements(idx);
+    size_t nrOfElements = pImpl->getNrOfOutputPortElements(idx);
 
     // Get the buffer pointer from Simulink
     auto signalRawPtr = pImpl->getSignalRawPtrFromOutputPort(idx);
@@ -198,14 +187,11 @@ core::OutputSignalPtr SimulinkBlockInformation::getOutputPortSignal(const PortIn
     }
 
     // Initialize the signal
-    auto signal =
-        std::make_shared<core::Signal>(core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY, dataType);
-
-    // Set the width
-    signal->setWidth(static_cast<unsigned>(nrOfElements));
+    auto signal = std::make_shared<core::Signal>(core::Signal::DataFormat::CONTIGUOUS_ZEROCOPY,
+                                                 portInfo.dataType);
 
     // Initialize signal's data
-    if (!signal->initializeBufferFromContiguousZeroCopy(signalRawPtr)) {
+    if (!signal->initializeBufferFromContiguousZeroCopy(signalRawPtr, nrOfElements)) {
         bfError << "Failed to initialize CONTIGUOUS_ZEROCOPY signal connected to "
                 << "output port at index " << idx << ".";
         return {};
@@ -220,36 +206,34 @@ core::OutputSignalPtr SimulinkBlockInformation::getOutputPortSignal(const PortIn
     return signal;
 }
 
-core::BlockInformation::MatrixSize
-SimulinkBlockInformation::getInputPortMatrixSize(const PortIndex idx) const
+core::Port::Size::Matrix
+SimulinkBlockInformation::getInputPortMatrixSize(const core::Port::Index idx) const
 {
-    PortData portData = getInputPortData(idx);
-    PortDimension dims = std::get<Port::Dimensions>(portData);
+    core::Port::Info portInfo = getInputPortInfo(idx);
 
-    if (dims.size() != 2) {
-        bfError << "Signal at index " << idx
+    if (portInfo.dimension.size() != 2) {
+        bfError << "Input port at index " << idx
                 << "does not contain a matrix. Failed to get its size.";
-        assert(dims.size() != 2);
+        assert(portInfo.dimension.size() != 2);
         return {};
     }
 
-    return {dims[0], dims[1]};
+    return {portInfo.dimension[0], portInfo.dimension[1]};
 }
 
-core::BlockInformation::MatrixSize
-SimulinkBlockInformation::getOutputPortMatrixSize(const PortIndex idx) const
+core::Port::Size::Matrix
+SimulinkBlockInformation::getOutputPortMatrixSize(const core::Port::Index idx) const
 {
-    PortData portData = getOutputPortData(idx);
-    PortDimension dims = std::get<Port::Dimensions>(portData);
+    core::Port::Info portInfo = getOutputPortInfo(idx);
 
-    if (dims.size() != 2) {
-        bfError << "Signal at index " << idx
+    if (portInfo.dimension.size() != 2) {
+        bfError << "Output port at index " << idx
                 << "does not contain a matrix. Failed to get its size.";
-        assert(dims.size() != 2);
+        assert(portInfo.dimension.size() != 2);
         return {};
     }
 
-    return {dims[0], dims[1]};
+    return {portInfo.dimension[0], portInfo.dimension[1]};
 }
 
 bool SimulinkBlockInformation::addParameterMetadata(const core::ParameterMetadata& paramMD)
@@ -524,30 +508,31 @@ bool SimulinkBlockInformation::parseParameters(core::Parameters& parameters)
     return true;
 }
 
-bool SimulinkBlockInformation::setIOPortsData(const BlockInformation::IOData& ioData)
+bool SimulinkBlockInformation::setPortsInfo(const core::InputPortsInfo& inputPortsInfo,
+                                            const core::OutputPortsInfo& outputPortsInfo)
 {
     // Set the number of input ports
-    if (!pImpl->setNumberOfInputPorts(ioData.input.size())) {
+    if (!pImpl->setNumberOfInputPorts(inputPortsInfo.size())) {
         bfError << "Failed to set the number of input ports.";
         return false;
     }
 
     // Set the number of output ports
-    if (!pImpl->setNumberOfOutputPorts(ioData.output.size())) {
+    if (!pImpl->setNumberOfOutputPorts(outputPortsInfo.size())) {
         bfError << "Failed to set the number of output ports.";
         return false;
     }
 
     // Set the other input ports properties
-    for (const auto& portData : ioData.input) {
-        if (!pImpl->updateInputPortData(portData)) {
+    for (const auto& portInfo : inputPortsInfo) {
+        if (!pImpl->updateInputPortInfo(portInfo)) {
             return false;
         }
     }
 
     // Set the other output ports properties
-    for (const auto& portData : ioData.output) {
-        if (!pImpl->updateOutputPortData(portData)) {
+    for (const auto& portInfo : outputPortsInfo) {
+        if (!pImpl->updateOutputPortInfo(portInfo)) {
             return false;
         }
     }
@@ -555,14 +540,12 @@ bool SimulinkBlockInformation::setIOPortsData(const BlockInformation::IOData& io
     return true;
 }
 
-core::BlockInformation::PortData
-SimulinkBlockInformation::getInputPortData(const BlockInformation::PortIndex idx) const
+core::Port::Info SimulinkBlockInformation::getInputPortInfo(const core::Port::Index idx) const
 {
-    return pImpl->getInputPortData(idx);
+    return pImpl->getInputPortInfo(idx);
 }
 
-core::BlockInformation::PortData
-SimulinkBlockInformation::getOutputPortData(const BlockInformation::PortIndex idx) const
+core::Port::Info SimulinkBlockInformation::getOutputPortInfo(const core::Port::Index idx) const
 {
-    return pImpl->getOutputPortData(idx);
+    return pImpl->getOutputPortInfo(idx);
 }

@@ -7,9 +7,9 @@
  *
  * Code generation for model "AutogenerationExample".
  *
- * Model version              : 1.7
+ * Model version              : 1.10
  * Simulink Coder version : 8.14 (R2018a) 06-Feb-2018
- * C++ source code generated on : Fri Dec 14 16:49:39 2018
+ * C++ source code generated on : Tue Jan 29 14:43:33 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -24,9 +24,9 @@
 #include <string.h>
 #ifndef AutogenerationExample_COMMON_INCLUDES_
 #define AutogenerationExample_COMMON_INCLUDES_
+#include "rtwtypes.h"
 #include "rtw_continuous.h"
 #include "rtw_solver.h"
-#include "rtwtypes.h"
 #include <BlockFactory/Core/Block.h>
 #include <BlockFactory/Core/FactorySingleton.h>
 #include <BlockFactory/Core/Log.h>

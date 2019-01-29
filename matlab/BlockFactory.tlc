@@ -123,7 +123,7 @@
   %assign PWorkStorage_Block     = LibBlockPWork(blockPWork, "", "", 0)
   %assign PWorkStorage_BlockInfo = LibBlockPWork(blockPWork, "", "", 1)
 
-  {    
+  {
     // Create and store the CoderBlockInformation object
     blockfactory::coder::CoderBlockInformation* blockInfo = new blockfactory::coder::CoderBlockInformation();
     %<PWorkStorage_BlockInfo> = static_cast<void*>(blockInfo);
@@ -199,7 +199,7 @@
     %%assign width = LibBlockInputSignalWidth(i)
     %assign address = LibBlockInputSignalAddr(i, "", "", 0)
     blockInfo->setInputPort(
-        {%<i>, {%<rows>, %<cols>}, blockfactory::core::DataType::DOUBLE},
+        {%<i>, {%<rows>, %<cols>}, blockfactory::core::Port::DataType::DOUBLE},
         static_cast<void*>(%<address>));
     %endforeach
 
@@ -218,7 +218,7 @@
     %%assign width = LibBlockOutputSignalWidth(i)
     %assign address = LibBlockOutputSignalAddr(i, "", "", 0)
     blockInfo->setOutputPort(
-        {%<i>, {%<rows>, %<cols>}, blockfactory::core::DataType::DOUBLE},
+        {%<i>, {%<rows>, %<cols>}, blockfactory::core::Port::DataType::DOUBLE},
         static_cast<void*>(%<address>));
     %endforeach
 

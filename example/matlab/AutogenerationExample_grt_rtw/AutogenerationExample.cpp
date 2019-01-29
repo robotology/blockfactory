@@ -7,9 +7,9 @@
  *
  * Code generation for model "AutogenerationExample".
  *
- * Model version              : 1.7
+ * Model version              : 1.10
  * Simulink Coder version : 8.14 (R2018a) 06-Feb-2018
- * C++ source code generated on : Fri Dec 14 16:49:39 2018
+ * C++ source code generated on : Tue Jan 29 14:43:33 2019
  *
  * Target selection: grt.tlc
  * Note: GRT includes extra infrastructure and instrumentation for prototyping
@@ -121,17 +121,17 @@ void AutogenerationExampleModelClass::initialize()
         // ---------------------------------
 
         // Inputs
-        blockInfo->setInputPort({0, {1, 5}, blockfactory::core::DataType::DOUBLE}
+        blockInfo->setInputPort({0, {1, 5}, blockfactory::core::Port::DataType::DOUBLE}
 
                                 ,
                                 static_cast<void*>(&AutogenerationExample_P.Constant_Value[0]));
-        blockInfo->setInputPort({1, {1, 5}, blockfactory::core::DataType::DOUBLE}
+        blockInfo->setInputPort({1, {1, 5}, blockfactory::core::Port::DataType::DOUBLE}
 
                                 ,
                                 static_cast<void*>(&AutogenerationExample_U.input2[0]));
 
         // Outputs
-        blockInfo->setOutputPort({0, {1, 5}, blockfactory::core::DataType::DOUBLE}
+        blockInfo->setOutputPort({0, {1, 5}, blockfactory::core::Port::DataType::DOUBLE}
 
                                  ,
                                  static_cast<void*>(&AutogenerationExample_Y.Result[0]));

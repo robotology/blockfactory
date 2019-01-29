@@ -9,40 +9,18 @@
 #ifndef BLOCKFACTORY_CORE_SIGNAL_H
 #define BLOCKFACTORY_CORE_SIGNAL_H
 
+#include "BlockFactory/Core/Port.h"
+
 #include <memory>
 
 namespace blockfactory {
     namespace core {
         class Signal;
-        enum class DataType;
     } // namespace core
 } // namespace blockfactory
 
 /**
- * @brief Defines allowed signal data types
- *
- * This enum defines the data types of signals that are handled by this toolbox.
- *
- * @note Currently only `DOUBLE` is fully implemented.
- * @see core::Signal::Signal,
- *      core::BlockInformation::setInputPortType,
- *      core::BlockInformation::setOutputPortType
- */
-enum class blockfactory::core::DataType
-{
-    DOUBLE,
-    SINGLE,
-    INT8,
-    UINT8,
-    INT16,
-    UINT16,
-    INT32,
-    UINT32,
-    BOOLEAN,
-};
-
-/**
- * @brief Class to represent data shared by blocks, labelled as signals.
+ * @brief Class to access data shared by blocks, represented as signals.
  *
  * Analogously to the block-algorithm corrispondence, this class introduces the signal-data
  * corrispondence. Signals are basically the connections between blocks.
@@ -50,10 +28,10 @@ enum class blockfactory::core::DataType
  * Signals do not directly translate to block's input and output. Signals are plugged into block
  * ports, and these block ports fill the signal with data.
  *
- * Briefly, core::Signal is a wrapper around a generic `void*` buffer.
+ * Briefly, core::Signal is a wrapper of a generic `void*` buffer.
  *
  * @remark A signal can be plugged to more than one block port.
- * @see core::Block
+ * @see core::Port, core::Block
  */
 class blockfactory::core::Signal
 {
@@ -63,13 +41,14 @@ public:
     ///
     /// @note DataFormat::CONTIGUOUS_ZEROCOPY is the only format that doesn't copy data from the
     ///       original buffer address into the core::Signal object. The engine is responsible of its
-    ///       memory management, and a core::Signal object of this type can only access (either r/o
-    ///       or r/w) to this raw buffer. On the other hand, both DataFormat::CONTIGUOUS and
-    ///       DataFormat::NONCONTIGUOUS copy the content of the buffer inside the Signal object. For
-    ///       performance reasons, prefer using DataFormat::CONTIGUOUS_ZEROCOPY.
+    ///       memory management, and a core::Signal object of this type does not own any memory. On
+    ///       the other hand, both DataFormat::CONTIGUOUS and DataFormat::NONCONTIGUOUS copy the
+    ///       content of the buffer inside the Signal object. For performance reasons, prefer using
+    ///       DataFormat::CONTIGUOUS_ZEROCOPY since it minimizes dynamic allocations during the
+    ///       simulation loop.
     /// \par
     /// @note DataFormat::NONCONTIGUOUS is associated to r/o signals and methods as
-    ///       core::Signal::setBuffer are not allowed.
+    ///       core::Signal::setBuffer are not allowed. It might be the candidate of input signals.
     ///
     /// @see core::BlockInformation::getInputPortSignal,
     ///      core::BlockInformation::getOutputPortSignal
@@ -111,13 +90,8 @@ private:
 #endif
 
 public:
-    enum
-    {
-        DynamicSize = -1
-    };
-
     Signal(const DataFormat& dataFormat = DataFormat::CONTIGUOUS_ZEROCOPY,
-           const DataType& dataType = DataType::DOUBLE);
+           const Port::DataType& dataType = Port::DataType::DOUBLE);
     ~Signal();
 
     Signal(const Signal& other);
@@ -133,11 +107,12 @@ public:
      * case, the core::Signal object will own the data.
      *
      * @param buffer The pointer to the original contiguous buffer.
+     * @param len The number of buffer elements.
      * @return True for success, false otherwise.
      *
      * @see core::Signal::DataFormat
      */
-    bool initializeBufferFromContiguous(const void* buffer);
+    bool initializeBufferFromContiguous(const void* buffer, size_t len);
 
     /**
      * @brief Initialize the signal from a contiguous buffer without copying data
@@ -145,15 +120,13 @@ public:
      * This methods accepts an external contiguous buffer and holds its pointer. The data is not
      * owned by this object.
      *
-     * @note You must set the signal width with core::Signal::setWidth in order to have a valid
-     *       signal.
-     *
      * @param buffer The pointer to the original contiguous buffer.
+     * @param len The number of buffer elements.
      * @return True for success, false otherwise.
      *
      * @see core::Signal::DataFormat
      */
-    bool initializeBufferFromContiguousZeroCopy(const void* buffer);
+    bool initializeBufferFromContiguousZeroCopy(const void* buffer, size_t len);
 
     /**
      * @brief Initialize the signal from a non-contiguous buffer
@@ -162,15 +135,13 @@ public:
      * this case, the core::Signal object will own the data. `bufferPtrs` points to an array of
      * pointers. Each of these pointers points to a data element.
      *
-     * @note You must set the signal width with core::Signal::setWidth in order to have a valid
-     *       signal.
-     *
      * @param bufferPtrs The pointer to the original non-contiguous buffer.
+     * @param len The number of buffer elements.
      * @return True for success, false otherwise.
      *
      * @see core::Signal::DataFormat
      */
-    bool initializeBufferFromNonContiguous(const void* const* bufferPtrs);
+    bool initializeBufferFromNonContiguous(const void* const* bufferPtrs, size_t len);
 
     /**
      * @brief Check if the signal is valid
@@ -184,23 +155,20 @@ public:
     /**
      * @brief Read the width of the signal
      *
-     * By default the width of Signal is core::Signal::DynamicSize. However, for being a valid
-     * signal, an object must have a specified width.
-     *
      * @return The signal width.
      *
-     * @see Signal::setWidth, Signal::isValid
+     * @see Signal::isValid
      */
-    int getWidth() const;
+    size_t getWidth() const;
 
     /**
-     * @brief Read the core::DataType of the signal
+     * @brief Read the Port::DataType of the signal
      *
-     * The default type is core::DataType::DOUBLE.
+     * The default type is Port::DataType::DOUBLE.
      *
      * @return The signal data type.
      */
-    DataType getPortDataType() const;
+    Port::DataType getPortDataType() const;
 
     /**
      * @brief Read the core::Signal::DataFormat of the signal
@@ -251,14 +219,7 @@ public:
      * @todo Switch to std::optional as soon as we switch to C++17
      */
     template <typename T>
-    T get(const unsigned i) const;
-
-    /**
-     * @brief Set the width of the signal
-     *
-     * @param width The width to set.
-     */
-    void setWidth(const unsigned width);
+    T get(const size_t i) const;
 
     /**
      * @brief Set the value of a sigle element of the buffer
@@ -269,7 +230,7 @@ public:
      *
      * @todo Port this to a template
      */
-    bool set(const unsigned index, const double data);
+    bool set(const size_t index, const double data);
 
     /**
      * @brief Set the pointer to the buffer storing signal's data
@@ -286,7 +247,7 @@ public:
      * @return True if the buffer was set sucessfully, false otherwise.
      */
     template <typename T>
-    bool setBuffer(const T* data, const unsigned length);
+    bool setBuffer(const T* data, const size_t length);
 };
 
 // Explicit declaration of templates for all the supported types
@@ -300,8 +261,8 @@ namespace blockfactory {
         // DataType::DOUBLE
         extern template double* Signal::getBuffer<double>();
         extern template const double* Signal::getBuffer<double>() const;
-        extern template double Signal::get<double>(const unsigned i) const;
-        extern template bool Signal::setBuffer<double>(const double* data, const unsigned length);
+        extern template double Signal::get<double>(const size_t i) const;
+        extern template bool Signal::setBuffer<double>(const double* data, const size_t length);
     } // namespace core
 } // namespace blockfactory
 

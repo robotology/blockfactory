@@ -39,19 +39,19 @@ private:
 public:
     using ParameterIndex = unsigned;
 
-    using DataType = blockfactory::core::DataType;
-    using PortData = blockfactory::core::BlockInformation::PortData;
-    using PortIndex = blockfactory::core::BlockInformation::PortIndex;
-    using VectorSize = blockfactory::core::BlockInformation::VectorSize;
-    using MatrixSize = blockfactory::core::BlockInformation::MatrixSize;
+    using DataType = blockfactory::core::Port::DataType;
+    using PortInfo = blockfactory::core::Port::Info;
+    using PortIndex = blockfactory::core::Port::Index;
+    using VectorSize = blockfactory::core::Port::Size::Vector;
+    using MatrixSize = blockfactory::core::Port::Size::Matrix;
 
     SimStruct* simstruct = nullptr;
 
     std::string confBlockName;
     std::vector<core::ParameterMetadata> paramsMetadata;
 
-    core::DataType mapSimulinkToPortType(const DTypeId typeId) const;
-    DTypeId mapPortTypeToSimulink(const core::DataType dataType) const;
+    DataType mapSimulinkToPortType(const DTypeId typeId) const;
+    DTypeId mapPortTypeToSimulink(const DataType dataType) const;
 
     SimulinkBlockInformationImpl() = delete;
     SimulinkBlockInformationImpl(SimStruct* ss);
@@ -67,8 +67,8 @@ public:
     // PORTS METHODS
     // =============
 
-    bool updateInputPortData(const PortData& portData);
-    bool updateOutputPortData(const PortData& portData);
+    bool updateInputPortInfo(const PortInfo& portData);
+    bool updateOutputPortInfo(const PortInfo& portData);
     bool setNumberOfInputPorts(const size_t numberOfPorts);
     bool setNumberOfOutputPorts(const size_t numberOfPorts);
     bool setInputPortType(const PortIndex idx, const DataType type);
@@ -77,10 +77,10 @@ public:
     bool setInputPortMatrixSize(const PortIndex idx, const MatrixSize& size);
     bool setOutputPortVectorSize(const PortIndex idx, const VectorSize& size);
     bool setOutputPortMatrixSize(const PortIndex idx, const MatrixSize& size);
-    int getNrOfInputPortElements(const core::BlockInformation::PortIndex idx) const;
-    int getNrOfOutputPortElements(const core::BlockInformation::PortIndex idx) const;
-    PortData getInputPortData(const core::BlockInformation::PortIndex idx) const;
-    PortData getOutputPortData(const core::BlockInformation::PortIndex idx) const;
+    size_t getNrOfInputPortElements(const PortIndex idx) const;
+    size_t getNrOfOutputPortElements(const PortIndex idx) const;
+    PortInfo getInputPortInfo(const PortIndex idx) const;
+    PortInfo getOutputPortInfo(const PortIndex idx) const;
     bool isInputPortDynamicallySized(const PortIndex idx) const;
     bool isOutputPortDynamicallySized(const PortIndex idx) const;
 

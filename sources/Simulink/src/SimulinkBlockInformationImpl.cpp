@@ -14,7 +14,7 @@
 #include <cassert>
 #include <simstruc.h>
 
-using namespace blockfactory::core;
+using namespace blockfactory;
 using namespace blockfactory::mex::impl;
 
 SimulinkBlockInformationImpl::SimulinkBlockInformationImpl(SimStruct* ss)
@@ -32,52 +32,52 @@ bool SimulinkBlockInformationImpl::optionFromKey(const std::string& key, double&
     return false;
 }
 
-DataType SimulinkBlockInformationImpl::mapSimulinkToPortType(const DTypeId typeId) const
+core::Port::DataType SimulinkBlockInformationImpl::mapSimulinkToPortType(const DTypeId typeId) const
 {
     switch (typeId) {
         case SS_DOUBLE:
-            return core::DataType::DOUBLE;
+            return core::Port::DataType::DOUBLE;
         case SS_SINGLE:
-            return core::DataType::SINGLE;
+            return core::Port::DataType::SINGLE;
         case SS_INT8:
-            return core::DataType::INT8;
+            return core::Port::DataType::INT8;
         case SS_UINT8:
-            return core::DataType::UINT8;
+            return core::Port::DataType::UINT8;
         case SS_INT16:
-            return core::DataType::INT16;
+            return core::Port::DataType::INT16;
         case SS_UINT16:
-            return core::DataType::UINT16;
+            return core::Port::DataType::UINT16;
         case SS_INT32:
-            return core::DataType::INT32;
+            return core::Port::DataType::INT32;
         case SS_UINT32:
-            return core::DataType::UINT32;
+            return core::Port::DataType::UINT32;
         case SS_BOOLEAN:
-            return core::DataType::BOOLEAN;
+            return core::Port::DataType::BOOLEAN;
         default:
-            return core::DataType::DOUBLE;
+            return core::Port::DataType::DOUBLE;
     }
 }
 
-DTypeId SimulinkBlockInformationImpl::mapPortTypeToSimulink(const core::DataType dataType) const
+DTypeId SimulinkBlockInformationImpl::mapPortTypeToSimulink(const DataType dataType) const
 {
     switch (dataType) {
-        case core::DataType::DOUBLE:
+        case core::Port::DataType::DOUBLE:
             return SS_DOUBLE;
-        case core::DataType::SINGLE:
+        case core::Port::DataType::SINGLE:
             return SS_SINGLE;
-        case core::DataType::INT8:
+        case core::Port::DataType::INT8:
             return SS_INT8;
-        case core::DataType::UINT8:
+        case core::Port::DataType::UINT8:
             return SS_UINT8;
-        case core::DataType::INT16:
+        case core::Port::DataType::INT16:
             return SS_INT16;
-        case core::DataType::UINT16:
+        case core::Port::DataType::UINT16:
             return SS_UINT16;
-        case core::DataType::INT32:
+        case core::Port::DataType::INT32:
             return SS_INT32;
-        case core::DataType::UINT32:
+        case core::Port::DataType::UINT32:
             return SS_UINT32;
-        case core::DataType::BOOLEAN:
+        case core::Port::DataType::BOOLEAN:
             return SS_BOOLEAN;
     }
 
@@ -88,82 +88,70 @@ DTypeId SimulinkBlockInformationImpl::mapPortTypeToSimulink(const core::DataType
 // PORTS METHODS
 // =============
 
-bool SimulinkBlockInformationImpl::updateInputPortData(const BlockInformation::PortData& portData)
+bool SimulinkBlockInformationImpl::updateInputPortInfo(const PortInfo& portInfo)
 {
-    // Get the port dimensions
-    const auto& portDimensions = std::get<BlockInformation::Port::Dimensions>(portData);
-    if (portDimensions.size() > 2) {
+    if (portInfo.dimension.size() > 2) {
         bfError << "Only vector (1D) and matrix (2D) input ports are supported.";
         return false;
     }
 
-    // Get the port index and type
-    const auto& portIndex = std::get<BlockInformation::Port::Index>(portData);
-    const auto& portDataType = std::get<BlockInformation::Port::DataType>(portData);
-
     bool ok = false;
 
-    switch (portDimensions.size()) {
+    switch (portInfo.dimension.size()) {
         // 1D Vector
         case 1: {
-            const VectorSize width = portDimensions.at(0);
-            ok = setInputPortVectorSize(portIndex, width)
-                 && setInputPortType(portIndex, portDataType);
+            const VectorSize width = portInfo.dimension.at(0);
+            ok = setInputPortVectorSize(portInfo.index, width)
+                 && setInputPortType(portInfo.index, portInfo.dataType);
             break;
         }
             // 2D Matrix
         case 2: {
-            const BlockInformation::Rows rows = portDimensions.at(0);
-            const BlockInformation::Cols cols = portDimensions.at(1);
-            ok = setInputPortMatrixSize(portIndex, {rows, cols})
-                 && setInputPortType(portIndex, portDataType);
+            const core::Port::Size::Rows rows = portInfo.dimension.at(0);
+            const core::Port::Size::Cols cols = portInfo.dimension.at(1);
+            ok = setInputPortMatrixSize(portInfo.index, {rows, cols})
+                 && setInputPortType(portInfo.index, portInfo.dataType);
             break;
         }
     }
 
     if (!ok) {
-        bfError << "Failed to configure input port with index " << portIndex << ".";
+        bfError << "Failed to configure input port with index " << portInfo.index << ".";
         return false;
     }
 
     return true;
 }
 
-bool SimulinkBlockInformationImpl::updateOutputPortData(const BlockInformation::PortData& portData)
+bool SimulinkBlockInformationImpl::updateOutputPortInfo(const PortInfo& portInfo)
 {
-    // Get the port dimensions
-    const auto portDimensions = std::get<BlockInformation::Port::Dimensions>(portData);
-    if (portDimensions.size() > 2) {
+    if (portInfo.dimension.size() > 2) {
         bfError << "Only vector (1D) and matrix (2D) output ports are supported.";
         return false;
     }
 
-    // Get the port index and type
-    const auto portIndex = std::get<BlockInformation::Port::Index>(portData);
-    const auto portDataType = std::get<BlockInformation::Port::DataType>(portData);
-
     bool ok = false;
 
-    switch (portDimensions.size()) {
+    switch (portInfo.dimension.size()) {
         // 1D Vector
         case 1: {
-            const VectorSize width = portDimensions.at(0);
-            ok = setOutputPortVectorSize(portIndex, width)
-                 && setOutputPortType(portIndex, portDataType);
+            const VectorSize width = portInfo.dimension.at(0);
+            ok = setOutputPortVectorSize(portInfo.index, width)
+                 && setOutputPortType(portInfo.index, portInfo.dataType);
             break;
         }
             // 2D Matrix
         case 2: {
-            const BlockInformation::Rows rows = portDimensions.at(0);
-            const BlockInformation::Cols cols = portDimensions.at(1);
-            ok = setOutputPortMatrixSize(portIndex, {rows, cols})
-                 && setOutputPortType(portIndex, portDataType);
+            const core::Port::Size::Rows rows = portInfo.dimension.at(0);
+            const core::Port::Size::Cols cols = portInfo.dimension.at(1);
+            ok = setOutputPortMatrixSize(portInfo.index, {rows, cols})
+                 && setOutputPortType(portInfo.index, portInfo.dataType);
             break;
         }
     }
 
     if (!ok) {
-        bfError << "Failed to configure output port with index " << portIndex << ".";
+        bfError << "Failed to configure output port with index " << portInfo.index << ".";
         return false;
     }
 
@@ -180,14 +168,14 @@ bool SimulinkBlockInformationImpl::setNumberOfOutputPorts(const size_t numberOfP
     return ssSetNumOutputPorts(simstruct, static_cast<int>(numberOfPorts));
 }
 
-bool SimulinkBlockInformationImpl::setInputPortType(const PortIndex idx, const core::DataType type)
+bool SimulinkBlockInformationImpl::setInputPortType(const PortIndex idx, const DataType type)
 {
     ssSetInputPortDirectFeedThrough(simstruct, idx, 1);
     ssSetInputPortDataType(simstruct, idx, mapPortTypeToSimulink(type));
     return true;
 }
 
-bool SimulinkBlockInformationImpl::setOutputPortType(const PortIndex idx, const core::DataType type)
+bool SimulinkBlockInformationImpl::setOutputPortType(const PortIndex idx, const DataType type)
 {
     ssSetOutputPortDataType(simstruct, idx, mapPortTypeToSimulink(type));
     return true;
@@ -196,7 +184,7 @@ bool SimulinkBlockInformationImpl::setOutputPortType(const PortIndex idx, const 
 bool SimulinkBlockInformationImpl::setInputPortVectorSize(const PortIndex idx,
                                                           const VectorSize& size)
 {
-    if (size == core::Signal::DynamicSize) {
+    if (size == core::Port::DynamicSize) {
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
         return ssSetInputPortVectorDimension(simstruct, idx, DYNAMICALLY_SIZED);
@@ -209,19 +197,19 @@ bool SimulinkBlockInformationImpl::setInputPortMatrixSize(const PortIndex idx,
                                                           const MatrixSize& size)
 {
     // Refer to: https://it.mathworks.com/help/simulink/sfg/sssetoutputportmatrixdimensions.html
-    if (size.first == core::Signal::DynamicSize || size.second == core::Signal::DynamicSize) {
+    if (size.rows == core::Port::DynamicSize || size.cols == core::Port::DynamicSize) {
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
         ssSetInputPortMatrixDimensions(simstruct, idx, DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
     }
 
-    return ssSetInputPortMatrixDimensions(simstruct, idx, size.first, size.first);
+    return ssSetInputPortMatrixDimensions(simstruct, idx, size.rows, size.cols);
 }
 
 bool SimulinkBlockInformationImpl::setOutputPortVectorSize(const PortIndex idx,
                                                            const VectorSize& size)
 {
-    if (size == core::Signal::DynamicSize) {
+    if (size == core::Port::DynamicSize) {
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
         return ssSetOutputPortVectorDimension(simstruct, idx, DYNAMICALLY_SIZED);
@@ -234,66 +222,60 @@ bool SimulinkBlockInformationImpl::setOutputPortMatrixSize(const PortIndex idx,
                                                            const MatrixSize& size)
 {
     // Refer to: https://it.mathworks.com/help/simulink/sfg/sssetinputportmatrixdimensions.html
-    if (size.first == Signal::DynamicSize || size.second == Signal::DynamicSize) {
+    if (size.rows == core::Port::DynamicSize || size.cols == core::Port::DynamicSize) {
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
         return ssSetOutputPortMatrixDimensions(
             simstruct, idx, DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
     }
 
-    return ssSetOutputPortMatrixDimensions(simstruct, idx, size.first, size.second);
+    return ssSetOutputPortMatrixDimensions(simstruct, idx, size.rows, size.cols);
 }
 
-int SimulinkBlockInformationImpl::getNrOfInputPortElements(
-    const BlockInformation::PortIndex idx) const
+size_t SimulinkBlockInformationImpl::getNrOfInputPortElements(const PortIndex idx) const
 {
-    PortData portData = getInputPortData(idx);
-    BlockInformation::PortDimension dimensions =
-        std::get<BlockInformation::Port::Dimensions>(portData);
+    PortInfo portInfo = getInputPortInfo(idx);
 
-    int nrOfElements = 1;
-    for (int dim : dimensions) {
-        dim == Signal::DynamicSize ? dim = 0 : true;
+    size_t nrOfElements = 1;
+    for (int dim : portInfo.dimension) {
+        dim == core::Port::DynamicSize ? dim = 0 : true;
         nrOfElements *= dim;
     }
 
     return nrOfElements;
 }
 
-int SimulinkBlockInformationImpl::getNrOfOutputPortElements(
-    const BlockInformation::PortIndex idx) const
+size_t SimulinkBlockInformationImpl::getNrOfOutputPortElements(const PortIndex idx) const
 {
-    PortData portData = getOutputPortData(idx);
-    BlockInformation::PortDimension dimensions =
-        std::get<BlockInformation::Port::Dimensions>(portData);
+    PortInfo portInfo = getOutputPortInfo(idx);
 
-    int nrOfElements = 1;
-    for (int dim : dimensions) {
-        dim == Signal::DynamicSize ? dim = 0 : true;
+    size_t nrOfElements = 1;
+    for (int dim : portInfo.dimension) {
+        dim == core::Port::DynamicSize ? dim = 0 : true;
         nrOfElements *= dim;
     }
 
     return nrOfElements;
 }
 
-SimulinkBlockInformationImpl::PortData
-SimulinkBlockInformationImpl::getInputPortData(const BlockInformation::PortIndex idx) const
+SimulinkBlockInformationImpl::PortInfo
+SimulinkBlockInformationImpl::getInputPortInfo(const PortIndex idx) const
 {
-    std::vector<int> portDimension;
+    core::Port::Dimensions portDimension;
 
-    const core::DataType dt = mapSimulinkToPortType(ssGetInputPortDataType(simstruct, idx));
+    const DataType dt = mapSimulinkToPortType(ssGetInputPortDataType(simstruct, idx));
 
     switch (ssGetInputPortNumDimensions(simstruct, idx)) {
         case 1: {
             auto width = ssGetInputPortWidth(simstruct, idx);
-            width == DYNAMICALLY_SIZED ? width = core::Signal::DynamicSize : true;
+            width == DYNAMICALLY_SIZED ? width = core::Port::DynamicSize : true;
             portDimension = {width};
             break;
         }
         case 2: {
             auto dims = ssGetInputPortDimensions(simstruct, idx);
-            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Signal::DynamicSize : true;
-            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Signal::DynamicSize : true;
+            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Port::DynamicSize : true;
+            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Port::DynamicSize : true;
             portDimension = {dims[0], dims[1]};
             break;
         }
@@ -302,27 +284,27 @@ SimulinkBlockInformationImpl::getInputPortData(const BlockInformation::PortIndex
             assert(false);
     }
 
-    return std::make_tuple(idx, portDimension, dt);
+    return {idx, portDimension, dt};
 }
 
-SimulinkBlockInformationImpl::PortData
-SimulinkBlockInformationImpl::getOutputPortData(const BlockInformation::PortIndex idx) const
+SimulinkBlockInformationImpl::PortInfo
+SimulinkBlockInformationImpl::getOutputPortInfo(const PortIndex idx) const
 {
-    std::vector<int> portDimension;
+    core::Port::Dimensions portDimension;
 
-    const core::DataType dt = mapSimulinkToPortType(ssGetOutputPortDataType(simstruct, idx));
+    const DataType dt = mapSimulinkToPortType(ssGetOutputPortDataType(simstruct, idx));
 
     switch (ssGetOutputPortNumDimensions(simstruct, idx)) {
         case 1: {
             auto width = ssGetOutputPortWidth(simstruct, idx);
-            width == DYNAMICALLY_SIZED ? width = core::Signal::DynamicSize : true;
+            width == DYNAMICALLY_SIZED ? width = core::Port::DynamicSize : true;
             portDimension = {width};
             break;
         }
         case 2: {
             auto dims = ssGetOutputPortDimensions(simstruct, idx);
-            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Signal::DynamicSize : true;
-            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Signal::DynamicSize : true;
+            dims[0] == DYNAMICALLY_SIZED ? dims[0] = core::Port::DynamicSize : true;
+            dims[1] == DYNAMICALLY_SIZED ? dims[1] = core::Port::DynamicSize : true;
             portDimension = {dims[0], dims[1]};
             break;
         }
@@ -331,17 +313,15 @@ SimulinkBlockInformationImpl::getOutputPortData(const BlockInformation::PortInde
             assert(false);
     }
 
-    return std::make_tuple(idx, portDimension, dt);
+    return {idx, portDimension, dt};
 }
 
 bool SimulinkBlockInformationImpl::isInputPortDynamicallySized(const PortIndex idx) const
 {
-    PortData portData = getInputPortData(idx);
-    BlockInformation::PortDimension dimensions =
-        std::get<BlockInformation::Port::Dimensions>(portData);
+    PortInfo portInfo = getInputPortInfo(idx);
 
-    for (auto dim : dimensions) {
-        if (dim == core::Signal::DynamicSize) {
+    for (auto dim : portInfo.dimension) {
+        if (dim == core::Port::DynamicSize) {
             return true;
         }
     }
@@ -351,12 +331,9 @@ bool SimulinkBlockInformationImpl::isInputPortDynamicallySized(const PortIndex i
 
 bool SimulinkBlockInformationImpl::isOutputPortDynamicallySized(const PortIndex idx) const
 {
-    PortData portData = getOutputPortData(idx);
-    BlockInformation::PortDimension dimensions =
-        std::get<BlockInformation::Port::Dimensions>(portData);
-
-    for (auto dim : dimensions) {
-        if (dim == core::Signal::DynamicSize) {
+    PortInfo portInfo = getOutputPortInfo(idx);
+    for (auto dim : portInfo.dimension) {
+        if (dim == core::Port::DynamicSize) {
             return true;
         }
     }

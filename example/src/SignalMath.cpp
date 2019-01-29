@@ -52,30 +52,29 @@ bool SignalMath::configureSizeAndPorts(blockfactory::core::BlockInformation* blo
         return false;
     }
 
-    // Create data about input and output ports.
-    blockfactory::core::BlockInformation::PortData input1{
-        /*portIndex=*/0,
-        std::vector<int>{blockfactory::core::Signal::DynamicSize},
-        blockfactory::core::DataType::DOUBLE};
+    // Create object that store input and output ports information
+    blockfactory::core::Port::Info input1{/*portIndex=*/0,
+                                          std::vector<int>{blockfactory::core::Port::DynamicSize},
+                                          blockfactory::core::Port::DataType::DOUBLE};
 
-    blockfactory::core::BlockInformation::PortData input2{
-        /*portIndex=*/1,
-        std::vector<int>{blockfactory::core::Signal::DynamicSize},
-        blockfactory::core::DataType::DOUBLE};
+    blockfactory::core::Port::Info input2{/*portIndex=*/1,
+                                          std::vector<int>{blockfactory::core::Port::DynamicSize},
+                                          blockfactory::core::Port::DataType::DOUBLE};
 
-    blockfactory::core::BlockInformation::PortData output{
-        /*portIndex=*/0,
-        std::vector<int>{blockfactory::core::Signal::DynamicSize},
-        blockfactory::core::DataType::DOUBLE};
+    blockfactory::core::Port::Info output{/*portIndex=*/0,
+                                          std::vector<int>{blockfactory::core::Port::DynamicSize},
+                                          blockfactory::core::Port::DataType::DOUBLE};
 
-    // Populate a structure with the overall input / output data
-    blockfactory::core::BlockInformation::IOData ioData;
-    ioData.input.push_back(input1);
-    ioData.input.push_back(input2);
-    ioData.output.push_back(output);
+    // Store together the port information objects
+    blockfactory::core::InputPortsInfo inputPortInfo;
+    blockfactory::core::OutputPortsInfo outputPortInfo;
 
-    // Store this data into the BlockInformation
-    if (!blockInfo->setIOPortsData(ioData)) {
+    inputPortInfo.push_back(input1);
+    inputPortInfo.push_back(input2);
+    outputPortInfo.push_back(output);
+
+    // Store the port information into the BlockInformation
+    if (!blockInfo->setPortsInfo(inputPortInfo, outputPortInfo)) {
         bfError << "Failed to configure input / output ports";
         return false;
     }
@@ -153,7 +152,7 @@ bool SignalMath::output(const blockfactory::core::BlockInformation* blockInfo)
     }
 
     // Perform the given operation
-    for (int i = 0; i < output->getWidth(); ++i) {
+    for (size_t i = 0; i < output->getWidth(); ++i) {
         switch (m_operation) {
             case Operation::ADDITION:
                 output->set(i, input1->get<double>(i) + input2->get<double>(i));

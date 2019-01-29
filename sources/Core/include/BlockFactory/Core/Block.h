@@ -70,7 +70,7 @@ namespace blockfactory {
  *       interface. For what concerns Simulink, a mex::SimulinkBlockInformation implementation is
  *       provided. \par
  *
- * @see core::BlockInformation Class for providing information about signals and parameters.
+ * @see core::Signal, core::Port, core::BlockInformation
  *
  * @section block_parameters Block Parameters
  *

@@ -9,6 +9,8 @@
 #ifndef BLOCKFACTORY_CORE_BLOCKINFORMATION_H
 #define BLOCKFACTORY_CORE_BLOCKINFORMATION_H
 
+#include "BlockFactory/Core/Port.h"
+
 #include <memory>
 #include <string>
 #include <tuple>
@@ -21,9 +23,10 @@ namespace blockfactory {
         class ParameterMetadata;
         class Parameters;
         class Signal;
+        using InputPortsInfo = std::vector<Port::Info>;
+        using OutputPortsInfo = std::vector<Port::Info>;
         using InputSignalPtr = std::shared_ptr<const blockfactory::core::Signal>;
         using OutputSignalPtr = std::shared_ptr<blockfactory::core::Signal>;
-        enum class DataType;
         // List of possible key for defining block options:
         extern const std::string BlockOptionPrioritizeOrder;
     } // namespace core
@@ -47,30 +50,11 @@ namespace blockfactory {
  * In this case, core::BlockInformation::parseParameters will parse the xml and fill the
  * core::Parameters argument.
  *
- * @see core::Block, core::Parameters, core::Signal
+ * @see core::Block, core::Parameters, core::Signal, core::Port
  */
 class blockfactory::core::BlockInformation
 {
 public:
-    using Rows = int;
-    using Cols = int;
-    using PortIndex = int;
-
-    using VectorSize = int;
-    using MatrixSize = std::pair<Rows, Cols>;
-
-    struct Port
-    { // The struct provides an enum scope
-        enum
-        {
-            Index = 0,
-            Dimensions = 1,
-            DataType = 2,
-        };
-    };
-    using PortDimension = std::vector<int>;
-    using PortData = std::tuple<PortIndex, PortDimension, blockfactory::core::DataType>;
-
     BlockInformation() = default;
     virtual ~BlockInformation() = default;
 
@@ -99,7 +83,7 @@ public:
      * @param[out] parameters A container filled with the parsed parameters.
      * @return True for success, false otherwise.
      */
-    virtual bool parseParameters(blockfactory::core::Parameters& parameters) = 0;
+    virtual bool parseParameters(Parameters& parameters) = 0;
 
     /**
      * @brief Add a parameter metadata
@@ -111,47 +95,46 @@ public:
      *
      * @see core::BlockInformation::parseParameters
      */
-    virtual bool addParameterMetadata(const blockfactory::core::ParameterMetadata& paramMD) = 0;
+    virtual bool addParameterMetadata(const ParameterMetadata& paramMD) = 0;
 
     // ========================
     // PORT INFORMATION SETTERS
     // ========================
 
-    struct IOData;
-
     /**
-     * @brief Set input / output ports data
+     * @brief Set input / output ports information
      *
-     * Specify I/O ports data such as core::BlockInformation::PortIndex,
-     * core::BlockInformation::PortDimension, and core::DataType storing the information in a
-     * core::BlockInformation::IOData structure.
+     * Specify I/O ports information such as indices, dimensions, and datatype.
      *
-     * @param ioData The structure containing I/O ports data.
+     * @param inputPortsInfo Vector of core::Port::Info objects storing input port information.
+     * @param outputPortsInfo Vector of core::Port::Info objects storing output port information.
      * @return True for success, false otherwise.
      *
-     * @note This method should also automatically set the number of inputs and outputs.
+     * @note This method also automatically set the number of input and output ports and should be
+     *       called only once.
      */
-    virtual bool setIOPortsData(const IOData& ioData) = 0;
+    virtual bool setPortsInfo(const InputPortsInfo& inputPortsInfo,
+                              const OutputPortsInfo& outputPortsInfo) = 0;
 
     // ========================
     // PORT INFORMATION GETTERS
     // ========================
 
     /**
-     * @brief Get data of an input port
+     * @brief Get information of an input port
      *
      * @param idx The index of the port.
-     * @return A PortData object containing the port's data.
+     * @return A Port::Info object containing the port information.
      */
-    virtual PortData getInputPortData(PortIndex idx) const = 0;
+    virtual Port::Info getInputPortInfo(Port::Index idx) const = 0;
 
     /**
-     * @brief Get data of an output port
+     * @brief Get information of an output port
      *
      * @param idx The index of the port.
-     * @return A PortData object containing the port's data.
+     * @return A Port::Info object containing the port information.
      */
-    virtual PortData getOutputPortData(PortIndex idx) const = 0;
+    virtual Port::Info getOutputPortInfo(Port::Index idx) const = 0;
 
     /**
      * @brief Get the size of a 1D input port
@@ -159,7 +142,7 @@ public:
      * @param idx The index of the port.
      * @return The size of the port.
      */
-    virtual VectorSize getInputPortWidth(const PortIndex idx) const = 0;
+    virtual Port::Size::Vector getInputPortWidth(const Port::Index idx) const = 0;
 
     /**
      * @brief Get the size of a 1D output port
@@ -167,7 +150,7 @@ public:
      * @param idx The index of the port.
      * @return The size of the port.
      */
-    virtual VectorSize getOutputPortWidth(const PortIndex idx) const = 0;
+    virtual Port::Size::Vector getOutputPortWidth(const Port::Index idx) const = 0;
 
     /**
      * @brief Get the size of a 2D input port
@@ -175,7 +158,7 @@ public:
      * @param idx The index of the port.
      * @return The size of the port.
      */
-    virtual MatrixSize getInputPortMatrixSize(const PortIndex idx) const = 0;
+    virtual Port::Size::Matrix getInputPortMatrixSize(const Port::Index idx) const = 0;
 
     /**
      * @brief Get the size of a 2D output port
@@ -183,39 +166,29 @@ public:
      * @param idx The index of the port.
      * @return The size of the port.
      */
-    virtual MatrixSize getOutputPortMatrixSize(const PortIndex idx) const = 0;
+    virtual Port::Size::Matrix getOutputPortMatrixSize(const Port::Index idx) const = 0;
 
     // =============
     // BLOCK SIGNALS
     // =============
 
     /**
-     * @brief Get the signal connected to a 1D input port
+     * @brief Get the signal connected to an input input port
      *
-     * @param idx The index of the port.
-     * @param size The size of the signal.
+     * @param idx The index of the port to which the signal is connected.
      * @return The pointer to the signal connected to the input port for success, a `nullptr`
      *         otherwise.
      */
-    virtual blockfactory::core::InputSignalPtr
-    getInputPortSignal(const PortIndex idx, const VectorSize size = -1) const = 0;
+    virtual InputSignalPtr getInputPortSignal(const Port::Index idx) const = 0;
 
     /**
-     * @brief Get the signal connected to a 1D output port
+     * @brief Get the signal connected to an output port
      *
-     * @param idx The index of the port.
-     * @param size The size of the signal.
-     *@return The pointer to the signal connected to the output port for success, a `nullptr`
+     * @param idx The index of the port to which the signal is connected.
+     * @return The pointer to the signal connected to the output port for success, a `nullptr`
      *         otherwise.
      */
-    virtual blockfactory::core::OutputSignalPtr
-    getOutputPortSignal(const PortIndex idx, const VectorSize size = -1) const = 0;
-};
-
-struct blockfactory::core::BlockInformation::IOData
-{
-    std::vector<BlockInformation::PortData> input;
-    std::vector<BlockInformation::PortData> output;
+    virtual OutputSignalPtr getOutputPortSignal(const Port::Index idx) const = 0;
 };
 
 #endif // BLOCKFACTORY_CORE_BLOCKINFORMATION_H
