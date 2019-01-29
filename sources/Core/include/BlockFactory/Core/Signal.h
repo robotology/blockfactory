@@ -219,7 +219,7 @@ public:
      * @todo Switch to std::optional as soon as we switch to C++17
      */
     template <typename T>
-    T get(const unsigned i) const;
+    T get(const size_t i) const;
 
     /**
      * @brief Set the value of a sigle element of the buffer
@@ -230,7 +230,7 @@ public:
      *
      * @todo Port this to a template
      */
-    bool set(const unsigned index, const double data);
+    bool set(const size_t index, const double data);
 
     /**
      * @brief Set the pointer to the buffer storing signal's data
@@ -247,7 +247,7 @@ public:
      * @return True if the buffer was set sucessfully, false otherwise.
      */
     template <typename T>
-    bool setBuffer(const T* data, const unsigned length);
+    bool setBuffer(const T* data, const size_t length);
 };
 
 // Explicit declaration of templates for all the supported types
@@ -261,8 +261,8 @@ namespace blockfactory {
         // DataType::DOUBLE
         extern template double* Signal::getBuffer<double>();
         extern template const double* Signal::getBuffer<double>() const;
-        extern template double Signal::get<double>(const unsigned i) const;
-        extern template bool Signal::setBuffer<double>(const double* data, const unsigned length);
+        extern template double Signal::get<double>(const size_t i) const;
+        extern template bool Signal::setBuffer<double>(const double* data, const size_t length);
     } // namespace core
 } // namespace blockfactory
 

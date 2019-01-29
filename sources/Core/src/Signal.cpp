@@ -236,7 +236,7 @@ Signal::DataFormat Signal::getDataFormat() const
     return pImpl->dataFormat;
 }
 
-bool Signal::set(const unsigned index, const double data)
+bool Signal::set(const size_t index, const double data)
 {
     if (pImpl->width <= index) {
         bfError << "The signal index exceeds its width.";
@@ -274,8 +274,8 @@ namespace blockfactory {
     namespace core {
         template double* Signal::getBuffer<double>();
         template const double* Signal::getBuffer<double>() const;
-        template double Signal::get<double>(const unsigned i) const;
-        template bool Signal::setBuffer<double>(const double* data, const unsigned length);
+        template double Signal::get<double>(const size_t i) const;
+        template bool Signal::setBuffer<double>(const double* data, const size_t length);
     } // namespace core
 } // namespace blockfactory
 
@@ -283,7 +283,7 @@ namespace blockfactory {
 // ===================
 
 template <typename T>
-T Signal::get(const unsigned i) const
+T Signal::get(const size_t i) const
 {
     const T* buffer = getBuffer<T>();
 
@@ -344,7 +344,7 @@ const T* Signal::getBuffer() const
 }
 
 template <typename T>
-bool Signal::setBuffer(const T* data, const unsigned length)
+bool Signal::setBuffer(const T* data, const size_t length)
 {
     // Non contiguous signals follow the Simulink convention of being read-only.
     // They are used only for input signals.
