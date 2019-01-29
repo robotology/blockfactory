@@ -41,13 +41,14 @@ public:
     ///
     /// @note DataFormat::CONTIGUOUS_ZEROCOPY is the only format that doesn't copy data from the
     ///       original buffer address into the core::Signal object. The engine is responsible of its
-    ///       memory management, and a core::Signal object of this type can only access (either r/o
-    ///       or r/w) to this raw buffer. On the other hand, both DataFormat::CONTIGUOUS and
-    ///       DataFormat::NONCONTIGUOUS copy the content of the buffer inside the Signal object. For
-    ///       performance reasons, prefer using DataFormat::CONTIGUOUS_ZEROCOPY.
+    ///       memory management, and a core::Signal object of this type does not own any memory. On
+    ///       the other hand, both DataFormat::CONTIGUOUS and DataFormat::NONCONTIGUOUS copy the
+    ///       content of the buffer inside the Signal object. For performance reasons, prefer using
+    ///       DataFormat::CONTIGUOUS_ZEROCOPY since it minimizes dynamic allocations during the
+    ///       simulation loop.
     /// \par
     /// @note DataFormat::NONCONTIGUOUS is associated to r/o signals and methods as
-    ///       core::Signal::setBuffer are not allowed.
+    ///       core::Signal::setBuffer are not allowed. It might be the candidate of input signals.
     ///
     /// @see core::BlockInformation::getInputPortSignal,
     ///      core::BlockInformation::getOutputPortSignal

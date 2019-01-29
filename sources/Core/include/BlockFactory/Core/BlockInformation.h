@@ -83,7 +83,7 @@ public:
      * @param[out] parameters A container filled with the parsed parameters.
      * @return True for success, false otherwise.
      */
-    virtual bool parseParameters(blockfactory::core::Parameters& parameters) = 0;
+    virtual bool parseParameters(Parameters& parameters) = 0;
 
     /**
      * @brief Add a parameter metadata
@@ -95,7 +95,7 @@ public:
      *
      * @see core::BlockInformation::parseParameters
      */
-    virtual bool addParameterMetadata(const blockfactory::core::ParameterMetadata& paramMD) = 0;
+    virtual bool addParameterMetadata(const ParameterMetadata& paramMD) = 0;
 
     // ========================
     // PORT INFORMATION SETTERS

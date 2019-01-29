@@ -247,7 +247,6 @@ bool Signal::set(const unsigned index, const double data)
             // TODO: Implement other DataType
             bfError << "The specified DataType is not yet supported. Used DOUBLE instead.";
             return false;
-            break;
     }
     return true;
 }

@@ -10,6 +10,8 @@
 #define BLOCKFACTORY_CODER_CODERBLOCKINFORMATION_H
 
 #include "BlockFactory/Core/BlockInformation.h"
+#include "BlockFactory/Core/Parameter.h"
+#include "BlockFactory/Core/Parameters.h"
 #include "BlockFactory/Core/Port.h"
 #include "BlockFactory/Core/Signal.h"
 
