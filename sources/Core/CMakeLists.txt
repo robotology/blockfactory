@@ -13,6 +13,7 @@ set(CORE_SRC
     src/FactorySingleton.cpp)
 
 set(CORE_PUBLIC_HDR
+    include/BlockFactory/Core/Port.h
     include/BlockFactory/Core/Block.h
     include/BlockFactory/Core/BlockInformation.h
     include/BlockFactory/Core/Log.h
