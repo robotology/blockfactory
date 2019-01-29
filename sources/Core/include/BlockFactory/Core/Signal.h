@@ -83,13 +83,6 @@ public:
         CONTIGUOUS_ZEROCOPY = 2
     };
 
-private:
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-    class impl;
-    std::unique_ptr<impl> pImpl;
-#endif
-
-public:
     Signal(const DataFormat& dataFormat = DataFormat::CONTIGUOUS_ZEROCOPY,
            const Port::DataType& dataType = Port::DataType::DOUBLE);
     ~Signal();
@@ -248,6 +241,20 @@ public:
      */
     template <typename T>
     bool setBuffer(const T* data, const size_t length);
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+private:
+    size_t m_width = 0;
+    const Port::DataType m_portDataType;
+    const DataFormat m_dataFormat;
+    void* m_bufferPtr = nullptr;
+
+    template <typename T>
+    T* getBufferImpl() const;
+
+    void deleteBuffer();
+    void allocateBuffer(const void* const bufferInput, void*& bufferOutput, size_t length);
+#endif
 };
 
 // Explicit declaration of templates for all the supported types
