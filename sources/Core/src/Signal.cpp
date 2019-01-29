@@ -35,7 +35,7 @@ public:
     T* getBufferImpl();
 
     void deleteBuffer();
-    void allocateBuffer(const void* const bufferInput, void*& bufferOutput, const unsigned& length);
+    void allocateBuffer(const void* const bufferInput, void*& bufferOutput, size_t length);
 
     impl(const DataFormat& dFormat, const Port::DataType& dType)
         : portDataType(dType)
@@ -45,9 +45,7 @@ public:
     impl* clone() { return new impl(*this); }
 };
 
-void Signal::impl::allocateBuffer(const void* const bufferInput,
-                                  void*& bufferOutput,
-                                  const unsigned& length)
+void Signal::impl::allocateBuffer(const void* const bufferInput, void*& bufferOutput, size_t length)
 {
     if (dataFormat == DataFormat::CONTIGUOUS_ZEROCOPY) {
         bfWarning << "Trying to allocate a buffer with a non-supported "
@@ -129,7 +127,7 @@ Signal::Signal(Signal&& other)
     other.pImpl->bufferPtr = nullptr;
 }
 
-bool Signal::initializeBufferFromContiguousZeroCopy(const void* buffer)
+bool Signal::initializeBufferFromContiguousZeroCopy(const void* buffer, size_t len)
 {
     if (pImpl->dataFormat != DataFormat::CONTIGUOUS_ZEROCOPY) {
         bfError << "Trying to initialize a CONTIGUOUS_ZEROCOPY signal but the configured "
@@ -137,17 +135,26 @@ bool Signal::initializeBufferFromContiguousZeroCopy(const void* buffer)
         return false;
     }
 
-    if (pImpl->width <= 0) {
-        bfError << "Signal width unknown. Unable to initialize the buffer if the "
-                << "signal size is not set.";
+    if (!buffer) {
+        bfError << "Failed to initialize Signal. The pointer to the buffer contains a nullptr";
         return false;
     }
 
+    if (len == 0) {
+        bfError << "Failed to initialize the Signal buffer with a length of 0";
+        return false;
+    }
+
+    // Store the length
+    pImpl->width = len;
+
+    // Store the buffer
     pImpl->bufferPtr = const_cast<void*>(buffer);
+
     return true;
 }
 
-bool Signal::initializeBufferFromContiguous(const void* buffer)
+bool Signal::initializeBufferFromContiguous(const void* buffer, size_t len)
 {
     if (pImpl->dataFormat != DataFormat::CONTIGUOUS) {
         bfError << "Trying to initialize a CONTIGUOUS signal but the configured "
@@ -155,11 +162,18 @@ bool Signal::initializeBufferFromContiguous(const void* buffer)
         return false;
     }
 
-    if (pImpl->width <= 0) {
-        bfError << "Signal width unknown. Unable to initialize the buffer if the "
-                << "signal size is not set.";
+    if (!buffer) {
+        bfError << "Failed to initialize Signal. The pointer to the buffer contains a nullptr";
         return false;
     }
+
+    if (len == 0) {
+        bfError << "Failed to initialize the Signal buffer with a length of 0";
+        return false;
+    }
+
+    // Store the length
+    pImpl->width = len;
 
     // Copy data from the external contiguous buffer to the internal buffer
     pImpl->allocateBuffer(buffer, pImpl->bufferPtr, pImpl->width);
@@ -167,7 +181,7 @@ bool Signal::initializeBufferFromContiguous(const void* buffer)
     return true;
 }
 
-bool Signal::initializeBufferFromNonContiguous(const void* const* bufferPtrs)
+bool Signal::initializeBufferFromNonContiguous(const void* const* bufferPtrs, size_t len)
 {
     if (pImpl->dataFormat != DataFormat::NONCONTIGUOUS) {
         bfError << "Trying to initialize a NONCONTIGUOUS signal but the configured "
@@ -175,11 +189,18 @@ bool Signal::initializeBufferFromNonContiguous(const void* const* bufferPtrs)
         return false;
     }
 
-    if (pImpl->width <= 0) {
-        bfError << "Signal width unknown. Unable to initialize the buffer if the "
-                << "signal size is not set.";
+    if (!bufferPtrs) {
+        bfError << "Failed to initialize Signal. The pointer to the buffer contains a nullptr";
         return false;
     }
+
+    if (len == 0) {
+        bfError << "Failed to initialize the Signal buffer with a length of 0";
+        return false;
+    }
+
+    // Store the length
+    pImpl->width = len;
 
     if (pImpl->portDataType == Port::DataType::DOUBLE) {
         // Allocate a new vector to store data from the non-contiguous signal
@@ -200,12 +221,7 @@ bool Signal::isValid() const
     return pImpl->bufferPtr && (pImpl->width > 0);
 }
 
-void Signal::setWidth(const unsigned width)
-{
-    pImpl->width = width;
-}
-
-int Signal::getWidth() const
+size_t Signal::getWidth() const
 {
     return pImpl->width;
 }

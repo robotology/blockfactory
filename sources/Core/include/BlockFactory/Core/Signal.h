@@ -107,11 +107,12 @@ public:
      * case, the core::Signal object will own the data.
      *
      * @param buffer The pointer to the original contiguous buffer.
+     * @param len The number of buffer elements.
      * @return True for success, false otherwise.
      *
      * @see core::Signal::DataFormat
      */
-    bool initializeBufferFromContiguous(const void* buffer);
+    bool initializeBufferFromContiguous(const void* buffer, size_t len);
 
     /**
      * @brief Initialize the signal from a contiguous buffer without copying data
@@ -119,15 +120,13 @@ public:
      * This methods accepts an external contiguous buffer and holds its pointer. The data is not
      * owned by this object.
      *
-     * @note You must set the signal width with core::Signal::setWidth in order to have a valid
-     *       signal.
-     *
      * @param buffer The pointer to the original contiguous buffer.
+     * @param len The number of buffer elements.
      * @return True for success, false otherwise.
      *
      * @see core::Signal::DataFormat
      */
-    bool initializeBufferFromContiguousZeroCopy(const void* buffer);
+    bool initializeBufferFromContiguousZeroCopy(const void* buffer, size_t len);
 
     /**
      * @brief Initialize the signal from a non-contiguous buffer
@@ -136,15 +135,13 @@ public:
      * this case, the core::Signal object will own the data. `bufferPtrs` points to an array of
      * pointers. Each of these pointers points to a data element.
      *
-     * @note You must set the signal width with core::Signal::setWidth in order to have a valid
-     *       signal.
-     *
      * @param bufferPtrs The pointer to the original non-contiguous buffer.
+     * @param len The number of buffer elements.
      * @return True for success, false otherwise.
      *
      * @see core::Signal::DataFormat
      */
-    bool initializeBufferFromNonContiguous(const void* const* bufferPtrs);
+    bool initializeBufferFromNonContiguous(const void* const* bufferPtrs, size_t len);
 
     /**
      * @brief Check if the signal is valid
@@ -158,14 +155,11 @@ public:
     /**
      * @brief Read the width of the signal
      *
-     * By default the width of Signal is core::Signal::DynamicSize. However, for being a valid
-     * signal, an object must have a specified width.
-     *
      * @return The signal width.
      *
-     * @see Signal::setWidth, Signal::isValid
+     * @see Signal::isValid
      */
-    int getWidth() const;
+    size_t getWidth() const;
 
     /**
      * @brief Read the Port::DataType of the signal
@@ -226,13 +220,6 @@ public:
      */
     template <typename T>
     T get(const unsigned i) const;
-
-    /**
-     * @brief Set the width of the signal
-     *
-     * @param width The width to set.
-     */
-    void setWidth(const unsigned width);
 
     /**
      * @brief Set the value of a sigle element of the buffer
