@@ -7,5 +7,6 @@ var namespaceblockfactory_1_1core =
     [ "Parameter", "classblockfactory_1_1core_1_1_parameter.html", "classblockfactory_1_1core_1_1_parameter" ],
     [ "ParameterMetadata", "classblockfactory_1_1core_1_1_parameter_metadata.html", "classblockfactory_1_1core_1_1_parameter_metadata" ],
     [ "Parameters", "classblockfactory_1_1core_1_1_parameters.html", "classblockfactory_1_1core_1_1_parameters" ],
+    [ "Port", "classblockfactory_1_1core_1_1_port.html", "classblockfactory_1_1core_1_1_port" ],
     [ "Signal", "classblockfactory_1_1core_1_1_signal.html", "classblockfactory_1_1core_1_1_signal" ]
 ];

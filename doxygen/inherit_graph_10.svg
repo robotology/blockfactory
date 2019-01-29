@@ -10,10 +10,10 @@
 <title>Graphical Class Hierarchy</title>
 <!-- Node1 -->
 <g id="node1" class="node"><title>Node1</title>
-<g id="a_node1"><a xlink:href="classblockfactory_1_1core_1_1_signal.html" target="_top" xlink:title="Class to represent data shared by blocks, labelled as signals. ">
+<g id="a_node1"><a xlink:href="structblockfactory_1_1core_1_1_port_1_1_size.html" target="_top" xlink:title="Contained of size&#45;related properties of ports. ">
 <polygon fill="none" stroke="black" points="0,-0.5 0,-30.5 101,-30.5 101,-0.5 0,-0.5"/>
 <text text-anchor="start" x="8" y="-18.5" font-family="Helvetica,sans-Serif" font-size="10.00">blockfactory::core</text>
-<text text-anchor="middle" x="50.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">::Signal</text>
+<text text-anchor="middle" x="50.5" y="-7.5" font-family="Helvetica,sans-Serif" font-size="10.00">::Port::Size</text>
 </a>
 </g>
 </g>

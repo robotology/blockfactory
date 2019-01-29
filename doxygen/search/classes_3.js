@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iodata',['IOData',['../structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html',1,'blockfactory::core::BlockInformation']]]
+  ['info',['Info',['../structblockfactory_1_1core_1_1_port_1_1_info.html',1,'blockfactory::core::Port']]]
 ];

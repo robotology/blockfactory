@@ -1,4 +1,7 @@
 <map id="/home/travis/build/robotology/blockfactory/sources/SimulinkCoder/include/BlockFactory/SimulinkCoder/CoderBlockInformation.h" name="/home/travis/build/robotology/blockfactory/sources/SimulinkCoder/include/BlockFactory/SimulinkCoder/CoderBlockInformation.h">
-<area shape="rect" id="node2" href="$_block_information_8h.html" title="BlockFactory/Core/BlockInformation.h" alt="" coords="289,139,548,165"/>
-<area shape="rect" id="node8" href="$_signal_8h.html" title="BlockFactory/Core/Signal.h" alt="" coords="23,139,214,165"/>
+<area shape="rect" id="node2" href="$_block_information_8h.html" title="BlockFactory/Core/BlockInformation.h" alt="" coords="241,139,499,165"/>
+<area shape="rect" id="node3" href="$_port_8h.html" title="BlockFactory/Core/Port.h" alt="" coords="49,213,227,240"/>
+<area shape="rect" id="node10" href="$_parameter_8h.html" title="BlockFactory/Core/Parameter.h" alt="" coords="875,139,1094,165"/>
+<area shape="rect" id="node11" href="$_parameters_8h.html" title="BlockFactory/Core/Parameters.h" alt="" coords="574,139,801,165"/>
+<area shape="rect" id="node12" href="$_signal_8h.html" title="BlockFactory/Core/Signal.h" alt="" coords="25,139,216,165"/>
 </map>

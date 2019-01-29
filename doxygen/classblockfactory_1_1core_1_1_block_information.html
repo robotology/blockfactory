@@ -106,8 +106,6 @@ $(document).ready(function(){initNavTree('classblockfactory_1_1core_1_1_block_in
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classblockfactory_1_1core_1_1_block_information-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -129,33 +127,9 @@ Inheritance diagram for blockfactory::core::BlockInformation:</div>
 <div class="textblock"><p>Abstract class for storing generic <a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a> properties. </p>
 <p><a class="el" href="classblockfactory_1_1core_1_1_block_information.html" title="Abstract class for storing generic core::Block properties. ">core::BlockInformation</a> provides an interface for handling implementation-specific properties such as input / output number, size and type, number of parameters, ...</p>
 <p>A <a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a> needs to know on what kind of data it operates, and retrieving this information is often specific on the framework on top of which blocks run. In order to allow using the same <a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a> class from different frameworks (e.g. Simulink, C++, etc), different implementation of this interface can be developed to provide a transparent translation of such functionalities.</p>
-<p>As an example, take the <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ad387c3d4d136805d800e01d3f7fbe3b5" title="Parse the core::Block parameters. ">core::BlockInformation::parseParameters</a>. In Simulink, parameters are read from the block masks and Matlab provides APIs for reading them. The <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html" title="Simulink implementation of block information. ">mex::SimulinkBlockInformation</a> implementation will use those APIs. However, if you want to call the same block class (which is just a wrapper of an algorithm) from a pure C++ main, parameters are read e.g. from an xml file. In this case, <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ad387c3d4d136805d800e01d3f7fbe3b5" title="Parse the core::Block parameters. ">core::BlockInformation::parseParameters</a> will parse the xml and fill the <a class="el" href="classblockfactory_1_1core_1_1_parameters.html" title="Class for storing block&#39;s parameters. ">core::Parameters</a> argument.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a>, <a class="el" href="classblockfactory_1_1core_1_1_parameters.html" title="Class for storing block&#39;s parameters. ">core::Parameters</a>, <a class="el" href="classblockfactory_1_1core_1_1_signal.html" title="Class to represent data shared by blocks, labelled as signals. ">core::Signal</a> </dd></dl>
+<p>As an example, take the <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ab5ef013c3fbfec82f73a9806b2e2d851" title="Parse the core::Block parameters. ">core::BlockInformation::parseParameters</a>. In Simulink, parameters are read from the block masks and Matlab provides APIs for reading them. The <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html" title="Simulink implementation of block information. ">mex::SimulinkBlockInformation</a> implementation will use those APIs. However, if you want to call the same block class (which is just a wrapper of an algorithm) from a pure C++ main, parameters are read e.g. from an xml file. In this case, <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ab5ef013c3fbfec82f73a9806b2e2d851" title="Parse the core::Block parameters. ">core::BlockInformation::parseParameters</a> will parse the xml and fill the <a class="el" href="classblockfactory_1_1core_1_1_parameters.html" title="Class for storing block&#39;s parameters. ">core::Parameters</a> argument.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a>, <a class="el" href="classblockfactory_1_1core_1_1_parameters.html" title="Class for storing block&#39;s parameters. ">core::Parameters</a>, <a class="el" href="classblockfactory_1_1core_1_1_signal.html" title="Class to access data shared by blocks, represented as signals. ">core::Signal</a>, <a class="el" href="classblockfactory_1_1core_1_1_port.html" title="Class that stores port properties. ">core::Port</a> </dd></dl>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html">IOData</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structblockfactory_1_1core_1_1_block_information_1_1_port.html">Port</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:a5754fd354ec3debda99c9ff78339c3d2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5754fd354ec3debda99c9ff78339c3d2">Rows</a> = int</td></tr>
-<tr class="separator:a5754fd354ec3debda99c9ff78339c3d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9530a5d43495c7faf3fd72f105710ba9"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a9530a5d43495c7faf3fd72f105710ba9">Cols</a> = int</td></tr>
-<tr class="separator:a9530a5d43495c7faf3fd72f105710ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b622fc844a499d820c4b3019353e6ba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> = int</td></tr>
-<tr class="separator:a8b622fc844a499d820c4b3019353e6ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a675a4587b81757e0325cbcb3e48c688c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a> = int</td></tr>
-<tr class="separator:a675a4587b81757e0325cbcb3e48c688c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8843b9676d0d409bec6e31fd1b0d51cb"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8843b9676d0d409bec6e31fd1b0d51cb">MatrixSize</a> = std::pair&lt; <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5754fd354ec3debda99c9ff78339c3d2">Rows</a>, <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a9530a5d43495c7faf3fd72f105710ba9">Cols</a> &gt;</td></tr>
-<tr class="separator:a8843b9676d0d409bec6e31fd1b0d51cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a906224f8f3278df1c8f0124f2b71d686"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">PortDimension</a> = std::vector&lt; int &gt;</td></tr>
-<tr class="separator:a906224f8f3278df1c8f0124f2b71d686"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a33c402944926e4fb54d60bde4c23ee"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a> = std::tuple&lt; <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>, <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">PortDimension</a>, <a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622b">blockfactory::core::DataType</a> &gt;</td></tr>
-<tr class="separator:a5a33c402944926e4fb54d60bde4c23ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4f42a294d358b7e8b28b76b5e5a1dc28"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a4f42a294d358b7e8b28b76b5e5a1dc28">BlockInformation</a> ()=default</td></tr>
@@ -165,125 +139,40 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab433996c89aaaf07f2d932206399d57e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ab433996c89aaaf07f2d932206399d57e">optionFromKey</a> (const std::string &amp;key, double &amp;option) const =0</td></tr>
 <tr class="memdesc:ab433996c89aaaf07f2d932206399d57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a block option from its string identifier to a specific implementation.  <a href="#ab433996c89aaaf07f2d932206399d57e">More...</a><br /></td></tr>
 <tr class="separator:ab433996c89aaaf07f2d932206399d57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad387c3d4d136805d800e01d3f7fbe3b5"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ad387c3d4d136805d800e01d3f7fbe3b5">parseParameters</a> (<a class="el" href="classblockfactory_1_1core_1_1_parameters.html">blockfactory::core::Parameters</a> &amp;parameters)=0</td></tr>
-<tr class="memdesc:ad387c3d4d136805d800e01d3f7fbe3b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the <a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a> parameters.  <a href="#ad387c3d4d136805d800e01d3f7fbe3b5">More...</a><br /></td></tr>
-<tr class="separator:ad387c3d4d136805d800e01d3f7fbe3b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9a08917e02d4469837b08e056cc70d0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ac9a08917e02d4469837b08e056cc70d0">addParameterMetadata</a> (const <a class="el" href="classblockfactory_1_1core_1_1_parameter_metadata.html">blockfactory::core::ParameterMetadata</a> &amp;paramMD)=0</td></tr>
-<tr class="memdesc:ac9a08917e02d4469837b08e056cc70d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a parameter metadata.  <a href="#ac9a08917e02d4469837b08e056cc70d0">More...</a><br /></td></tr>
-<tr class="separator:ac9a08917e02d4469837b08e056cc70d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8ad2615c47fe2bb4151f66587ecec86"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ae8ad2615c47fe2bb4151f66587ecec86">setIOPortsData</a> (const <a class="el" href="structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html">IOData</a> &amp;ioData)=0</td></tr>
-<tr class="memdesc:ae8ad2615c47fe2bb4151f66587ecec86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set input / output ports data.  <a href="#ae8ad2615c47fe2bb4151f66587ecec86">More...</a><br /></td></tr>
-<tr class="separator:ae8ad2615c47fe2bb4151f66587ecec86"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a0f9cf6c2ae08e11f029a51cddd3852"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8a0f9cf6c2ae08e11f029a51cddd3852">getInputPortData</a> (<a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx) const =0</td></tr>
-<tr class="memdesc:a8a0f9cf6c2ae08e11f029a51cddd3852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data of an input port.  <a href="#a8a0f9cf6c2ae08e11f029a51cddd3852">More...</a><br /></td></tr>
-<tr class="separator:a8a0f9cf6c2ae08e11f029a51cddd3852"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43392e86bdf6ea3d9319e42b34af5615"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a43392e86bdf6ea3d9319e42b34af5615">getOutputPortData</a> (<a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx) const =0</td></tr>
-<tr class="memdesc:a43392e86bdf6ea3d9319e42b34af5615"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data of an output port.  <a href="#a43392e86bdf6ea3d9319e42b34af5615">More...</a><br /></td></tr>
-<tr class="separator:a43392e86bdf6ea3d9319e42b34af5615"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa7ae668534ef6792f4bc1b54985b65d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#aaa7ae668534ef6792f4bc1b54985b65d">getInputPortWidth</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx) const =0</td></tr>
-<tr class="memdesc:aaa7ae668534ef6792f4bc1b54985b65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 1D input port.  <a href="#aaa7ae668534ef6792f4bc1b54985b65d">More...</a><br /></td></tr>
-<tr class="separator:aaa7ae668534ef6792f4bc1b54985b65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b68eccad7ce10638636ff1ce307a84d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b68eccad7ce10638636ff1ce307a84d">getOutputPortWidth</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx) const =0</td></tr>
-<tr class="memdesc:a8b68eccad7ce10638636ff1ce307a84d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 1D output port.  <a href="#a8b68eccad7ce10638636ff1ce307a84d">More...</a><br /></td></tr>
-<tr class="separator:a8b68eccad7ce10638636ff1ce307a84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea4578dbf45d473605a5046e08b7cc8a"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8843b9676d0d409bec6e31fd1b0d51cb">MatrixSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#aea4578dbf45d473605a5046e08b7cc8a">getInputPortMatrixSize</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx) const =0</td></tr>
-<tr class="memdesc:aea4578dbf45d473605a5046e08b7cc8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 2D input port.  <a href="#aea4578dbf45d473605a5046e08b7cc8a">More...</a><br /></td></tr>
-<tr class="separator:aea4578dbf45d473605a5046e08b7cc8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa04e9fa7115d6bdddfbb62a547a18183"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8843b9676d0d409bec6e31fd1b0d51cb">MatrixSize</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#aa04e9fa7115d6bdddfbb62a547a18183">getOutputPortMatrixSize</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx) const =0</td></tr>
-<tr class="memdesc:aa04e9fa7115d6bdddfbb62a547a18183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 2D output port.  <a href="#aa04e9fa7115d6bdddfbb62a547a18183">More...</a><br /></td></tr>
-<tr class="separator:aa04e9fa7115d6bdddfbb62a547a18183"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab11a1e8ea66678262095734ecca44e06"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf">blockfactory::core::InputSignalPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ab11a1e8ea66678262095734ecca44e06">getInputPortSignal</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx, const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a> size=-1) const =0</td></tr>
-<tr class="memdesc:ab11a1e8ea66678262095734ecca44e06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the signal connected to a 1D input port.  <a href="#ab11a1e8ea66678262095734ecca44e06">More...</a><br /></td></tr>
-<tr class="separator:ab11a1e8ea66678262095734ecca44e06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31f9307eac3c6665bafe3ea2d9d6bf05"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceblockfactory_1_1core.html#ac71090d8d50fd8c03318cb237d79a558">blockfactory::core::OutputSignalPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a31f9307eac3c6665bafe3ea2d9d6bf05">getOutputPortSignal</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a> idx, const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a> size=-1) const =0</td></tr>
-<tr class="memdesc:a31f9307eac3c6665bafe3ea2d9d6bf05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the signal connected to a 1D output port.  <a href="#a31f9307eac3c6665bafe3ea2d9d6bf05">More...</a><br /></td></tr>
-<tr class="separator:a31f9307eac3c6665bafe3ea2d9d6bf05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5ef013c3fbfec82f73a9806b2e2d851"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ab5ef013c3fbfec82f73a9806b2e2d851">parseParameters</a> (<a class="el" href="classblockfactory_1_1core_1_1_parameters.html">Parameters</a> &amp;parameters)=0</td></tr>
+<tr class="memdesc:ab5ef013c3fbfec82f73a9806b2e2d851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parse the <a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a> parameters.  <a href="#ab5ef013c3fbfec82f73a9806b2e2d851">More...</a><br /></td></tr>
+<tr class="separator:ab5ef013c3fbfec82f73a9806b2e2d851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9365c63daeda48771d98843d795e8345"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a9365c63daeda48771d98843d795e8345">addParameterMetadata</a> (const <a class="el" href="classblockfactory_1_1core_1_1_parameter_metadata.html">ParameterMetadata</a> &amp;paramMD)=0</td></tr>
+<tr class="memdesc:a9365c63daeda48771d98843d795e8345"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a parameter metadata.  <a href="#a9365c63daeda48771d98843d795e8345">More...</a><br /></td></tr>
+<tr class="separator:a9365c63daeda48771d98843d795e8345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e9c6533091dbc4c17c74941c246d60b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8e9c6533091dbc4c17c74941c246d60b">setPortsInfo</a> (const <a class="el" href="namespaceblockfactory_1_1core.html#a0205b9e8bac01606843829b0d80e1036">InputPortsInfo</a> &amp;inputPortsInfo, const <a class="el" href="namespaceblockfactory_1_1core.html#a7729f90970e807206aca8ed2cc128040">OutputPortsInfo</a> &amp;outputPortsInfo)=0</td></tr>
+<tr class="memdesc:a8e9c6533091dbc4c17c74941c246d60b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set input / output ports information.  <a href="#a8e9c6533091dbc4c17c74941c246d60b">More...</a><br /></td></tr>
+<tr class="separator:a8e9c6533091dbc4c17c74941c246d60b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affe7d11d1e4d08daefd733333c93e780"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#affe7d11d1e4d08daefd733333c93e780">getInputPortInfo</a> (<a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:affe7d11d1e4d08daefd733333c93e780"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get information of an input port.  <a href="#affe7d11d1e4d08daefd733333c93e780">More...</a><br /></td></tr>
+<tr class="separator:affe7d11d1e4d08daefd733333c93e780"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35eb2069ada9053c2473dc817608753d"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a35eb2069ada9053c2473dc817608753d">getOutputPortInfo</a> (<a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:a35eb2069ada9053c2473dc817608753d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get information of an output port.  <a href="#a35eb2069ada9053c2473dc817608753d">More...</a><br /></td></tr>
+<tr class="separator:a35eb2069ada9053c2473dc817608753d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d3ae2ced6f7abe5bda6e3a181c5da0f"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a2c6c918383a8a8a85c552374ee901e36">Port::Size::Vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8d3ae2ced6f7abe5bda6e3a181c5da0f">getInputPortWidth</a> (const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:a8d3ae2ced6f7abe5bda6e3a181c5da0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 1D input port.  <a href="#a8d3ae2ced6f7abe5bda6e3a181c5da0f">More...</a><br /></td></tr>
+<tr class="separator:a8d3ae2ced6f7abe5bda6e3a181c5da0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fd2b073f86b13e492dedae2601fb4be"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a2c6c918383a8a8a85c552374ee901e36">Port::Size::Vector</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a4fd2b073f86b13e492dedae2601fb4be">getOutputPortWidth</a> (const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:a4fd2b073f86b13e492dedae2601fb4be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 1D output port.  <a href="#a4fd2b073f86b13e492dedae2601fb4be">More...</a><br /></td></tr>
+<tr class="separator:a4fd2b073f86b13e492dedae2601fb4be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acfbc7abedaf6589ecebdcc6befd07f0b"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a5d2e2bd8b84069e5c5e2e7e8b6e00ff3">Port::Size::Matrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#acfbc7abedaf6589ecebdcc6befd07f0b">getInputPortMatrixSize</a> (const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:acfbc7abedaf6589ecebdcc6befd07f0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 2D input port.  <a href="#acfbc7abedaf6589ecebdcc6befd07f0b">More...</a><br /></td></tr>
+<tr class="separator:acfbc7abedaf6589ecebdcc6befd07f0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5730d68cc4c03c8892872d555457e7bb"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a5d2e2bd8b84069e5c5e2e7e8b6e00ff3">Port::Size::Matrix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5730d68cc4c03c8892872d555457e7bb">getOutputPortMatrixSize</a> (const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:a5730d68cc4c03c8892872d555457e7bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the size of a 2D output port.  <a href="#a5730d68cc4c03c8892872d555457e7bb">More...</a><br /></td></tr>
+<tr class="separator:a5730d68cc4c03c8892872d555457e7bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2f0e34c18c9d3549ddfacc1a20cf7f8"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf">InputSignalPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#af2f0e34c18c9d3549ddfacc1a20cf7f8">getInputPortSignal</a> (const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:af2f0e34c18c9d3549ddfacc1a20cf7f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the signal connected to an input input port.  <a href="#af2f0e34c18c9d3549ddfacc1a20cf7f8">More...</a><br /></td></tr>
+<tr class="separator:af2f0e34c18c9d3549ddfacc1a20cf7f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a030d31ff0082ae9fd0ab8273cbbd54f2"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespaceblockfactory_1_1core.html#ac71090d8d50fd8c03318cb237d79a558">OutputSignalPtr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a030d31ff0082ae9fd0ab8273cbbd54f2">getOutputPortSignal</a> (const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a> idx) const =0</td></tr>
+<tr class="memdesc:a030d31ff0082ae9fd0ab8273cbbd54f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the signal connected to an output port.  <a href="#a030d31ff0082ae9fd0ab8273cbbd54f2">More...</a><br /></td></tr>
+<tr class="separator:a030d31ff0082ae9fd0ab8273cbbd54f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
-<a class="anchor" id="a9530a5d43495c7faf3fd72f105710ba9"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a9530a5d43495c7faf3fd72f105710ba9">blockfactory::core::BlockInformation::Cols</a> =  int</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8843b9676d0d409bec6e31fd1b0d51cb"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8843b9676d0d409bec6e31fd1b0d51cb">blockfactory::core::BlockInformation::MatrixSize</a> =  std::pair&lt;<a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5754fd354ec3debda99c9ff78339c3d2">Rows</a>, <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a9530a5d43495c7faf3fd72f105710ba9">Cols</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5a33c402944926e4fb54d60bde4c23ee"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">blockfactory::core::BlockInformation::PortData</a> =  std::tuple&lt;<a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>, <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">PortDimension</a>, <a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622b">blockfactory::core::DataType</a>&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a906224f8f3278df1c8f0124f2b71d686"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">blockfactory::core::BlockInformation::PortDimension</a> =  std::vector&lt;int&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a8b622fc844a499d820c4b3019353e6ba"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">blockfactory::core::BlockInformation::PortIndex</a> =  int</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a5754fd354ec3debda99c9ff78339c3d2"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5754fd354ec3debda99c9ff78339c3d2">blockfactory::core::BlockInformation::Rows</a> =  int</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a675a4587b81757e0325cbcb3e48c688c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">blockfactory::core::BlockInformation::VectorSize</a> =  int</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a4f42a294d358b7e8b28b76b5e5a1dc28"></a>
 <div class="memitem">
@@ -332,7 +221,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="ac9a08917e02d4469837b08e056cc70d0"></a>
+<a class="anchor" id="a9365c63daeda48771d98843d795e8345"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -342,7 +231,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual bool blockfactory::core::BlockInformation::addParameterMetadata </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_parameter_metadata.html">blockfactory::core::ParameterMetadata</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_parameter_metadata.html">ParameterMetadata</a> &amp;&#160;</td>
           <td class="paramname"><em>paramMD</em></td><td>)</td>
           <td></td>
         </tr>
@@ -363,13 +252,13 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True for success, false otherwise.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ad387c3d4d136805d800e01d3f7fbe3b5" title="Parse the core::Block parameters. ">core::BlockInformation::parseParameters</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ab5ef013c3fbfec82f73a9806b2e2d851" title="Parse the core::Block parameters. ">core::BlockInformation::parseParameters</a> </dd></dl>
 
 <p>Implemented in <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a2a68c96f0d49d81a7a2e23412b171dec">blockfactory::mex::SimulinkBlockInformation</a>, and <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a863c82fa275bc6cd5eb92243a607a19c">blockfactory::coder::CoderBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8a0f9cf6c2ae08e11f029a51cddd3852"></a>
+<a class="anchor" id="affe7d11d1e4d08daefd733333c93e780"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -377,9 +266,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a> blockfactory::core::BlockInformation::getInputPortData </td>
+          <td class="memname">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a> blockfactory::core::BlockInformation::getInputPortInfo </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -391,20 +280,20 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get data of an input port. </p>
+<p>Get information of an input port. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">idx</td><td>The index of the port. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A PortData object containing the port's data. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html" title="A container of port information. ">Port::Info</a> object containing the port information. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#ab1ba8e1b601a335bcf34efcda5132526">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a1a4d8e59941a0eda4899dcad93134cab">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#abcbdfe9b7b88d7f516e03aea1f39ca12">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a330b1031bd5f54827d3c16034c70977e">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aea4578dbf45d473605a5046e08b7cc8a"></a>
+<a class="anchor" id="acfbc7abedaf6589ecebdcc6befd07f0b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -412,9 +301,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8843b9676d0d409bec6e31fd1b0d51cb">MatrixSize</a> blockfactory::core::BlockInformation::getInputPortMatrixSize </td>
+          <td class="memname">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a5d2e2bd8b84069e5c5e2e7e8b6e00ff3">Port::Size::Matrix</a> blockfactory::core::BlockInformation::getInputPortMatrixSize </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -435,11 +324,11 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The size of the port. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a59ebeb8f82c1db64dfe2c71fb90ea002">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#ae8ac77ecdb20fd8dc4e2d76c9b64d1a5">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a13a0d9cc67977eb4073c54bb9f6cefb9">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a325e41e25ff16a1bfef607f26a370b2e">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="ab11a1e8ea66678262095734ecca44e06"></a>
+<a class="anchor" id="af2f0e34c18c9d3549ddfacc1a20cf7f8"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -447,21 +336,11 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf">blockfactory::core::InputSignalPtr</a> blockfactory::core::BlockInformation::getInputPortSignal </td>
+          <td class="memname">virtual <a class="el" href="namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf">InputSignalPtr</a> blockfactory::core::BlockInformation::getInputPortSignal </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
-          <td class="paramname"><em>idx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a>&#160;</td>
-          <td class="paramname"><em>size</em> = <code>-1</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -471,21 +350,20 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get the signal connected to a 1D input port. </p>
+<p>Get the signal connected to an input input port. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">idx</td><td>The index of the port. </td></tr>
-    <tr><td class="paramname">size</td><td>The size of the signal. </td></tr>
+    <tr><td class="paramname">idx</td><td>The index of the port to which the signal is connected. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The pointer to the signal connected to the input port for success, a <code>nullptr</code> otherwise. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#ab9831fd2dca7c61a1dc109f73f19ecfa">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a567d5ccc023202fe32a0d3f95683afec">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#aa5aff775a97548e54cde2d9b1604433b">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a1be41ef9dc93d17f9c2b68df4903986d">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aaa7ae668534ef6792f4bc1b54985b65d"></a>
+<a class="anchor" id="a8d3ae2ced6f7abe5bda6e3a181c5da0f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -493,9 +371,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a> blockfactory::core::BlockInformation::getInputPortWidth </td>
+          <td class="memname">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a2c6c918383a8a8a85c552374ee901e36">Port::Size::Vector</a> blockfactory::core::BlockInformation::getInputPortWidth </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -516,11 +394,11 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The size of the port. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a431747676f6167e9ffe7fd162bab88d0">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#ab6ada42a78a6a6b162d471f4e43f2dc5">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a2d2565264b887bea1dbc5ca0e9ec49eb">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a7b21da808b6ed04b0639986cd2d9517e">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a43392e86bdf6ea3d9319e42b34af5615"></a>
+<a class="anchor" id="a35eb2069ada9053c2473dc817608753d"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -528,9 +406,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a5a33c402944926e4fb54d60bde4c23ee">PortData</a> blockfactory::core::BlockInformation::getOutputPortData </td>
+          <td class="memname">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a> blockfactory::core::BlockInformation::getOutputPortInfo </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -542,20 +420,20 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get data of an output port. </p>
+<p>Get information of an output port. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">idx</td><td>The index of the port. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A PortData object containing the port's data. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html" title="A container of port information. ">Port::Info</a> object containing the port information. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#ab1e0a3a22b625cecd6ad9349c354b97d">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#afcf6a4c22b8b4ba84a4236d1319f206c">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a25ed5083149dca01ac74e5ebdaf2db06">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#ac470e0cefe551686d2e26f54e4b612a3">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="aa04e9fa7115d6bdddfbb62a547a18183"></a>
+<a class="anchor" id="a5730d68cc4c03c8892872d555457e7bb"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -563,9 +441,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8843b9676d0d409bec6e31fd1b0d51cb">MatrixSize</a> blockfactory::core::BlockInformation::getOutputPortMatrixSize </td>
+          <td class="memname">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a5d2e2bd8b84069e5c5e2e7e8b6e00ff3">Port::Size::Matrix</a> blockfactory::core::BlockInformation::getOutputPortMatrixSize </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -586,11 +464,11 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The size of the port. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a2c30e6f5ca55c2c6bb3364244632fd74">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a2e22637b8a87896c094af28d1df63193">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a004f0875905c360ce35abc3346702e41">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#af122d7d568104ed73b9d450b2b64ce4d">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a31f9307eac3c6665bafe3ea2d9d6bf05"></a>
+<a class="anchor" id="a030d31ff0082ae9fd0ab8273cbbd54f2"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -598,21 +476,11 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="namespaceblockfactory_1_1core.html#ac71090d8d50fd8c03318cb237d79a558">blockfactory::core::OutputSignalPtr</a> blockfactory::core::BlockInformation::getOutputPortSignal </td>
+          <td class="memname">virtual <a class="el" href="namespaceblockfactory_1_1core.html#ac71090d8d50fd8c03318cb237d79a558">OutputSignalPtr</a> blockfactory::core::BlockInformation::getOutputPortSignal </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
-          <td class="paramname"><em>idx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a>&#160;</td>
-          <td class="paramname"><em>size</em> = <code>-1</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td> const</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -622,21 +490,20 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get the signal connected to a 1D output port. </p>
+<p>Get the signal connected to an output port. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">idx</td><td>The index of the port. </td></tr>
-    <tr><td class="paramname">size</td><td>The size of the signal. </td></tr>
+    <tr><td class="paramname">idx</td><td>The index of the port to which the signal is connected. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The pointer to the signal connected to the output port for success, a <code>nullptr</code> otherwise. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#afcd229bf1fd997a4f645e08e97b2aed7">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a6011d48428b488290e3e309b6ee8cb7d">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a850b78728c1770f12e43166022645d4c">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a6132fc5466732d1fa810fa229a0b53fd">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
-<a class="anchor" id="a8b68eccad7ce10638636ff1ce307a84d"></a>
+<a class="anchor" id="a4fd2b073f86b13e492dedae2601fb4be"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -644,9 +511,9 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a675a4587b81757e0325cbcb3e48c688c">VectorSize</a> blockfactory::core::BlockInformation::getOutputPortWidth </td>
+          <td class="memname">virtual <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_size.html#a2c6c918383a8a8a85c552374ee901e36">Port::Size::Vector</a> blockfactory::core::BlockInformation::getOutputPortWidth </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">PortIndex</a>&#160;</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_port.html#a928e4d6ffe3b3b6cfa2473a7bf94eef5">Port::Index</a>&#160;</td>
           <td class="paramname"><em>idx</em></td><td>)</td>
           <td> const</td>
         </tr>
@@ -667,7 +534,7 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The size of the port. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a45245e35559ff087a29db6453600a850">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a2407b62ec0843bed29ad3f104dbb5ad0">blockfactory::mex::SimulinkBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a80a85ac920f8cc1c5aee222f6d074dbd">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#ace61b8855d1e6283671f4ab924420b08">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>
@@ -717,7 +584,7 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad387c3d4d136805d800e01d3f7fbe3b5"></a>
+<a class="anchor" id="ab5ef013c3fbfec82f73a9806b2e2d851"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -727,7 +594,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">virtual bool blockfactory::core::BlockInformation::parseParameters </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classblockfactory_1_1core_1_1_parameters.html">blockfactory::core::Parameters</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classblockfactory_1_1core_1_1_parameters.html">Parameters</a> &amp;&#160;</td>
           <td class="paramname"><em>parameters</em></td><td>)</td>
           <td></td>
         </tr>
@@ -753,7 +620,7 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae8ad2615c47fe2bb4151f66587ecec86"></a>
+<a class="anchor" id="a8e9c6533091dbc4c17c74941c246d60b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -761,11 +628,21 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool blockfactory::core::BlockInformation::setIOPortsData </td>
+          <td class="memname">virtual bool blockfactory::core::BlockInformation::setPortsInfo </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html">IOData</a> &amp;&#160;</td>
-          <td class="paramname"><em>ioData</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="namespaceblockfactory_1_1core.html#a0205b9e8bac01606843829b0d80e1036">InputPortsInfo</a> &amp;&#160;</td>
+          <td class="paramname"><em>inputPortsInfo</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="namespaceblockfactory_1_1core.html#a7729f90970e807206aca8ed2cc128040">OutputPortsInfo</a> &amp;&#160;</td>
+          <td class="paramname"><em>outputPortsInfo</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -775,18 +652,19 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Set input / output ports data. </p>
-<p>Specify I/O ports data such as <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a8b622fc844a499d820c4b3019353e6ba">core::BlockInformation::PortIndex</a>, <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a906224f8f3278df1c8f0124f2b71d686">core::BlockInformation::PortDimension</a>, and <a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622b" title="Defines allowed signal data types. ">core::DataType</a> storing the information in a <a class="el" href="structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html">core::BlockInformation::IOData</a> structure.</p>
+<p>Set input / output ports information. </p>
+<p>Specify I/O ports information such as indices, dimensions, and datatype.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">ioData</td><td>The structure containing I/O ports data. </td></tr>
+    <tr><td class="paramname">inputPortsInfo</td><td>Vector of <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html" title="A container of port information. ">core::Port::Info</a> objects storing input port information. </td></tr>
+    <tr><td class="paramname">outputPortsInfo</td><td>Vector of <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html" title="A container of port information. ">core::Port::Info</a> objects storing output port information. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>True for success, false otherwise.</dd></dl>
-<dl class="section note"><dt>Note</dt><dd>This method should also automatically set the number of inputs and outputs. </dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This method also automatically set the number of input and output ports and should be called only once. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a2c571e0f56ae7136a9eee9b58596522c">blockfactory::mex::SimulinkBlockInformation</a>, and <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#ae50502f8a7d1d80e740c15ced9f83274">blockfactory::coder::CoderBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a9a1a3430efbee909653e0bc4955d5793">blockfactory::mex::SimulinkBlockInformation</a>, and <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a732d3dcda57805ed9f1fe5fe00645c60">blockfactory::coder::CoderBlockInformation</a>.</p>
 
 </div>
 </div>

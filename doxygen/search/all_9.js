@@ -8,8 +8,9 @@ var searchData=
   ['m_5fparameters',['m_parameters',['../classblockfactory_1_1core_1_1_block.html#a063836c2459d24401dd351b2abdbb595',1,'blockfactory::core::Block']]],
   ['m_5fvaluescalar',['m_valueScalar',['../classblockfactory_1_1core_1_1_parameter.html#addcc344bd41d4670ee9bf570687f5739',1,'blockfactory::core::Parameter']]],
   ['m_5fvaluevector',['m_valueVector',['../classblockfactory_1_1core_1_1_parameter.html#ad473c87b943e7850eb1ef06076788032',1,'blockfactory::core::Parameter']]],
-  ['mapporttypetosimulink',['mapPortTypeToSimulink',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a107b133e168fca31c04f0e75a5085086',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
-  ['mapsimulinktoporttype',['mapSimulinkToPortType',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#add54e8dd8f5e947c5caec5021a0026c6',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
-  ['matrixsize',['MatrixSize',['../classblockfactory_1_1core_1_1_block_information.html#a8843b9676d0d409bec6e31fd1b0d51cb',1,'blockfactory::core::BlockInformation::MatrixSize()'],['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#aca3f832185206ecbb26a6f3afa06be74',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl::MatrixSize()']]],
+  ['mapporttypetosimulink',['mapPortTypeToSimulink',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#ac70c24911afb517ea77757dc63c392b4',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
+  ['mapsimulinktoporttype',['mapSimulinkToPortType',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a4601012f66b61032127bbfd8615cde5c',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
+  ['matrix',['Matrix',['../structblockfactory_1_1core_1_1_port_1_1_size.html#a5d2e2bd8b84069e5c5e2e7e8b6e00ff3',1,'blockfactory::core::Port::Size']]],
+  ['matrixsize',['MatrixSize',['../classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a57674d5f71bce0623734e32f6394ccf8',1,'blockfactory::mex::impl::SimulinkBlockInformationImpl']]],
   ['modelfailed',['modelFailed',['../classblockfactory_1_1coder_1_1_generated_code_wrapper.html#a3c4f2073112d091d0b1b24845af90f66',1,'blockfactory::coder::GeneratedCodeWrapper']]]
 ];

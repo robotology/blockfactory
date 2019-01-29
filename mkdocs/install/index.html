@@ -347,6 +347,26 @@
     Configuration
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#matlab" title="Matlab" class="md-nav__link">
+    Matlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugins" title="Plugins" class="md-nav__link">
+    Plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
       
@@ -495,6 +515,26 @@
     Configuration
   </a>
   
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#matlab" title="Matlab" class="md-nav__link">
+    Matlab
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#plugins" title="Plugins" class="md-nav__link">
+    Plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
       
@@ -532,7 +572,7 @@
 <li>C++14 compiler</li>
 <li>CMake 3.5</li>
 </ul>
-<p>BlockFactory provides three components, listed here below with their dependendencies. If a component dependency is not found, the component is not built. </p>
+<p>BlockFactory provides three components, listed here below with their dependencies. If a component dependency is not found, the component is not built.</p>
 <table>
 <thead>
 <tr>
@@ -580,12 +620,29 @@ cmake --build . --config Release --target install
 </div>
 </div>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h3 id="matlab">Matlab<a class="headerlink" href="#matlab" title="Permanent link">&para;</a></h3>
 <p>BlockFactory provides the support of:</p>
 <ul>
 <li><strong>Simulink</strong> by shipping a generic <a href="https://it.mathworks.com/help/simulink/sfg/what-is-an-s-function.html">MEX Level-2 S-Function S-Functions</a></li>
 <li><strong>Simulink Coder</strong> by shipping a TLC file to achieve <a href="https://it.mathworks.com/help/rtw/tlc/inlining-s-functions.html">Wrapper Inlined S-Functions</a></li>
 </ul>
 <p>These two files are installed in the <code>&lt;install-prefix&gt;/mex</code> folder, which should be added to the <a href="https://it.mathworks.com/help/matlab/matlab_env/what-is-the-matlab-search-path.html">Matlab search path</a>.</p>
+<h3 id="plugins">Plugins<a class="headerlink" href="#plugins" title="Permanent link">&para;</a></h3>
+<p>The archictecture of BlockFactory is based on a plugin system. The libraries containing the blocks must be found in the filesystem.
+Add to the following environment variable all the folders that contain BlockFactory plugins:</p>
+<div class="admonition example">
+<p class="admonition-title">Environment</p>
+<div class="superfences-tabs">
+<input name="__tabs_2" type="radio" id="__tab_2_0" checked="checked" />
+<label for="__tab_2_0">GNU/Linux and macOS</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>export BLOCKFACTORY_PLUGIN_PATH=/installfolder1/subfolder1/blockfactory:/installfolder2/subfolder2/blockfactory/:&lt;...&gt;
+</pre></div></div>
+<input name="__tabs_2" type="radio" id="__tab_2_1" />
+<label for="__tab_2_1">Windows</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>$env:BLOCKFACTORY_PLUGIN_PATH = &quot;C:\installfolder1\subfolder1\blockfactory;C:\installfolder2\subfolder2\blockfactory:&lt;...&gt;&quot;;
+</pre></div></div>
+</div>
+</div>
                 
                   
                 

@@ -138,12 +138,19 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_parameters.html">Parameters</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for storing block's parameters.  <a href="classblockfactory_1_1core_1_1_parameters.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_port.html">Port</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that stores port properties.  <a href="classblockfactory_1_1core_1_1_port.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_signal.html">Signal</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to represent data shared by blocks, labelled as signals.  <a href="classblockfactory_1_1core_1_1_signal.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class to access data shared by blocks, represented as signals.  <a href="classblockfactory_1_1core_1_1_signal.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a0205b9e8bac01606843829b0d80e1036"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#a0205b9e8bac01606843829b0d80e1036">InputPortsInfo</a> = std::vector&lt; <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a> &gt;</td></tr>
+<tr class="separator:a0205b9e8bac01606843829b0d80e1036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7729f90970e807206aca8ed2cc128040"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#a7729f90970e807206aca8ed2cc128040">OutputPortsInfo</a> = std::vector&lt; <a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a> &gt;</td></tr>
+<tr class="separator:a7729f90970e807206aca8ed2cc128040"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c8ce1e2ccfff53dfae947fbb1f9a2cf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf">InputSignalPtr</a> = std::shared_ptr&lt; const <a class="el" href="classblockfactory_1_1core_1_1_signal.html">blockfactory::core::Signal</a> &gt;</td></tr>
 <tr class="separator:a8c8ce1e2ccfff53dfae947fbb1f9a2cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac71090d8d50fd8c03318cb237d79a558"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#ac71090d8d50fd8c03318cb237d79a558">OutputSignalPtr</a> = std::shared_ptr&lt; <a class="el" href="classblockfactory_1_1core_1_1_signal.html">blockfactory::core::Signal</a> &gt;</td></tr>
@@ -175,22 +182,6 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:ad94013a79fc17415d0793ce04afde8c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines the types of parameters supported by core::Parameter.  <a href="namespaceblockfactory_1_1core.html#ad94013a79fc17415d0793ce04afde8c2">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ad94013a79fc17415d0793ce04afde8c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa56e71fc86a1dcd4f5b39c915aab622b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622b">DataType</a> { <br />
-&#160;&#160;<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622bafd3e4ece78a7d422280d5ed379482229">DataType::DOUBLE</a>, 
-<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622ba0679273e201afd0bf57af3961f8a23b8">DataType::SINGLE</a>, 
-<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622baee9d73311ff0658494edfff14c3ec1e3">DataType::INT8</a>, 
-<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622baecfc091ed2a607335524c8389cfa41b5">DataType::UINT8</a>, 
-<br />
-&#160;&#160;<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622ba5f90af42814c0a419d715d43ae54fd7a">DataType::INT16</a>, 
-<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622ba48d8f1a723d44ff4a87db1bb6c551c62">DataType::UINT16</a>, 
-<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622ba6495adba09844fac8eeb0aba86e6f1bf">DataType::INT32</a>, 
-<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622ba17266551181f69a1b4a3ad5c9e270afc">DataType::UINT32</a>, 
-<br />
-&#160;&#160;<a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622bac48d5da12d702e73d6966069f2687376">DataType::BOOLEAN</a>
-<br />
- }<tr class="memdesc:aa56e71fc86a1dcd4f5b39c915aab622b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Defines allowed signal data types.  <a href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622b">More...</a><br /></td></tr>
-</td></tr>
-<tr class="separator:aa56e71fc86a1dcd4f5b39c915aab622b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -238,12 +229,36 @@ Variables</h2></td></tr>
 <tr class="separator:a9739b54ca725115eb234e6c7a2a4fc23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
+<a class="anchor" id="a0205b9e8bac01606843829b0d80e1036"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceblockfactory_1_1core.html#a0205b9e8bac01606843829b0d80e1036">blockfactory::core::InputPortsInfo</a> = typedef std::vector&lt;<a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a8c8ce1e2ccfff53dfae947fbb1f9a2cf"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf">blockfactory::core::InputSignalPtr</a> = typedef std::shared_ptr&lt;const <a class="el" href="classblockfactory_1_1core_1_1_signal.html">blockfactory::core::Signal</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7729f90970e807206aca8ed2cc128040"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespaceblockfactory_1_1core.html#a7729f90970e807206aca8ed2cc128040">blockfactory::core::OutputPortsInfo</a> = typedef std::vector&lt;<a class="el" href="structblockfactory_1_1core_1_1_port_1_1_info.html">Port::Info</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -263,51 +278,6 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622b"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622b">blockfactory::core::DataType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Defines allowed signal data types. </p>
-<p>This enum defines the data types of signals that are handled by this toolbox.</p>
-<dl class="section note"><dt>Note</dt><dd>Currently only <code>DOUBLE</code> is fully implemented. </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classblockfactory_1_1core_1_1_signal.html#a973f4a8d875f284fcd791f9b3f3afa1f">core::Signal::Signal</a>, core::BlockInformation::setInputPortType, core::BlockInformation::setOutputPortType </dd></dl>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622bafd3e4ece78a7d422280d5ed379482229"></a>DOUBLE&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622ba0679273e201afd0bf57af3961f8a23b8"></a>SINGLE&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622baee9d73311ff0658494edfff14c3ec1e3"></a>INT8&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622baecfc091ed2a607335524c8389cfa41b5"></a>UINT8&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622ba5f90af42814c0a419d715d43ae54fd7a"></a>INT16&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622ba48d8f1a723d44ff4a87db1bb6c551c62"></a>UINT16&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622ba6495adba09844fac8eeb0aba86e6f1bf"></a>INT32&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622ba17266551181f69a1b4a3ad5c9e270afc"></a>UINT32&#160;</td><td class="fielddoc">
-</td></tr>
-<tr><td class="fieldname"><a class="anchor" id="aa56e71fc86a1dcd4f5b39c915aab622bac48d5da12d702e73d6966069f2687376"></a>BOOLEAN&#160;</td><td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
 <a class="anchor" id="ad94013a79fc17415d0793ce04afde8c2"></a>
 <div class="memitem">
 <div class="memproto">

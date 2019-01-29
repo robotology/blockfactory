@@ -108,7 +108,8 @@ $(document).ready(function(){initNavTree('_block_information_8h.html','');});
 <div class="title">BlockInformation.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;memory&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="_port_8h_source.html">BlockFactory/Core/Port.h</a>&quot;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;utility&gt;</code><br />
@@ -116,7 +117,7 @@ $(document).ready(function(){initNavTree('_block_information_8h.html','');});
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for BlockInformation.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="_block_information_8h__incl.svg" width="418" height="156"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="_block_information_8h__incl.svg" width="584" height="231"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -133,10 +134,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html">blockfactory::core::BlockInformation</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Abstract class for storing generic <a class="el" href="classblockfactory_1_1core_1_1_block.html" title="Basic abstract class for wrapping generic algorithms. ">core::Block</a> properties.  <a href="classblockfactory_1_1core_1_1_block_information.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structblockfactory_1_1core_1_1_block_information_1_1_port.html">blockfactory::core::BlockInformation::Port</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html">blockfactory::core::BlockInformation::IOData</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -147,6 +144,10 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a0205b9e8bac01606843829b0d80e1036"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#a0205b9e8bac01606843829b0d80e1036">blockfactory::core::InputPortsInfo</a> = std::vector&lt; Port::Info &gt;</td></tr>
+<tr class="separator:a0205b9e8bac01606843829b0d80e1036"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7729f90970e807206aca8ed2cc128040"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#a7729f90970e807206aca8ed2cc128040">blockfactory::core::OutputPortsInfo</a> = std::vector&lt; Port::Info &gt;</td></tr>
+<tr class="separator:a7729f90970e807206aca8ed2cc128040"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c8ce1e2ccfff53dfae947fbb1f9a2cf"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#a8c8ce1e2ccfff53dfae947fbb1f9a2cf">blockfactory::core::InputSignalPtr</a> = std::shared_ptr&lt; const <a class="el" href="classblockfactory_1_1core_1_1_signal.html">blockfactory::core::Signal</a> &gt;</td></tr>
 <tr class="separator:a8c8ce1e2ccfff53dfae947fbb1f9a2cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac71090d8d50fd8c03318cb237d79a558"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceblockfactory_1_1core.html#ac71090d8d50fd8c03318cb237d79a558">blockfactory::core::OutputSignalPtr</a> = std::shared_ptr&lt; <a class="el" href="classblockfactory_1_1core_1_1_signal.html">blockfactory::core::Signal</a> &gt;</td></tr>

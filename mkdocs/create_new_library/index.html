@@ -1042,7 +1042,7 @@
 <p>To grasp better this difference, if multiple executables link against the same static library, the same code is embedded inside all of them, resulting in bigger executables and code duplication. A dynamic library object instead can be shared by multiple executables that need only to know its location in the filesystem and which symbols it provide.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
-<p>You can find more detailed information about software libraries and linkers at <a href="https://www.lurklurk.org/linkers/linkers.html">this link</a>. </p>
+<p>You can find more detailed information about software libraries and linkers at <a href="https://www.lurklurk.org/linkers/linkers.html">this link</a>.</p>
 </div>
 <h4 id="plugin-library">Plugin Library<a class="headerlink" href="#plugin-library" title="Permanent link">&para;</a></h4>
 <p>A plugin library is a particular type of a dynamic library. An executable can load dynamic libraries either at load time, i.e. when the executable is launched, or at run time, i.e. when needed during the execution. The libraries that can be loaded during run time are referred as plugins.</p>
@@ -1152,22 +1152,35 @@
 <p class="admonition-title">Note</p>
 <p>If your library needs to link against other libraries, use <code>find_package</code> to load their targets and then add them to the <code>target_link_libraries</code> directive.</p>
 </div>
+<div class="admonition example">
+<p class="admonition-title">Compiling instructions</p>
 <p>From the root folder of the project, execute:</p>
-<div class="highlight"><pre><span></span>mkdir build
-<span class="nb">cd</span> build
+<div class="superfences-tabs">
+<input name="__tabs_1" type="radio" id="__tab_1_0" checked="checked" />
+<label for="__tab_1_0">GNU/Linux and macOS</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>mkdir build
+cd build
 cmake ..
 cmake --build .
-</pre></div>
-
+</pre></div></div>
+<input name="__tabs_1" type="radio" id="__tab_1_1" />
+<label for="__tab_1_1">Windows</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>mkdir build
+cd build
+cmake ..
+cmake --build . --config Release
+</pre></div></div>
+</div>
+</div>
 <p>You should now find in the <code>./build</code> directories a new library file, which depending on your OS is:</p>
 <ul>
 <li><code>libExampleToolbox.so</code> on Linux</li>
 <li><code>libExampleToolbox.dylib</code> on macOS</li>
 <li><code>ExampleToolbox.dll</code> on Windows</li>
 </ul>
-<p>This is the toolbox's plugin library which is loaded during runtime by the active Engine. </p>
+<p>This is the toolbox's plugin library which is loaded during runtime by the active Engine.</p>
 <h3 id="implement-the-block-logic">Implement the block logic<a class="headerlink" href="#implement-the-block-logic" title="Permanent link">&para;</a></h3>
-<p>The only <em>Signal math</em> block of our new toolbox will be implemented in a <code>example::SignalMath</code> C++ class. </p>
+<p>The only <em>Signal math</em> block of our new toolbox will be implemented in a <code>example::SignalMath</code> C++ class.</p>
 <h4 id="header">Header<a class="headerlink" href="#header" title="Permanent link">&para;</a></h4>
 <p>Here below the <code>./include/SignalMath.h</code> header.</p>
 <p>Given the simple logic it should be straightforward to understand. The class inherits from the <code>blockfactory::core::Block</code> interface and implements some of its methods.</p>
@@ -1271,7 +1284,6 @@ cmake --build .
 <ol>
 <li>The base class needs to be configured. It needs some parameters (e.g. the class name and the library name) and this call asks the Engine to parse them.</li>
 <li>The ports of the Block need to be defined. In this example the size is set as dynamic so that it accepts signals with any width.</li>
-<li>The <a href="https://robotology.github.io/blockfactory/doxygen/structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html"><code>blockfactory::core::BlockInformation::IOData</code></a> class is used to store the data of all the ports. It is a <code>struct</code> containing two <code>std::vectors</code>.</li>
 <li>The data is then sent to the Engine through the BlockInformation interface.</li>
 </ol>
 <div class="admonition info">
@@ -1280,7 +1292,7 @@ cmake --build .
 </div>
 <div class="admonition warning">
 <p class="admonition-title">Signal size</p>
-<p>Simulink has the support of inheriting the port size from the signal size, though use this feature only when strictly needed. In complex Simulink Models it might be difficult executing the size propagation, and fixing the Port size provides helpful constraints for the Engine (especially for blocks with only outputs) </p>
+<p>Simulink has the support of inheriting the port size from the signal size, though use this feature only when strictly needed. In complex Simulink Models the Engine might have difficulties to execute this size propagation, and fixing the Port sizes provides helpful constraints (especially for blocks with only outputs)</p>
 </div>
 <div class="admonition danger">
 <p class="admonition-title">Important</p>
@@ -1293,31 +1305,29 @@ cmake --build .
         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="c1">// Create data about input and output ports.</span>
-    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">PortData</span> <span class="n">input1</span><span class="p">;</span>
-    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">PortData</span> <span class="n">input2</span><span class="p">;</span>
-    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">PortData</span> <span class="n">output</span><span class="p">;</span>
+    <span class="c1">// Create object that store input and output ports information</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">Info</span> <span class="n">input1</span><span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">0</span><span class="p">,</span>
+                                          <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
+                                          <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
 
-    <span class="n">input1</span> <span class="o">=</span> <span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">0</span><span class="p">,</span>
-              <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Signal</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
-              <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">Info</span> <span class="n">input2</span><span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">1</span><span class="p">,</span>
+                                          <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
+                                          <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
 
-    <span class="n">input2</span> <span class="o">=</span> <span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">1</span><span class="p">,</span>
-              <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Signal</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
-              <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">Info</span> <span class="n">output</span><span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">0</span><span class="p">,</span>
+                                          <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
+                                          <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Port</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
 
-    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="cm">/*portIndex=*/</span><span class="mi">0</span><span class="p">,</span>
-              <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">{</span><span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">Signal</span><span class="o">::</span><span class="n">DynamicSize</span><span class="p">},</span>
-              <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">DataType</span><span class="o">::</span><span class="n">DOUBLE</span><span class="p">};</span>
+    <span class="c1">// Store together the port information objects</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">InputPortsInfo</span> <span class="n">inputPortInfo</span><span class="p">;</span>
+    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">OutputPortsInfo</span> <span class="n">outputPortInfo</span><span class="p">;</span>
 
-    <span class="c1">// Populate a structure with the overall input / output data</span>
-    <span class="n">blockfactory</span><span class="o">::</span><span class="n">core</span><span class="o">::</span><span class="n">BlockInformation</span><span class="o">::</span><span class="n">IOData</span> <span class="n">ioData</span><span class="p">;</span>
-    <span class="n">ioData</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">input1</span><span class="p">);</span>
-    <span class="n">ioData</span><span class="p">.</span><span class="n">input</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">input2</span><span class="p">);</span>
-    <span class="n">ioData</span><span class="p">.</span><span class="n">output</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
+    <span class="n">inputPortInfo</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">input1</span><span class="p">);</span>
+    <span class="n">inputPortInfo</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">input2</span><span class="p">);</span>
+    <span class="n">outputPortInfo</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">output</span><span class="p">);</span>
 
-    <span class="c1">// Store this data into the BlockInformation</span>
-    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">setIOPortsData</span><span class="p">(</span><span class="n">ioData</span><span class="p">))</span> <span class="p">{</span>
+    <span class="c1">// Store the port information into the BlockInformation</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">blockInfo</span><span class="o">-&gt;</span><span class="n">setPortsInfo</span><span class="p">(</span><span class="n">inputPortInfo</span><span class="p">,</span> <span class="n">outputPortInfo</span><span class="p">))</span> <span class="p">{</span>
         <span class="n">bfError</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Failed to configure input / output ports&quot;</span><span class="p">;</span>
         <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
@@ -1413,7 +1423,7 @@ cmake --build .
     <span class="p">}</span>
 
     <span class="c1">// Perform the given operation</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">output</span><span class="o">-&gt;</span><span class="n">getWidth</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">output</span><span class="o">-&gt;</span><span class="n">getWidth</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">switch</span> <span class="p">(</span><span class="n">m_operation</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">case</span> <span class="n">Operation</span><span class="o">::</span><span class="nl">ADDITION</span><span class="p">:</span>
                 <span class="n">output</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">input1</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">input2</span><span class="o">-&gt;</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
@@ -1464,19 +1474,15 @@ cmake --build .
 
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Simulink will open this library at the beginning of the simulation loop and it needs to find it from the filesystem. Be sure that the <code>./build</code> folder is in the searching path of your dynamic linker. In the supported OSs you should add it to:</p>
+<p>Simulink will open this library at the beginning of the simulation loop and it needs to be found in the filesystem. The BlockFactory search path can be configured by setting the <code>BLOCKFACTORY_PLUGIN_PATH</code> environment variable:</p>
 <div class="superfences-tabs">
-<input name="__tabs_1" type="radio" id="__tab_1_0" checked="checked" />
-<label for="__tab_1_0">GNU/LINUX</label>
-<div class="superfences-content"><div class="highlight"><pre><span></span>LD_LIBRARY_PATH
+<input name="__tabs_2" type="radio" id="__tab_2_0" checked="checked" />
+<label for="__tab_2_0">GNU/Linux and macOS</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>export BLOCKFACTORY_PLUGIN_PATH=&lt;build folder absolute path&gt;
 </pre></div></div>
-<input name="__tabs_1" type="radio" id="__tab_1_1" />
-<label for="__tab_1_1">macOS</label>
-<div class="superfences-content"><div class="highlight"><pre><span></span>DYLD_LIBRARY_PATH
-</pre></div></div>
-<input name="__tabs_1" type="radio" id="__tab_1_2" />
-<label for="__tab_1_2">Windows</label>
-<div class="superfences-content"><div class="highlight"><pre><span></span>Path
+<input name="__tabs_2" type="radio" id="__tab_2_1" />
+<label for="__tab_2_1">Windows</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>$env:BLOCKFACTORY_PLUGIN_PATH = &quot;&lt;build folder absolute path&gt;&quot;;
 </pre></div></div>
 </div>
 </div>

@@ -11,7 +11,7 @@ var searchData=
   ['blockinformation_2eh',['BlockInformation.h',['../_block_information_8h.html',1,'']]],
   ['blockoptionprioritizeorder',['BlockOptionPrioritizeOrder',['../namespaceblockfactory_1_1core.html#ae52661f2ce5af65e9bc5d322314e99f6',1,'blockfactory::core']]],
   ['bool',['BOOL',['../namespaceblockfactory_1_1core.html#ad94013a79fc17415d0793ce04afde8c2aa97b2c144243b2b9d2c593ec268b62f5',1,'blockfactory::core']]],
-  ['boolean',['BOOLEAN',['../namespaceblockfactory_1_1core.html#aa56e71fc86a1dcd4f5b39c915aab622bac48d5da12d702e73d6966069f2687376',1,'blockfactory::core']]],
+  ['boolean',['BOOLEAN',['../classblockfactory_1_1core_1_1_port.html#ac1866bae6c539fb3927030047639da6fac48d5da12d702e73d6966069f2687376',1,'blockfactory::core::Port']]],
   ['coder',['coder',['../namespaceblockfactory_1_1coder.html',1,'blockfactory']]],
   ['convertstdvector_3c_20std_3a_3astring_2c_20std_3a_3astring_20_3e',['convertStdVector&lt; std::string, std::string &gt;',['../_convert_std_vector_8h.html#ae20daf09829f0deb60c91200fdb7357e',1,'ConvertStdVector.h']]],
   ['core',['core',['../namespaceblockfactory_1_1core.html',1,'blockfactory']]],
