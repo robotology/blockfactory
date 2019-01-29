@@ -13,7 +13,7 @@
 #include <vector>
 
 using namespace blockfactory::core;
-std::string platformSpecificLibName(const std::string& library);
+//std::string platformSpecificLibName(const std::string& library);
 
 class ClassFactorySingleton::Impl
 {
@@ -63,7 +63,7 @@ ClassFactorySingleton::getClassFactory(const ClassFactoryData& factorydata)
     const ClassFactoryLibrary& libraryName = factorydata.first;
     const ClassFactoryName& factoryName = factorydata.second;
 
-    std::string fsLibraryName = platformSpecificLibName(libraryName);
+//    std::string fsLibraryName = platformSpecificLibName(libraryName);
 
     // Clean possible leftovers
     if (pImpl->factoryMap.find(factorydata) != pImpl->factoryMap.end()
@@ -91,7 +91,8 @@ ClassFactorySingleton::getClassFactory(const ClassFactoryData& factorydata)
         }
 
         // Open the plugin library
-        if (!factory->open(fsLibraryName.c_str(), factoryName.c_str()) || !factory->isValid()) {
+//        if (!factory->open(fsLibraryName.c_str(), factoryName.c_str()) || !factory->isValid()) {
+            if (!factory->open(libraryName.c_str(), factoryName.c_str()) || !factory->isValid()) {
             bfError << "Failed to create factory";
             bfError << "Factory error (" << static_cast<std::uint32_t>(factory->getStatus())
                     << "): " << factory->getError().c_str();
@@ -103,7 +104,8 @@ ClassFactorySingleton::getClassFactory(const ClassFactoryData& factorydata)
     }
 
     if (!pImpl->factoryMap[factorydata]->isValid()) {
-        bfError << "The factory " << factoryName << " associated with the plugin " << fsLibraryName
+//        bfError << "The factory " << factoryName << " associated with the plugin " << fsLibraryName
+        bfError << "The factory " << factoryName << " associated with the plugin " << libraryName
                 << " is not valid";
         bfError << "Factory error ("
                 << static_cast<std::uint32_t>(pImpl->factoryMap[factorydata]->getStatus())
@@ -138,21 +140,21 @@ void ClassFactorySingleton::extendPluginSearchPath(const std::string& path)
     pImpl->extraPluginPaths.push_back(path);
 }
 
-std::string platformSpecificLibName(const std::string& library)
-{
-#if defined(_WIN32)
-#if _MSC_VER && !__INTEL_COMPILER
-#if defined(NDEBUG)
-    return library + ".dll";
-#else
-    return library + "d.dll";
-#endif
-#else
-    return "lib" + library + ".dll";
-#endif
-#elif defined(__linux__)
-    return "lib" + library + ".so";
-#elif defined(__APPLE__)
-    return "lib" + library + ".dylib";
-#endif
-}
+//std::string platformSpecificLibName(const std::string& library)
+//{
+//#if defined(_WIN32)
+//#if _MSC_VER && !__INTEL_COMPILER
+//#if defined(NDEBUG)
+//    return library + ".dll";
+//#else
+//    return library + "d.dll";
+//#endif
+//#else
+//    return "lib" + library + ".dll";
+//#endif
+//#elif defined(__linux__)
+//    return "lib" + library + ".so";
+//#elif defined(__APPLE__)
+//    return "lib" + library + ".dylib";
+//#endif
+//}

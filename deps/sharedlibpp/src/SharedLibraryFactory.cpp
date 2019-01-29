@@ -43,6 +43,7 @@ public:
     bool isValid() const;
     bool useFactoryFunction(void *factory);
 
+    static std::string platformSpecificLibName(const std::string& library);
     void extendSearchPath(const std::string& path);
     void readExtendedPathFromEnvironment();
     std::string findLibraryInExtendedPath(const std::string& libraryName);
@@ -83,6 +84,25 @@ shlibpp::SharedLibraryFactory::Private::Private(int32_t startCheck,
     memset(&api, 0, sizeof(SharedLibraryClassApi));
 }
 
+std::string shlibpp::SharedLibraryFactory::Private::platformSpecificLibName(const std::string& library)
+{
+#if defined(_WIN32)
+#if _MSC_VER && !__INTEL_COMPILER
+#if defined(NDEBUG)
+    return library + ".dll";
+#else
+    return library + "d.dll";
+#endif
+#else // Windows with other compilers
+    return "lib" + library + ".dll";
+#endif
+#elif defined(__linux__)
+    return "lib" + library + ".so";
+#elif defined(__APPLE__)
+    return "lib" + library + ".dylib";
+#endif
+}
+
 std::string shlibpp::SharedLibraryFactory::Private::findLibraryInExtendedPath(const std::string& libraryName)
 {
     std::size_t found = libraryName.find_first_of("\\/");
@@ -91,7 +111,7 @@ std::string shlibpp::SharedLibraryFactory::Private::findLibraryInExtendedPath(co
     }
 
     for (const auto& path: extendedPath) {
-        std::string absolutePath = path + PATH_SEPARATOR + libraryName;
+        std::string absolutePath = path + PATH_SEPARATOR + platformSpecificLibName(libraryName);
 
         if (std::ifstream(absolutePath)) {
             return absolutePath;
