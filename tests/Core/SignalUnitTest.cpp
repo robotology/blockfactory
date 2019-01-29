@@ -28,33 +28,26 @@ static std::vector<double> generateRandomVector(size_t size)
 
 TEST_CASE("Contiguous Signal", "[Core][Signal]")
 {
-    bool ok;
-
     // Initialize a contiguous buffer
     size_t size = 10;
     std::vector<double> contiguousBuffer = generateRandomVector(size);
 
     // Empty contiguous Signal
     Signal signal{Signal::DataFormat::CONTIGUOUS};
-    REQUIRE(signal.getPortDataType() == DataType::DOUBLE);
+    REQUIRE(signal.getPortDataType() == Port::DataType::DOUBLE);
     REQUIRE(signal.getDataFormat() == Signal::DataFormat::CONTIGUOUS);
-    REQUIRE(signal.getWidth() == Signal::DynamicSize);
     REQUIRE(signal.getBuffer<double>() == nullptr);
-
-    // Initialize before assigning a size: should fail
-    ok = signal.initializeBufferFromContiguous(contiguousBuffer.data());
-    REQUIRE_FALSE(ok);
     REQUIRE_FALSE(signal.isValid());
-    REQUIRE(signal.getBuffer<double>() == nullptr);
 
-    // Assign a size
-    signal.setWidth(static_cast<unsigned>(size));
+    // Initialize not-matching buffer type
+    REQUIRE_FALSE(signal.initializeBufferFromNonContiguous({}, size));
+    REQUIRE_FALSE(signal.initializeBufferFromContiguousZeroCopy({}, size));
+
+    // Initialize the signal
+    REQUIRE(signal.initializeBufferFromContiguous(contiguousBuffer.data(), size));
     REQUIRE(signal.getWidth() == size);
-    REQUIRE_FALSE(signal.isValid());
-
-    // Initialize after assigning a size: should succeed
-    ok = signal.initializeBufferFromContiguous(contiguousBuffer.data());
-    REQUIRE(ok);
+    REQUIRE(signal.getBuffer<double>() != nullptr);
+    REQUIRE(signal.isValid());
 
     // The Signal object should have copied the data internally
     REQUIRE(signal.getBuffer<double>() != contiguousBuffer.data());
@@ -83,8 +76,6 @@ TEST_CASE("Contiguous Signal", "[Core][Signal]")
 
 TEST_CASE("Non-Contiguous Signal", "[Core][Signal]")
 {
-    bool ok;
-
     // Initialize a contiguous buffer
     size_t size = 10;
     std::vector<double> contiguousBuffer = generateRandomVector(size);
@@ -98,27 +89,22 @@ TEST_CASE("Non-Contiguous Signal", "[Core][Signal]")
 
     // Empty contiguous Signal
     Signal signal{Signal::DataFormat::NONCONTIGUOUS};
-    REQUIRE(signal.getPortDataType() == DataType::DOUBLE);
+    REQUIRE(signal.getPortDataType() == Port::DataType::DOUBLE);
     REQUIRE(signal.getDataFormat() == Signal::DataFormat::NONCONTIGUOUS);
-    REQUIRE(signal.getWidth() == Signal::DynamicSize);
     REQUIRE(signal.getBuffer<double>() == nullptr);
+    REQUIRE_FALSE(signal.isValid());
 
-    // Initialize before assigning a size: should fail.
+    // Initialize not-matching buffer type
+    REQUIRE_FALSE(signal.initializeBufferFromContiguous({}, size));
+    REQUIRE_FALSE(signal.initializeBufferFromContiguousZeroCopy({}, size));
+
+    // Initialize the signal.
     // This is the type of simulink buffers for non-contiguous input signals.
     auto simulink_ptr = reinterpret_cast<void**>(nonContiguousBuffer.data());
-    ok = signal.initializeBufferFromNonContiguous(simulink_ptr);
-    REQUIRE_FALSE(ok);
-    REQUIRE_FALSE(signal.isValid());
-    REQUIRE(signal.getBuffer<double>() == nullptr);
-
-    // Assign a size
-    signal.setWidth(static_cast<unsigned>(size));
+    REQUIRE(signal.initializeBufferFromNonContiguous(simulink_ptr, size));
     REQUIRE(signal.getWidth() == size);
-    REQUIRE_FALSE(signal.isValid());
-
-    // Initialize after assigning a size: should succeed
-    ok = signal.initializeBufferFromNonContiguous(simulink_ptr);
-    REQUIRE(ok);
+    REQUIRE(signal.getBuffer<double>() != nullptr);
+    REQUIRE(signal.isValid());
 
     // The Signal object should have copied the data internally
     REQUIRE(signal.getBuffer<double>() != contiguousBuffer.data());
@@ -139,33 +125,26 @@ TEST_CASE("Non-Contiguous Signal", "[Core][Signal]")
 
 TEST_CASE("Contiguous Zero-Copy Signal", "[Core][Signal]")
 {
-    bool ok;
-
     // Initialize a contiguous buffer
     size_t size = 10;
     std::vector<double> contiguousBuffer = generateRandomVector(size);
 
     // Empty contiguous Signal
     Signal signal{Signal::DataFormat::CONTIGUOUS_ZEROCOPY};
-    REQUIRE(signal.getPortDataType() == DataType::DOUBLE);
+    REQUIRE(signal.getPortDataType() == Port::DataType::DOUBLE);
     REQUIRE(signal.getDataFormat() == Signal::DataFormat::CONTIGUOUS_ZEROCOPY);
-    REQUIRE(signal.getWidth() == Signal::DynamicSize);
     REQUIRE(signal.getBuffer<double>() == nullptr);
-
-    // Initialize before assigning a size: should fail
-    ok = signal.initializeBufferFromContiguousZeroCopy(contiguousBuffer.data());
-    REQUIRE_FALSE(ok);
     REQUIRE_FALSE(signal.isValid());
-    REQUIRE(signal.getBuffer<double>() == nullptr);
 
-    // Assign a size
-    signal.setWidth(static_cast<unsigned>(size));
+    // Initialize not-matching buffer type
+    REQUIRE_FALSE(signal.initializeBufferFromContiguous({}, size));
+    REQUIRE_FALSE(signal.initializeBufferFromNonContiguous({}, size));
+
+    /// Initialize the signal.
+    REQUIRE(signal.initializeBufferFromContiguousZeroCopy(contiguousBuffer.data(), size));
     REQUIRE(signal.getWidth() == size);
-    REQUIRE_FALSE(signal.isValid());
-
-    // Initialize after assigning a size: should succeed
-    ok = signal.initializeBufferFromContiguousZeroCopy(contiguousBuffer.data());
-    REQUIRE(ok);
+    REQUIRE(signal.getBuffer<double>() != nullptr);
+    REQUIRE(signal.isValid());
 
     // The Signal object should not have copied the data internally
     REQUIRE(signal.getBuffer<double>() == contiguousBuffer.data());
