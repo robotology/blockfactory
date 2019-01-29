@@ -173,32 +173,22 @@ public:
     // =============
 
     /**
-     * @brief Get the signal connected to a 1D input port
+     * @brief Get the signal connected to an input input port
      *
-     * @param idx The index of the port.
-     * @param size The size of the signal.
+     * @param idx The index of the port to which the signal is connected.
      * @return The pointer to the signal connected to the input port for success, a `nullptr`
      *         otherwise.
      */
-    virtual blockfactory::core::InputSignalPtr
-    getInputPortSignal(const PortIndex idx, const VectorSize size = -1) const = 0;
+    virtual InputSignalPtr getInputPortSignal(const Port::Index idx) const = 0;
 
     /**
-     * @brief Get the signal connected to a 1D output port
+     * @brief Get the signal connected to an output port
      *
-     * @param idx The index of the port.
-     * @param size The size of the signal.
-     *@return The pointer to the signal connected to the output port for success, a `nullptr`
+     * @param idx The index of the port to which the signal is connected.
+     * @return The pointer to the signal connected to the output port for success, a `nullptr`
      *         otherwise.
      */
-    virtual blockfactory::core::OutputSignalPtr
-    getOutputPortSignal(const PortIndex idx, const VectorSize size = -1) const = 0;
-};
-
-struct blockfactory::core::BlockInformation::IOData
-{
-    std::vector<BlockInformation::PortData> input;
-    std::vector<BlockInformation::PortData> output;
+    virtual OutputSignalPtr getOutputPortSignal(const Port::Index idx) const = 0;
 };
 
 #endif // BLOCKFACTORY_CORE_BLOCKINFORMATION_H
