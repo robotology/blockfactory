@@ -11,6 +11,7 @@
 
 #include "BlockFactory/Core/BlockInformation.h"
 #include "BlockFactory/Core/Parameter.h"
+#include "BlockFactory/Core/Port.h"
 #include "BlockFactory/Core/Signal.h"
 
 #include <string>
@@ -49,19 +50,16 @@ public:
     bool optionFromKey(const std::string& key, double& option) const override;
     bool addParameterMetadata(const core::ParameterMetadata& paramMD) override;
     bool parseParameters(core::Parameters& parameters) override;
-    bool setIOPortsData(const IOData& ioData) override;
-    PortData getInputPortData(const PortIndex idx) const override;
-    PortData getOutputPortData(const PortIndex idx) const override;
-    VectorSize getInputPortWidth(const PortIndex idx) const override;
-    VectorSize getOutputPortWidth(const PortIndex idx) const override;
-    MatrixSize getInputPortMatrixSize(const PortIndex idx) const override;
-    MatrixSize getOutputPortMatrixSize(const PortIndex idx) const override;
-    core::InputSignalPtr
-    getInputPortSignal(const PortIndex idx,
-                       const VectorSize size = core::Signal::DynamicSize) const override;
-    core::OutputSignalPtr
-    getOutputPortSignal(const PortIndex idx,
-                        const VectorSize size = core::Signal::DynamicSize) const override;
+    bool setPortsInfo(const core::InputPortsInfo& inputPortsInfo,
+                      const core::OutputPortsInfo& outputPortsInfo) override;
+    core::Port::Info getInputPortInfo(const core::Port::Index idx) const override;
+    core::Port::Info getOutputPortInfo(const core::Port::Index idx) const override;
+    core::Port::Size::Vector getInputPortWidth(const core::Port::Index idx) const override;
+    core::Port::Size::Vector getOutputPortWidth(const core::Port::Index idx) const override;
+    core::Port::Size::Matrix getInputPortMatrixSize(const core::Port::Index idx) const override;
+    core::Port::Size::Matrix getOutputPortMatrixSize(const core::Port::Index idx) const override;
+    core::InputSignalPtr getInputPortSignal(const core::Port::Index idx) const override;
+    core::OutputSignalPtr getOutputPortSignal(const core::Port::Index idx) const override;
 };
 
 #endif /* BLOCKFACTORY_MEX_SIMULINKBLOCKINFORMATION_H */
