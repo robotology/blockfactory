@@ -9,40 +9,18 @@
 #ifndef BLOCKFACTORY_CORE_SIGNAL_H
 #define BLOCKFACTORY_CORE_SIGNAL_H
 
+#include "BlockFactory/Core/Port.h"
+
 #include <memory>
 
 namespace blockfactory {
     namespace core {
         class Signal;
-        enum class DataType;
     } // namespace core
 } // namespace blockfactory
 
 /**
- * @brief Defines allowed signal data types
- *
- * This enum defines the data types of signals that are handled by this toolbox.
- *
- * @note Currently only `DOUBLE` is fully implemented.
- * @see core::Signal::Signal,
- *      core::BlockInformation::setInputPortType,
- *      core::BlockInformation::setOutputPortType
- */
-enum class blockfactory::core::DataType
-{
-    DOUBLE,
-    SINGLE,
-    INT8,
-    UINT8,
-    INT16,
-    UINT16,
-    INT32,
-    UINT32,
-    BOOLEAN,
-};
-
-/**
- * @brief Class to represent data shared by blocks, labelled as signals.
+ * @brief Class to access data shared by blocks, represented as signals.
  *
  * Analogously to the block-algorithm corrispondence, this class introduces the signal-data
  * corrispondence. Signals are basically the connections between blocks.
@@ -50,10 +28,10 @@ enum class blockfactory::core::DataType
  * Signals do not directly translate to block's input and output. Signals are plugged into block
  * ports, and these block ports fill the signal with data.
  *
- * Briefly, core::Signal is a wrapper around a generic `void*` buffer.
+ * Briefly, core::Signal is a wrapper of a generic `void*` buffer.
  *
  * @remark A signal can be plugged to more than one block port.
- * @see core::Block
+ * @see core::Port, core::Block
  */
 class blockfactory::core::Signal
 {
@@ -111,13 +89,8 @@ private:
 #endif
 
 public:
-    enum
-    {
-        DynamicSize = -1
-    };
-
     Signal(const DataFormat& dataFormat = DataFormat::CONTIGUOUS_ZEROCOPY,
-           const DataType& dataType = DataType::DOUBLE);
+           const Port::DataType& dataType = Port::DataType::DOUBLE);
     ~Signal();
 
     Signal(const Signal& other);
@@ -194,13 +167,13 @@ public:
     int getWidth() const;
 
     /**
-     * @brief Read the core::DataType of the signal
+     * @brief Read the Port::DataType of the signal
      *
-     * The default type is core::DataType::DOUBLE.
+     * The default type is Port::DataType::DOUBLE.
      *
      * @return The signal data type.
      */
-    DataType getPortDataType() const;
+    Port::DataType getPortDataType() const;
 
     /**
      * @brief Read the core::Signal::DataFormat of the signal

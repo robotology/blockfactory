@@ -25,8 +25,8 @@ using namespace blockfactory::core;
 class Signal::impl
 {
 public:
-    int width = Signal::DynamicSize;
-    const DataType portDataType;
+    size_t width = 0;
+    const Port::DataType portDataType;
     const DataFormat dataFormat;
 
     void* bufferPtr = nullptr;
@@ -37,7 +37,7 @@ public:
     void deleteBuffer();
     void allocateBuffer(const void* const bufferInput, void*& bufferOutput, const unsigned& length);
 
-    impl(const DataFormat& dFormat, const DataType& dType)
+    impl(const DataFormat& dFormat, const Port::DataType& dType)
         : portDataType(dType)
         , dataFormat(dFormat)
     {}
@@ -56,7 +56,7 @@ void Signal::impl::allocateBuffer(const void* const bufferInput,
     }
 
     switch (portDataType) {
-        case DataType::DOUBLE: {
+        case Port::DataType::DOUBLE: {
             // Allocate the array
             bufferOutput = static_cast<void*>(new double[length]);
             // Cast to double
@@ -80,7 +80,7 @@ void Signal::impl::deleteBuffer()
     }
 
     switch (portDataType) {
-        case DataType::DOUBLE:
+        case Port::DataType::DOUBLE:
             delete[] static_cast<double*>(bufferPtr);
             bufferPtr = nullptr;
             return;
@@ -118,7 +118,7 @@ Signal::Signal(const Signal& other)
     }
 }
 
-Signal::Signal(const DataFormat& dataFormat, const DataType& dataType)
+Signal::Signal(const DataFormat& dataFormat, const Port::DataType& dataType)
     : pImpl(std::make_unique<impl>(dataFormat, dataType))
 {}
 
@@ -181,13 +181,13 @@ bool Signal::initializeBufferFromNonContiguous(const void* const* bufferPtrs)
         return false;
     }
 
-    if (pImpl->portDataType == DataType::DOUBLE) {
+    if (pImpl->portDataType == Port::DataType::DOUBLE) {
         // Allocate a new vector to store data from the non-contiguous signal
         pImpl->bufferPtr = static_cast<void*>(new double[pImpl->width]);
         double* bufferPtrDouble = static_cast<double*>(pImpl->bufferPtr);
 
         // Copy data from MATLAB's memory to the Signal object
-        for (auto i = 0; i < pImpl->width; ++i) {
+        for (size_t i = 0; i < pImpl->width; ++i) {
             const double* valuePtr = static_cast<const double*>(*bufferPtrs);
             bufferPtrDouble[i] = valuePtr[i];
         }
@@ -210,7 +210,7 @@ int Signal::getWidth() const
     return pImpl->width;
 }
 
-DataType Signal::getPortDataType() const
+Port::DataType Signal::getPortDataType() const
 {
     return pImpl->portDataType;
 }
@@ -233,12 +233,12 @@ bool Signal::set(const unsigned index, const double data)
     }
 
     switch (pImpl->portDataType) {
-        case DataType::DOUBLE: {
+        case Port::DataType::DOUBLE: {
             double* buffer = static_cast<double*>(pImpl->bufferPtr);
             buffer[index] = data;
             break;
         }
-        case DataType::SINGLE: {
+        case Port::DataType::SINGLE: {
             float* buffer = static_cast<float*>(pImpl->bufferPtr);
             buffer[index] = static_cast<float>(data);
             break;
@@ -288,16 +288,16 @@ T Signal::get(const unsigned i) const
 template <typename T>
 T* Signal::impl::getBufferImpl()
 {
-    const std::map<DataType, size_t> mapDataTypeToHash = {
-        {DataType::DOUBLE, typeid(double).hash_code()},
-        {DataType::SINGLE, typeid(float).hash_code()},
-        {DataType::INT8, typeid(int8_t).hash_code()},
-        {DataType::UINT8, typeid(uint8_t).hash_code()},
-        {DataType::INT16, typeid(int16_t).hash_code()},
-        {DataType::UINT16, typeid(uint16_t).hash_code()},
-        {DataType::INT32, typeid(int32_t).hash_code()},
-        {DataType::UINT32, typeid(uint32_t).hash_code()},
-        {DataType::BOOLEAN, typeid(bool).hash_code()}};
+    const std::map<Port::DataType, size_t> mapDataTypeToHash = {
+        {Port::DataType::DOUBLE, typeid(double).hash_code()},
+        {Port::DataType::SINGLE, typeid(float).hash_code()},
+        {Port::DataType::INT8, typeid(int8_t).hash_code()},
+        {Port::DataType::UINT8, typeid(uint8_t).hash_code()},
+        {Port::DataType::INT16, typeid(int16_t).hash_code()},
+        {Port::DataType::UINT16, typeid(uint16_t).hash_code()},
+        {Port::DataType::INT32, typeid(int32_t).hash_code()},
+        {Port::DataType::UINT32, typeid(uint32_t).hash_code()},
+        {Port::DataType::BOOLEAN, typeid(bool).hash_code()}};
 
     if (!bufferPtr) {
         bfError << "The pointer to data is null. The signal was not configured properly.";
