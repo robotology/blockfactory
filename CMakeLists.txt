@@ -100,24 +100,14 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
 
-if(${CMAKE_VERSION} VERSION_LESS 3.7)
-    find_package(Matlab COMPONENTS
-        MX_LIBRARY
-        ENG_LIBRARY
-        MAIN_PROGRAM)
-else()
-    find_package(Matlab COMPONENTS
-        MX_LIBRARY
-        ENG_LIBRARY
-        MAIN_PROGRAM
-        SIMULINK)
-    if(NOT ${CMAKE_MINIMUM_REQUIRED_VERSION} VERSION_LESS 3.7)
-      message(AUTHOR_WARNING "CMake minimum required version greater than 3.7. You can remove this.")
-    endif()
-endif()
+find_package(Matlab COMPONENTS
+    MX_LIBRARY
+    ENG_LIBRARY
+    MAIN_PROGRAM
+    SIMULINK)
 
 if(NOT USES_MATLAB)
-    option(USES_MATLAB "Compile also Matlab-related components" ${Matlab_FOUND})
+    option(USES_MATLAB "Compile also Matlab-related components" ${Matlab_SIMULINK_FOUND})
 endif()
 
 # Handle unit tests support

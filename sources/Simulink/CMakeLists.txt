@@ -14,8 +14,6 @@ matlab_add_mex(
     LINK_TO BlockFactory::Core shlibpp::shlibpp mxpp)
 add_library(BlockFactory::Simulink ALIAS Simulink)
 
-# Needed to access Simulink C APIs
-target_compile_definitions(Simulink PRIVATE "MATLAB_MEX_FILE")
 target_compile_warnings(Simulink
     WARNINGS_AS_ERRORS ${TREAT_WARNINGS_AS_ERRORS}
     DEPENDS ENABLE_WARNINGS)
@@ -26,8 +24,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 endif()
 
 target_include_directories(Simulink PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    ${Matlab_ROOT_DIR}/simulink/include)
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 
 # Install S-Function
 install(
