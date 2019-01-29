@@ -10,11 +10,11 @@ cache:
     - $HOME/Library/Caches/Homebrew
 
 stages:
+  - osx
   - test # Default stage with job matrix
   # Disable windows if there are secrete variables, waiting a fix from Travis CI
   - name: windows
     if: env(DEPLOY_TOKEN) IS blank
-  - osx
   - name: deploy
     if: fork = false AND branch IN (master, devel) AND type != pull_request AND env(DEPLOY_TOKEN) IS present
 
@@ -61,6 +61,12 @@ script:
 # ==========
 # STAGE: osx
 # ==========
+
+addons:
+  homebrew:
+    update: true
+    packages:
+      - valgrind
 
 stage_osx:
   script: &osx_script
@@ -139,7 +145,7 @@ jobs:
       os: osx
       osx_image: xcode10.1
       services:
-      before_install: skip
+      before_install:
       install: skip
       before_script: skip
       script: *osx_script
@@ -147,15 +153,17 @@ jobs:
       after_failure: skip
       after_success: skip
       env:
-        BUILD_TESTING=1
         TRAVIS_CMAKE_GENERATOR="Xcode"
         TRAVIS_BUILD_TYPE="Debug"
+        BUILD_TESTING=1
+        VALGRIND_TESTS=1
     - <<: *osx_template
       compiler: clang
       env:
-        BUILD_TESTING=1
         TRAVIS_CMAKE_GENERATOR="Unix Makefiles"
         TRAVIS_BUILD_TYPE="Debug"
+        BUILD_TESTING=1
+        VALGRIND_TESTS=1
     # -------------
     # STAGE WINDOWS
     # -------------

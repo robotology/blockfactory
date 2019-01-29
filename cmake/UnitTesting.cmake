@@ -14,6 +14,10 @@
 find_program(MEMORYCHECK_COMMAND valgrind)
 set(MEMORYCHECK_COMMAND_OPTIONS
     "-q --tool=memcheck --leak-check=yes --show-reachable=yes --error-exitcode=1 --num-callers=50")
+if(APPLE)
+    set(MEMORYCHECK_COMMAND_OPTIONS
+        "${MEMORYCHECK_COMMAND_OPTIONS} --suppressions=${CMAKE_CURRENT_LIST_DIR}/misc/darwin17.supp")
+endif()
 
 include(CTest)
 include(Catch)
