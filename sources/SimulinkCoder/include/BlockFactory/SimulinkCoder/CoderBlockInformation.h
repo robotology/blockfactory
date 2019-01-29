@@ -10,6 +10,7 @@
 #define BLOCKFACTORY_CODER_CODERBLOCKINFORMATION_H
 
 #include "BlockFactory/Core/BlockInformation.h"
+#include "BlockFactory/Core/Port.h"
 #include "BlockFactory/Core/Signal.h"
 
 #include <memory>
@@ -47,34 +48,31 @@ public:
     // PORT INFORMATION SETTERS
     // ========================
 
-    bool setIOPortsData(const IOData& ioData) override;
+    bool setPortsInfo(const core::InputPortsInfo& inputPortsInfo,
+                      const core::OutputPortsInfo& outputPortsInfo) override;
 
     // PORT INFORMATION GETTERS
     // ========================
 
-    PortData getInputPortData(PortIndex idx) const override;
-    PortData getOutputPortData(PortIndex idx) const override;
-    VectorSize getInputPortWidth(const PortIndex idx) const override;
-    VectorSize getOutputPortWidth(const PortIndex idx) const override;
-    MatrixSize getInputPortMatrixSize(const PortIndex idx) const override;
-    MatrixSize getOutputPortMatrixSize(const PortIndex idx) const override;
+    core::Port::Info getInputPortInfo(core::Port::Index idx) const override;
+    core::Port::Info getOutputPortInfo(core::Port::Index idx) const override;
+    core::Port::Size::Vector getInputPortWidth(const core::Port::Index idx) const override;
+    core::Port::Size::Vector getOutputPortWidth(const core::Port::Index idx) const override;
+    core::Port::Size::Matrix getInputPortMatrixSize(const core::Port::Index idx) const override;
+    core::Port::Size::Matrix getOutputPortMatrixSize(const core::Port::Index idx) const override;
 
     // BLOCK SIGNALS
     // =============
 
-    core::InputSignalPtr
-    getInputPortSignal(const PortIndex idx,
-                       const VectorSize size = core::Signal::DynamicSize) const override;
-    core::OutputSignalPtr
-    getOutputPortSignal(const PortIndex idx,
-                        const VectorSize size = core::Signal::DynamicSize) const override;
+    core::InputSignalPtr getInputPortSignal(const core::Port::Index idx) const override;
+    core::OutputSignalPtr getOutputPortSignal(const core::Port::Index idx) const override;
 
     // METHODS OUTSIDE THE INTERFACE
     // =============================
 
     bool storeRTWParameters(const core::Parameters& parameters);
-    bool setInputPort(const PortData& portData, void* signalAddress);
-    bool setOutputPort(const PortData& portData, void* signalAddress);
+    bool setInputPort(const core::Port::Info& portInfo, void* signalAddress);
+    bool setOutputPort(const core::Port::Info& portInfo, void* signalAddress);
 };
 
 #endif // BLOCKFACTORY_CODER_CODERBLOCKINFORMATION_H
