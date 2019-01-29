@@ -83,7 +83,7 @@ A library is a file containing compiled code (functions, classes, constants, etc
 To grasp better this difference, if multiple executables link against the same static library, the same code is embedded inside all of them, resulting in bigger executables and code duplication. A dynamic library object instead can be shared by multiple executables that need only to know its location in the filesystem and which symbols it provide.
 
 !!! info
-    You can find more detailed information about software libraries and linkers at [this link](https://www.lurklurk.org/linkers/linkers.html). 
+    You can find more detailed information about software libraries and linkers at [this link](https://www.lurklurk.org/linkers/linkers.html).
 
 #### Plugin Library
 
@@ -203,14 +203,22 @@ target_include_directories(ExampleToolbox PRIVATE
 !!! note
     If your library needs to link against other libraries, use `find_package` to load their targets and then add them to the `target_link_libraries` directive.
 
-From the root folder of the project, execute:
+!!! example "Compiling instructions"
+    From the root folder of the project, execute:
 
-```bash
-mkdir build
-cd build
-cmake ..
-cmake --build .
-```
+    ````tab="GNU/Linux and macOS"
+    mkdir build
+    cd build
+    cmake ..
+    cmake --build .
+    ````
+
+    ````tab="Windows"
+    mkdir build
+    cd build
+    cmake ..
+    cmake --build . --config Release
+    ````
 
 You should now find in the `./build` directories a new library file, which depending on your OS is:
 
@@ -218,11 +226,11 @@ You should now find in the `./build` directories a new library file, which depen
 - `libExampleToolbox.dylib` on macOS
 - `ExampleToolbox.dll` on Windows
 
-This is the toolbox's plugin library which is loaded during runtime by the active Engine. 
+This is the toolbox's plugin library which is loaded during runtime by the active Engine.
 
 ### Implement the block logic
 
-The only _Signal math_ block of our new toolbox will be implemented in a `example::SignalMath` C++ class. 
+The only _Signal math_ block of our new toolbox will be implemented in a `example::SignalMath` C++ class.
 
 #### Header
 
@@ -335,15 +343,14 @@ bool SignalMath::parseParameters(blockfactory::core::BlockInformation* blockInfo
 The configuration of the Block is performed in the following steps:
 
 1. The base class needs to be configured. It needs some parameters (e.g. the class name and the library name) and this call asks the Engine to parse them.
-2. The ports of the Block need to be defined. In this example the size is set as dynamic so that it accepts signals with any width.
-3. The [`blockfactory::core::BlockInformation::IOData`](https://robotology.github.io/blockfactory/doxygen/structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html) class is used to store the data of all the ports. It is a `struct` containing two `std::vectors`.
-4. The data is then sent to the Engine through the BlockInformation interface.
+1. The ports of the Block need to be defined. In this example the size is set as dynamic so that it accepts signals with any width.
+1. The data is then sent to the Engine through the BlockInformation interface.
 
 !!! info
     If needed, parameters can be accessed from this step. Refer to the initialization phase to understand how to gather them.
 
 !!! warning "Signal size"
-    Simulink has the support of inheriting the port size from the signal size, though use this feature only when strictly needed. In complex Simulink Models it might be difficult executing the size propagation, and fixing the Port size provides helpful constraints for the Engine (especially for blocks with only outputs) 
+    Simulink has the support of inheriting the port size from the signal size, though use this feature only when strictly needed. In complex Simulink Models the Engine might have difficulties to execute this size propagation, and fixing the Port sizes provides helpful constraints (especially for blocks with only outputs)
 
 !!! danger "Important"
     Be careful on memory allocations during this step. A temporary object is created only for configuration means, and then destroyed. All the allocated memory will be hereby deleted.
@@ -356,31 +363,29 @@ bool SignalMath::configureSizeAndPorts(blockfactory::core::BlockInformation* blo
         return false;
     }
 
-    // Create data about input and output ports.
-    blockfactory::core::BlockInformation::PortData input1;
-    blockfactory::core::BlockInformation::PortData input2;
-    blockfactory::core::BlockInformation::PortData output;
+    // Create object that store input and output ports information
+    blockfactory::core::Port::Info input1{/*portIndex=*/0,
+                                          std::vector<int>{blockfactory::core::Port::DynamicSize},
+                                          blockfactory::core::Port::DataType::DOUBLE};
 
-    input1 = {/*portIndex=*/0,
-              std::vector<int>{blockfactory::core::Signal::DynamicSize},
-              blockfactory::core::DataType::DOUBLE};
+    blockfactory::core::Port::Info input2{/*portIndex=*/1,
+                                          std::vector<int>{blockfactory::core::Port::DynamicSize},
+                                          blockfactory::core::Port::DataType::DOUBLE};
 
-    input2 = {/*portIndex=*/1,
-              std::vector<int>{blockfactory::core::Signal::DynamicSize},
-              blockfactory::core::DataType::DOUBLE};
+    blockfactory::core::Port::Info output{/*portIndex=*/0,
+                                          std::vector<int>{blockfactory::core::Port::DynamicSize},
+                                          blockfactory::core::Port::DataType::DOUBLE};
 
-    output = {/*portIndex=*/0,
-              std::vector<int>{blockfactory::core::Signal::DynamicSize},
-              blockfactory::core::DataType::DOUBLE};
+    // Store together the port information objects
+    blockfactory::core::InputPortsInfo inputPortInfo;
+    blockfactory::core::OutputPortsInfo outputPortInfo;
 
-    // Populate a structure with the overall input / output data
-    blockfactory::core::BlockInformation::IOData ioData;
-    ioData.input.push_back(input1);
-    ioData.input.push_back(input2);
-    ioData.output.push_back(output);
+    inputPortInfo.push_back(input1);
+    inputPortInfo.push_back(input2);
+    outputPortInfo.push_back(output);
 
-    // Store this data into the BlockInformation
-    if (!blockInfo->setIOPortsData(ioData)) {
+    // Store the port information into the BlockInformation
+    if (!blockInfo->setPortsInfo(inputPortInfo, outputPortInfo)) {
         bfError << "Failed to configure input / output ports";
         return false;
     }
@@ -479,7 +484,7 @@ bool SignalMath::output(const blockfactory::core::BlockInformation* blockInfo)
     }
 
     // Perform the given operation
-    for (int i = 0; i < output->getWidth(); ++i) {
+    for (size_t i = 0; i < output->getWidth(); ++i) {
         switch (m_operation) {
             case Operation::ADDITION:
                 output->set(i, input1->get<double>(i) + input2->get<double>(i));
@@ -538,19 +543,14 @@ cmake --build .
 ```
 
 !!! tip
+    Simulink will open this library at the beginning of the simulation loop and it needs to be found in the filesystem. The BlockFactory search path can be configured by setting the `BLOCKFACTORY_PLUGIN_PATH` environment variable:
 
-    Simulink will open this library at the beginning of the simulation loop and it needs to find it from the filesystem. Be sure that the `./build` folder is in the searching path of your dynamic linker. In the supported OSs you should add it to:
-
-    ````tab="GNU/LINUX"
-    LD_LIBRARY_PATH
-    ````
-
-    ````tab="macOS"
-    DYLD_LIBRARY_PATH
+    ````tab="GNU/Linux and macOS"
+    export BLOCKFACTORY_PLUGIN_PATH=<build folder absolute path>
     ````
 
     ````tab="Windows"
-    Path
+    $env:BLOCKFACTORY_PLUGIN_PATH = "<build folder absolute path>";
     ````
 
 ## Matlab and Simulink
