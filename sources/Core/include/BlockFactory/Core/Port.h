@@ -9,6 +9,7 @@
 #ifndef BLOCKFACTORY_CORE_PORT_H
 #define BLOCKFACTORY_CORE_PORT_H
 
+#include <cstddef>
 #include <vector>
 
 namespace blockfactory {
