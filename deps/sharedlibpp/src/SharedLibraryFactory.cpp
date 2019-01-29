@@ -43,10 +43,10 @@ public:
     bool isValid() const;
     bool useFactoryFunction(void *factory);
 
-    static std::string platformSpecificLibName(const std::string& library);
     void extendSearchPath(const std::string& path);
     void readExtendedPathFromEnvironment();
     std::string findLibraryInExtendedPath(const std::string& libraryName);
+    static std::vector<std::string> platformSpecificLibName(const std::string& library);
 
     SharedLibrary lib;
     SharedLibraryFactory::Status status;
@@ -84,22 +84,21 @@ shlibpp::SharedLibraryFactory::Private::Private(int32_t startCheck,
     memset(&api, 0, sizeof(SharedLibraryClassApi));
 }
 
-std::string shlibpp::SharedLibraryFactory::Private::platformSpecificLibName(const std::string& library)
+std::vector<std::string> shlibpp::SharedLibraryFactory::Private::platformSpecificLibName(const std::string& library)
 {
+
 #if defined(_WIN32)
-#if _MSC_VER && !__INTEL_COMPILER
 #if defined(NDEBUG)
-    return library + ".dll";
+    return {library + ".dll", library + "d.dll", "lib" + library + ".dll"};
 #else
-    return library + "d.dll";
-#endif
-#else // Windows with other compilers
-    return "lib" + library + ".dll";
+    return {library + "d.dll", library + ".dll", "lib" + library + ".dll"};
 #endif
 #elif defined(__linux__)
-    return "lib" + library + ".so";
+    return {"lib" + library + ".so"};
 #elif defined(__APPLE__)
-    return "lib" + library + ".dylib";
+    return {"lib" + library + ".dylib"};
+#else
+#error "This platform not supported by this project"
 #endif
 }
 
@@ -111,10 +110,12 @@ std::string shlibpp::SharedLibraryFactory::Private::findLibraryInExtendedPath(co
     }
 
     for (const auto& path: extendedPath) {
-        std::string absolutePath = path + PATH_SEPARATOR + platformSpecificLibName(libraryName);
+        for (const auto& osLibName : platformSpecificLibName(libraryName)){
+            std::string absolutePath = path + PATH_SEPARATOR + osLibName;
 
-        if (std::ifstream(absolutePath)) {
-            return absolutePath;
+            if (std::ifstream(absolutePath)) {
+                return absolutePath;
+            }
         }
     }
 
