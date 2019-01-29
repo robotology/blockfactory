@@ -74,6 +74,7 @@ TEST_CASE("Load and use plugin", "[Factory][Plugin][Parameter]")
 
     // Allocate a mock::MockBlock object and get its core::Block pointer
     blockfactory::core::Block* block = factory->create();
+    factory->addRef();
     REQUIRE(block != nullptr);
 
     // Get the block parameters
@@ -92,4 +93,5 @@ TEST_CASE("Load and use plugin", "[Factory][Plugin][Parameter]")
 
     // Deallocate the block
     factory->destroy(block);
+    factory->removeRef();
 }
