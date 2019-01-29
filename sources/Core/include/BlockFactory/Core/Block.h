@@ -236,14 +236,6 @@ public:
     virtual bool configureSizeAndPorts(BlockInformation* blockInfo);
 
     /**
-     * @brief Never called.
-     *
-     * @param blockInfo The pointer to a BlockInformation object.
-     * @return True for success, false otherwise.
-     */
-    virtual bool checkParameters(const BlockInformation* blockInfo);
-
-    /**
      * @brief Initialize the block
      *
      * Implement this method to initialize and allocate the resources the algorithm needs during its

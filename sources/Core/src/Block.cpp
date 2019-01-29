@@ -30,11 +30,6 @@ bool Block::parameterAtIndexIsTunable(unsigned /*index*/)
     return false;
 }
 
-bool Block::checkParameters(const BlockInformation* /*blockInfo*/)
-{
-    return true;
-}
-
 bool Block::parseParameters(BlockInformation* blockInfo)
 {
     if (!blockInfo->addParameterMetadata({ParameterType::STRING, 0, 1, 1, "className"})
