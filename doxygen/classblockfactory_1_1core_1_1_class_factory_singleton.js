@@ -8,6 +8,7 @@ var classblockfactory_1_1core_1_1_class_factory_singleton =
     [ "ClassFactorySingleton", "classblockfactory_1_1core_1_1_class_factory_singleton.html#a6f4833c326c07536403fd56c19bce499", null ],
     [ "~ClassFactorySingleton", "classblockfactory_1_1core_1_1_class_factory_singleton.html#a4816c354553ff74d609e05e09ad6dae6", null ],
     [ "destroyFactory", "classblockfactory_1_1core_1_1_class_factory_singleton.html#a29be498870aa2255e093b8cd223f1e13", null ],
+    [ "extendPluginSearchPath", "classblockfactory_1_1core_1_1_class_factory_singleton.html#a5b0bc394c6931fd0efbf1e9586c90d92", null ],
     [ "getClassFactory", "classblockfactory_1_1core_1_1_class_factory_singleton.html#ab7ed3061b66f80889b10bb5b2aec42b3", null ],
     [ "getInstance", "classblockfactory_1_1core_1_1_class_factory_singleton.html#ac9b5667e30c308ee2d5159ca63ad4878", null ]
 ];

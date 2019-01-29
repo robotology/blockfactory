@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"namespaces.html":[0,0],
 "pages.html":[],
 "structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html":[1,0,0,1,1,0],
 "structblockfactory_1_1core_1_1_block_information_1_1_i_o_data.html#a31472e3bba212474a678c09fcc129553":[1,0,0,1,1,0,0],
