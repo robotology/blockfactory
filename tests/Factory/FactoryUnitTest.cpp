@@ -58,6 +58,10 @@ TEST_CASE("Load plugin", "[Factory][Plugin]")
     // Finally, this should work
     auto factory = factorySingleton.getClassFactory({mockPluginName, mockBlockName});
     REQUIRE(factory != nullptr);
+
+    // Deallocate the factory
+    factory.reset();
+    REQUIRE(factorySingleton.destroyFactory({mockPluginName, mockBlockName}));
 }
 
 TEST_CASE("Load and use plugin", "[Factory][Plugin][Parameter]")
@@ -94,4 +98,8 @@ TEST_CASE("Load and use plugin", "[Factory][Plugin][Parameter]")
     // Deallocate the block
     factory->destroy(block);
     factory->removeRef();
+
+    // Deallocate the factory
+    factory.reset();
+    REQUIRE(factorySingleton.destroyFactory({mockPluginName, mockBlockName}));
 }
