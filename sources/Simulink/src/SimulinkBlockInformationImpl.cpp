@@ -176,7 +176,7 @@ bool SimulinkBlockInformationImpl::setNumberOfOutputPorts(const size_t numberOfP
 
 bool SimulinkBlockInformationImpl::setInputPortType(const PortIndex idx, const DataType type)
 {
-    ssSetInputPortDirectFeedThrough(simstruct, idx, 1);
+    ssSetInputPortDirectFeedThrough(simstruct, static_cast<int>(idx), 1);
     ssSetInputPortDataType(simstruct, idx, mapPortTypeToSimulink(type));
     return true;
 }
@@ -193,10 +193,10 @@ bool SimulinkBlockInformationImpl::setInputPortVectorSize(const PortIndex idx,
     if (size == core::Port::DynamicSize) {
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
-        return ssSetInputPortVectorDimension(simstruct, idx, DYNAMICALLY_SIZED);
+        return ssSetInputPortVectorDimension(simstruct, static_cast<int>(idx), DYNAMICALLY_SIZED);
     }
 
-    return ssSetInputPortVectorDimension(simstruct, idx, size);
+    return ssSetInputPortVectorDimension(simstruct, static_cast<int>(idx), size);
 }
 
 bool SimulinkBlockInformationImpl::setInputPortMatrixSize(const PortIndex idx,
@@ -206,10 +206,11 @@ bool SimulinkBlockInformationImpl::setInputPortMatrixSize(const PortIndex idx,
     if (size.rows == core::Port::DynamicSize || size.cols == core::Port::DynamicSize) {
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
-        ssSetInputPortMatrixDimensions(simstruct, idx, DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
+        ssSetInputPortMatrixDimensions(
+            simstruct, static_cast<int>(idx), DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
     }
 
-    return ssSetInputPortMatrixDimensions(simstruct, idx, size.rows, size.cols);
+    return ssSetInputPortMatrixDimensions(simstruct, static_cast<int>(idx), size.rows, size.cols);
 }
 
 bool SimulinkBlockInformationImpl::setOutputPortVectorSize(const PortIndex idx,
@@ -218,10 +219,10 @@ bool SimulinkBlockInformationImpl::setOutputPortVectorSize(const PortIndex idx,
     if (size == core::Port::DynamicSize) {
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
-        return ssSetOutputPortVectorDimension(simstruct, idx, DYNAMICALLY_SIZED);
+        return ssSetOutputPortVectorDimension(simstruct, static_cast<int>(idx), DYNAMICALLY_SIZED);
     }
 
-    return ssSetOutputPortVectorDimension(simstruct, idx, size);
+    return ssSetOutputPortVectorDimension(simstruct, static_cast<int>(idx), size);
 }
 
 bool SimulinkBlockInformationImpl::setOutputPortMatrixSize(const PortIndex idx,
@@ -232,10 +233,10 @@ bool SimulinkBlockInformationImpl::setOutputPortMatrixSize(const PortIndex idx,
         // TODO: in this case, explore how to use mdlSetOutputPortDimensionInfo and
         // mdlSetDefaultPortDimensionInfo
         return ssSetOutputPortMatrixDimensions(
-            simstruct, idx, DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
+            simstruct, static_cast<int>(idx), DYNAMICALLY_SIZED, DYNAMICALLY_SIZED);
     }
 
-    return ssSetOutputPortMatrixDimensions(simstruct, idx, size.rows, size.cols);
+    return ssSetOutputPortMatrixDimensions(simstruct, static_cast<int>(idx), size.rows, size.cols);
 }
 
 size_t SimulinkBlockInformationImpl::getNrOfInputPortElements(const PortIndex idx) const
@@ -356,22 +357,22 @@ bool SimulinkBlockInformationImpl::isInputSignalAtIdxContiguous(
 ContiguousInputSignalRawPtr
 SimulinkBlockInformationImpl::getContiguousSignalRawPtrFromInputPort(const PortIndex idx) const
 {
-    auto ptr = ssGetInputPortSignal(simstruct, idx);
-    return idx >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
+    auto ptr = ssGetInputPortSignal(simstruct, static_cast<int>(idx));
+    return static_cast<int>(idx) >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
 }
 
 NonContiguousInputSignalRawPtr
 SimulinkBlockInformationImpl::getNonContiguousSignalRawPtrFromInputPort(const PortIndex idx) const
 {
-    auto ptr = ssGetInputPortSignalPtrs(simstruct, idx);
-    return idx >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
+    auto ptr = ssGetInputPortSignalPtrs(simstruct, static_cast<int>(idx));
+    return static_cast<int>(idx) >= ssGetNumInputPorts(simstruct) ? nullptr : ptr;
 }
 
 ContiguousOutputSignalRawPtr
 SimulinkBlockInformationImpl::getSignalRawPtrFromOutputPort(const PortIndex idx) const
 {
     auto ptr = ssGetOutputPortSignal(simstruct, idx);
-    return idx >= ssGetNumOutputPorts(simstruct) ? nullptr : ptr;
+    return static_cast<int>(idx) >= ssGetNumOutputPorts(simstruct) ? nullptr : ptr;
 }
 
 // =================
