@@ -58,6 +58,17 @@ public:
     BlockInformation() = default;
     virtual ~BlockInformation() = default;
 
+    /**
+     * @brief Get the unique name of the block instance
+     *
+     * Retrive from the engine the unique name of the block. A typical example is the scoped
+     * name of the block that takes into account its location in the model hierarchy.
+     *
+     * @param[out] blockUniqueName The unique name of the block instance.
+     * @return True for success, false otherwise.
+     */
+    virtual bool getUniqueName(std::string& blockUniqueName) const = 0;
+
     // =====================
     // BLOCK OPTIONS METHODS
     // =====================
