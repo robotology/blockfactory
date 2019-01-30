@@ -21,6 +21,12 @@ SimulinkBlockInformationImpl::SimulinkBlockInformationImpl(SimStruct* ss)
     : simstruct(ss)
 {}
 
+bool SimulinkBlockInformationImpl::getUniqueName(std::string& blockUniqueName) const
+{
+    blockUniqueName = ssGetPath(simstruct);
+    return true;
+}
+
 bool SimulinkBlockInformationImpl::optionFromKey(const std::string& key, double& option) const
 {
     if (key == core::BlockOptionPrioritizeOrder) {
