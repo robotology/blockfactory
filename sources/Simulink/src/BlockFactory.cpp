@@ -274,11 +274,10 @@ static void mdlUpdate(SimStruct* S, int_T tid)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
         bfError << "Failed to get pointers from the PWork vector.";
@@ -304,11 +303,10 @@ static void mdlInitializeConditions(SimStruct* S)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
         bfError << "Failed to get pointers from the PWork vector.";
@@ -344,11 +342,10 @@ static void mdlOutputs(SimStruct* S, int_T tid)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
         bfError << "Failed to get pointers from the PWork vector.";
@@ -374,11 +371,10 @@ static void mdlTerminate(SimStruct* S)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     // Get the factory object from the singleton
     auto factory = getFactoryForThisBlockType(S);
@@ -819,8 +815,8 @@ static void mdlRTW(SimStruct* S)
     if (ssGetNumPWork(S) > 0 && ssGetPWork(S)) {
 
         // Get the block object from the PWork
-        blockfactory::core::Block* block =
-            static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+        auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
         // Get the SimulinkBlockInformation object from the PWork
         auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
