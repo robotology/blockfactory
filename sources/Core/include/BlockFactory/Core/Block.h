@@ -92,6 +92,14 @@ public:
     virtual ~Block() = default;
 
     /**
+     * @brief Get the unique name of the block instance
+     *
+     * @param blockInfo The pointer to a BlockInformation object.
+     * @return The unique name of the block instance if it was set, an empty string otherwise.
+     */
+    std::string getUniqueName(const BlockInformation* blockInfo) const;
+
+    /**
      * @brief Number of parameters of core::Block
      *
      * Static variable matching Block::numberOfParameters. It might be useful to define
