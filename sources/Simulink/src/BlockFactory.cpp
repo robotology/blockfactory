@@ -748,7 +748,9 @@ bool writeParameterToRTW(const blockfactory::core::Parameter<std::string> param,
     }
 }
 
-bool writeRTW(SimStruct* S, const blockfactory::core::Parameters& params)
+bool writeRTW(SimStruct* S,
+              const std::string& blockUniqueName,
+              const blockfactory::core::Parameters& params)
 {
     // RTW Parameters record metadata
     // ==============================
@@ -769,10 +771,13 @@ bool writeRTW(SimStruct* S, const blockfactory::core::Parameters& params)
 
     // Create the record
     ssWriteRTWParamSettings(S,
-                            3,
+                            4,
                             SSWRITE_VALUE_NUM,
                             "numberOfParameters",
                             static_cast<real_T>(numberOfParameters),
+                            SSWRITE_VALUE_QSTR,
+                            "blockUniqueName",
+                            blockUniqueName.c_str(),
                             SSWRITE_VALUE_QSTR,
                             "className",
                             className.c_str(),
@@ -816,6 +821,8 @@ static void mdlRTW(SimStruct* S)
         // Get the block object from the PWork
         blockfactory::core::Block* block =
             static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+        // Get the SimulinkBlockInformation object from the PWork
+        auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
         bool ok;
         blockfactory::core::Parameters params;
@@ -836,8 +843,12 @@ static void mdlRTW(SimStruct* S)
             return;
         }
 
+        // Get the block object name
+        std::string blockUniqueName;
+        blockInfo->getUniqueName(blockUniqueName);
+
         // Use parameters metadata to populate the rtw file used by the coder
-        ok = writeRTW(S, params);
+        ok = writeRTW(S, blockUniqueName, params);
         catchLogMessages(ok, S);
         if (!ok) {
             bfError << "Failed to write parameters to the RTW file during the code "
