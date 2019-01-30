@@ -57,6 +57,8 @@ public:
     SimulinkBlockInformationImpl(SimStruct* ss);
     ~SimulinkBlockInformationImpl() = default;
 
+    bool getUniqueName(std::string& blockUniqueName) const;
+
     // =====================
     // BLOCK OPTIONS METHODS
     // =====================

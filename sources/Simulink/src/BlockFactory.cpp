@@ -274,11 +274,10 @@ static void mdlUpdate(SimStruct* S, int_T tid)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
         bfError << "Failed to get pointers from the PWork vector.";
@@ -304,11 +303,10 @@ static void mdlInitializeConditions(SimStruct* S)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
         bfError << "Failed to get pointers from the PWork vector.";
@@ -344,11 +342,10 @@ static void mdlOutputs(SimStruct* S, int_T tid)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     if (!block || !blockInfo) {
         bfError << "Failed to get pointers from the PWork vector.";
@@ -374,11 +371,10 @@ static void mdlTerminate(SimStruct* S)
     }
 
     // Get the Block object
-    blockfactory::core::Block* block =
-        static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+    auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
     // Get the SimulinkBlockInformation object
-    blockfactory::mex::SimulinkBlockInformation* blockInfo;
-    blockInfo = static_cast<blockfactory::mex::SimulinkBlockInformation*>(ssGetPWorkValue(S, 1));
+    auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
     // Get the factory object from the singleton
     auto factory = getFactoryForThisBlockType(S);
@@ -748,7 +744,9 @@ bool writeParameterToRTW(const blockfactory::core::Parameter<std::string> param,
     }
 }
 
-bool writeRTW(SimStruct* S, const blockfactory::core::Parameters& params)
+bool writeRTW(SimStruct* S,
+              const std::string& blockUniqueName,
+              const blockfactory::core::Parameters& params)
 {
     // RTW Parameters record metadata
     // ==============================
@@ -769,10 +767,13 @@ bool writeRTW(SimStruct* S, const blockfactory::core::Parameters& params)
 
     // Create the record
     ssWriteRTWParamSettings(S,
-                            3,
+                            4,
                             SSWRITE_VALUE_NUM,
                             "numberOfParameters",
                             static_cast<real_T>(numberOfParameters),
+                            SSWRITE_VALUE_QSTR,
+                            "blockUniqueName",
+                            blockUniqueName.c_str(),
                             SSWRITE_VALUE_QSTR,
                             "className",
                             className.c_str(),
@@ -814,8 +815,10 @@ static void mdlRTW(SimStruct* S)
     if (ssGetNumPWork(S) > 0 && ssGetPWork(S)) {
 
         // Get the block object from the PWork
-        blockfactory::core::Block* block =
-            static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+        auto* block = static_cast<blockfactory::core::Block*>(ssGetPWorkValue(S, 0));
+
+        // Get the SimulinkBlockInformation object from the PWork
+        auto* blockInfo = static_cast<blockfactory::core::BlockInformation*>(ssGetPWorkValue(S, 1));
 
         bool ok;
         blockfactory::core::Parameters params;
@@ -836,8 +839,12 @@ static void mdlRTW(SimStruct* S)
             return;
         }
 
+        // Get the block object name
+        std::string blockUniqueName;
+        blockInfo->getUniqueName(blockUniqueName);
+
         // Use parameters metadata to populate the rtw file used by the coder
-        ok = writeRTW(S, params);
+        ok = writeRTW(S, blockUniqueName, params);
         catchLogMessages(ok, S);
         if (!ok) {
             bfError << "Failed to write parameters to the RTW file during the code "

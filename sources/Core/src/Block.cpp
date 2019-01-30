@@ -15,6 +15,13 @@
 
 using namespace blockfactory::core;
 
+std::string Block::getUniqueName(const BlockInformation* blockInfo) const
+{
+    std::string blockUniqueName;
+    blockInfo->getUniqueName(blockUniqueName);
+    return blockUniqueName;
+}
+
 unsigned Block::numberOfParameters()
 {
     return Block::NumberOfParameters;

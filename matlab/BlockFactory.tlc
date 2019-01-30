@@ -136,6 +136,7 @@
     %assign numberOfParameters = SFcnParamSettings[0].numberOfParameters
     %assign className = SFcnParamSettings[0].className
     %assign libName = SFcnParamSettings[0].libName
+    %assign blockUniqueName = SFcnParamSettings[0].blockUniqueName
 
     %foreach i = numberOfParameters
 
@@ -174,6 +175,9 @@
     }
     %endif
     %endforeach
+
+    // Store the block name
+    blockInfo->setUniqueBlockName("%<blockUniqueName>");
 
     // Store the parameters in the CoderBlockInformation object
     blockInfo->storeRTWParameters(params);

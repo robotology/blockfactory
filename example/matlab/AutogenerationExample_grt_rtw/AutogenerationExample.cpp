@@ -114,6 +114,9 @@ void AutogenerationExampleModelClass::initialize()
             blockfactory::core::ParameterMetadata(
                 blockfactory::core::ParameterType::STRING, 0.0, 1.0, 1.0, "className"));
 
+        // Store the block name
+        blockInfo->setUniqueBlockName("AutogenerationExample/Signal Math");
+
         // Store the parameters in the CoderBlockInformation object
         blockInfo->storeRTWParameters(params);
 

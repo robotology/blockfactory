@@ -47,6 +47,7 @@ public:
     SimulinkBlockInformation(SimStruct* simstruct);
     ~SimulinkBlockInformation() override;
 
+    bool getUniqueName(std::string& blockUniqueName) const override;
     bool optionFromKey(const std::string& key, double& option) const override;
     bool addParameterMetadata(const core::ParameterMetadata& paramMD) override;
     bool parseParameters(core::Parameters& parameters) override;

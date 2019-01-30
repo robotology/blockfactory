@@ -33,7 +33,7 @@ class CoderBlockInformation::impl
 public:
     std::vector<core::ParameterMetadata> paramsMetadata;
 
-    std::string confBlockName;
+    std::string blockUniqueName;
     core::Parameters parametersFromRTW;
 
     using IndexToPortAndSignalDataMap = std::unordered_map<core::Port::Index, PortAndSignalData>;
@@ -70,6 +70,12 @@ bool CoderBlockInformation::impl::outputPortAtIndexExists(const core::Port::Inde
 CoderBlockInformation::CoderBlockInformation()
     : pImpl(std::make_unique<CoderBlockInformation::impl>())
 {}
+
+bool CoderBlockInformation::getUniqueName(std::string& blockUniqueName) const
+{
+    blockUniqueName = pImpl->blockUniqueName;
+    return true;
+}
 
 CoderBlockInformation::~CoderBlockInformation() = default;
 
@@ -172,6 +178,12 @@ core::OutputSignalPtr CoderBlockInformation::getOutputPortSignal(const core::Por
     }
 
     return signal;
+}
+
+bool CoderBlockInformation::setUniqueBlockName(const std::string& blockUniqueName)
+{
+    pImpl->blockUniqueName = blockUniqueName;
+    return true;
 }
 
 core::Port::Size::Matrix

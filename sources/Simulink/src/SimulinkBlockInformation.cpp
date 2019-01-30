@@ -28,6 +28,11 @@ SimulinkBlockInformation::SimulinkBlockInformation(SimStruct* S)
     : pImpl(std::make_unique<impl::SimulinkBlockInformationImpl>(S))
 {}
 
+bool SimulinkBlockInformation::getUniqueName(std::string& blockUniqueName) const
+{
+    return pImpl->getUniqueName(blockUniqueName);
+}
+
 SimulinkBlockInformation::~SimulinkBlockInformation() = default;
 
 // BLOCK OPTIONS METHODS
