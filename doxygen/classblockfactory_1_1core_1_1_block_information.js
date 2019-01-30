@@ -11,6 +11,7 @@ var classblockfactory_1_1core_1_1_block_information =
     [ "getOutputPortMatrixSize", "classblockfactory_1_1core_1_1_block_information.html#a5730d68cc4c03c8892872d555457e7bb", null ],
     [ "getOutputPortSignal", "classblockfactory_1_1core_1_1_block_information.html#a030d31ff0082ae9fd0ab8273cbbd54f2", null ],
     [ "getOutputPortWidth", "classblockfactory_1_1core_1_1_block_information.html#a4fd2b073f86b13e492dedae2601fb4be", null ],
+    [ "getUniqueName", "classblockfactory_1_1core_1_1_block_information.html#aeca932888223f5cf7aeae436dae9c226", null ],
     [ "optionFromKey", "classblockfactory_1_1core_1_1_block_information.html#ab433996c89aaaf07f2d932206399d57e", null ],
     [ "parseParameters", "classblockfactory_1_1core_1_1_block_information.html#ab5ef013c3fbfec82f73a9806b2e2d851", null ],
     [ "setPortsInfo", "classblockfactory_1_1core_1_1_block_information.html#a8e9c6533091dbc4c17c74941c246d60b", null ]

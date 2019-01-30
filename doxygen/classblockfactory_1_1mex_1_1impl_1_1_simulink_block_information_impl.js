@@ -25,6 +25,7 @@ var classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl =
     [ "getStringFieldAtIndex", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a5882efa4682bf1d0e966fbb0aaa466c1", null ],
     [ "getStringParameterAtIndex", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a014f9b5832601321bda120f3da29b2de", null ],
     [ "getStructAtIndex", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a11955911ee8692e5284e8f6b76277653", null ],
+    [ "getUniqueName", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#ad1e4ff29e7174228036c7925c1879614", null ],
     [ "getVectorAtIndex", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a316ec2f45aba67e0819d11634268a425", null ],
     [ "getVectorDoubleFieldAtIndex", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#aa957a666f11ccfe0f5cf70599f464fcd", null ],
     [ "isInputPortDynamicallySized", "classblockfactory_1_1mex_1_1impl_1_1_simulink_block_information_impl.html#a13c0d0fbb2275f8b66c58f53c15bfddd", null ],

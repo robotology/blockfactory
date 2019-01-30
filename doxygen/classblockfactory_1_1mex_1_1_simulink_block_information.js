@@ -12,6 +12,7 @@ var classblockfactory_1_1mex_1_1_simulink_block_information =
     [ "getOutputPortMatrixSize", "classblockfactory_1_1mex_1_1_simulink_block_information.html#af122d7d568104ed73b9d450b2b64ce4d", null ],
     [ "getOutputPortSignal", "classblockfactory_1_1mex_1_1_simulink_block_information.html#a6132fc5466732d1fa810fa229a0b53fd", null ],
     [ "getOutputPortWidth", "classblockfactory_1_1mex_1_1_simulink_block_information.html#ace61b8855d1e6283671f4ab924420b08", null ],
+    [ "getUniqueName", "classblockfactory_1_1mex_1_1_simulink_block_information.html#aa6ca655452f4245b9952f1b4bc0869d6", null ],
     [ "optionFromKey", "classblockfactory_1_1mex_1_1_simulink_block_information.html#a878d5e707affcc5983f43a5f67381a17", null ],
     [ "parseParameters", "classblockfactory_1_1mex_1_1_simulink_block_information.html#a074da47c8dec73a6396fc8f4bb308d5a", null ],
     [ "setPortsInfo", "classblockfactory_1_1mex_1_1_simulink_block_information.html#a9a1a3430efbee909653e0bc4955d5793", null ]

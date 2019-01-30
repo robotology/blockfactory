@@ -159,6 +159,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9b4d459fe39915cbe85d738bb767d458"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block.html#a9b4d459fe39915cbe85d738bb767d458">~Block</a> ()=default</td></tr>
 <tr class="memdesc:a9b4d459fe39915cbe85d738bb767d458"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a9b4d459fe39915cbe85d738bb767d458">More...</a><br /></td></tr>
 <tr class="separator:a9b4d459fe39915cbe85d738bb767d458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4b0465b444ee55679c7602fe90b84fe"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block.html#ae4b0465b444ee55679c7602fe90b84fe">getUniqueName</a> (const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html">BlockInformation</a> *blockInfo) const </td></tr>
+<tr class="memdesc:ae4b0465b444ee55679c7602fe90b84fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the unique name of the block instance.  <a href="#ae4b0465b444ee55679c7602fe90b84fe">More...</a><br /></td></tr>
+<tr class="separator:ae4b0465b444ee55679c7602fe90b84fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85176801eb52d1a350af994438f5b973"><td class="memItemLeft" align="right" valign="top">virtual unsigned&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block.html#a85176801eb52d1a350af994438f5b973">numberOfParameters</a> ()</td></tr>
 <tr class="memdesc:a85176801eb52d1a350af994438f5b973"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of configuration parameters needed by this block.  <a href="#a85176801eb52d1a350af994438f5b973">More...</a><br /></td></tr>
 <tr class="separator:a85176801eb52d1a350af994438f5b973"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -329,6 +332,31 @@ Protected Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>bool True for success, false otherwise. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae4b0465b444ee55679c7602fe90b84fe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string blockfactory::core::Block::getUniqueName </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classblockfactory_1_1core_1_1_block_information.html">BlockInformation</a> *&#160;</td>
+          <td class="paramname"><em>blockInfo</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the unique name of the block instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">blockInfo</td><td>The pointer to a <a class="el" href="classblockfactory_1_1core_1_1_block_information.html" title="Abstract class for storing generic core::Block properties. ">BlockInformation</a> object. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The unique name of the block instance if it was set, an empty string otherwise. </dd></dl>
 
 </div>
 </div>

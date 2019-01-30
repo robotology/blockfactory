@@ -136,6 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4f42a294d358b7e8b28b76b5e5a1dc28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a460d8c6a49c2aca38b9429cee6db2ab2"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a460d8c6a49c2aca38b9429cee6db2ab2">~BlockInformation</a> ()=default</td></tr>
 <tr class="separator:a460d8c6a49c2aca38b9429cee6db2ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeca932888223f5cf7aeae436dae9c226"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#aeca932888223f5cf7aeae436dae9c226">getUniqueName</a> (std::string &amp;blockUniqueName) const =0</td></tr>
+<tr class="memdesc:aeca932888223f5cf7aeae436dae9c226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the unique name of the block instance.  <a href="#aeca932888223f5cf7aeae436dae9c226">More...</a><br /></td></tr>
+<tr class="separator:aeca932888223f5cf7aeae436dae9c226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab433996c89aaaf07f2d932206399d57e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1core_1_1_block_information.html#ab433996c89aaaf07f2d932206399d57e">optionFromKey</a> (const std::string &amp;key, double &amp;option) const =0</td></tr>
 <tr class="memdesc:ab433996c89aaaf07f2d932206399d57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a block option from its string identifier to a specific implementation.  <a href="#ab433996c89aaaf07f2d932206399d57e">More...</a><br /></td></tr>
 <tr class="separator:ab433996c89aaaf07f2d932206399d57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -538,6 +541,42 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="aeca932888223f5cf7aeae436dae9c226"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool blockfactory::core::BlockInformation::getUniqueName </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>blockUniqueName</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the unique name of the block instance. </p>
+<p>Retrive from the engine the unique name of the block. A typical example is the scoped name of the block that takes into account its location in the model hierarchy.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">blockUniqueName</td><td>The unique name of the block instance. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True for success, false otherwise. </dd></dl>
+
+<p>Implemented in <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#aa6ca655452f4245b9952f1b4bc0869d6">blockfactory::mex::SimulinkBlockInformation</a>, and <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#ae30f1b52b4aaa5ca94b47c089469df32">blockfactory::coder::CoderBlockInformation</a>.</p>
+
+</div>
+</div>
 <a class="anchor" id="ab433996c89aaaf07f2d932206399d57e"></a>
 <div class="memitem">
 <div class="memproto">
@@ -664,7 +703,7 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>True for success, false otherwise.</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>This method also automatically set the number of input and output ports and should be called only once. </dd></dl>
 
-<p>Implemented in <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a9a1a3430efbee909653e0bc4955d5793">blockfactory::mex::SimulinkBlockInformation</a>, and <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a732d3dcda57805ed9f1fe5fe00645c60">blockfactory::coder::CoderBlockInformation</a>.</p>
+<p>Implemented in <a class="el" href="classblockfactory_1_1coder_1_1_coder_block_information.html#a732d3dcda57805ed9f1fe5fe00645c60">blockfactory::coder::CoderBlockInformation</a>, and <a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a9a1a3430efbee909653e0bc4955d5793">blockfactory::mex::SimulinkBlockInformation</a>.</p>
 
 </div>
 </div>

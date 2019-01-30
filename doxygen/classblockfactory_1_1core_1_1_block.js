@@ -4,6 +4,7 @@ var classblockfactory_1_1core_1_1_block =
     [ "additionalBlockOptions", "classblockfactory_1_1core_1_1_block.html#a7870c7ff32f7f8c4f475baa18b7675e5", null ],
     [ "configureSizeAndPorts", "classblockfactory_1_1core_1_1_block.html#acfb40d2bd1d43f6e938452b198b6b5fd", null ],
     [ "getParameters", "classblockfactory_1_1core_1_1_block.html#a2a728d883d6f87fde45b481f783f7379", null ],
+    [ "getUniqueName", "classblockfactory_1_1core_1_1_block.html#ae4b0465b444ee55679c7602fe90b84fe", null ],
     [ "initialize", "classblockfactory_1_1core_1_1_block.html#ac2f5743e10b9c8cb4c4cc4ce86d650b2", null ],
     [ "initializeInitialConditions", "classblockfactory_1_1core_1_1_block.html#a8bef9368694c2b596e0ff007dc940e68", null ],
     [ "numberOfContinuousStates", "classblockfactory_1_1core_1_1_block.html#a917d00d0c7fb9d28ab4b37657add7639", null ],

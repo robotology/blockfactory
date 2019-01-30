@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8c9b6238b4c618a9918df53235fef0e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6825a62084e1a57f8a5174bc5ccd30c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a6825a62084e1a57f8a5174bc5ccd30c9">~SimulinkBlockInformation</a> () override</td></tr>
 <tr class="separator:a6825a62084e1a57f8a5174bc5ccd30c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6ca655452f4245b9952f1b4bc0869d6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#aa6ca655452f4245b9952f1b4bc0869d6">getUniqueName</a> (std::string &amp;blockUniqueName) const override</td></tr>
+<tr class="memdesc:aa6ca655452f4245b9952f1b4bc0869d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the unique name of the block instance.  <a href="#aa6ca655452f4245b9952f1b4bc0869d6">More...</a><br /></td></tr>
+<tr class="separator:aa6ca655452f4245b9952f1b4bc0869d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a878d5e707affcc5983f43a5f67381a17"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classblockfactory_1_1mex_1_1_simulink_block_information.html#a878d5e707affcc5983f43a5f67381a17">optionFromKey</a> (const std::string &amp;key, double &amp;option) const override</td></tr>
 <tr class="memdesc:a878d5e707affcc5983f43a5f67381a17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a block option from its string identifier to a specific implementation.  <a href="#a878d5e707affcc5983f43a5f67381a17">More...</a><br /></td></tr>
 <tr class="separator:a878d5e707affcc5983f43a5f67381a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -549,6 +552,42 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>The size of the port. </dd></dl>
 
 <p>Implements <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#a4fd2b073f86b13e492dedae2601fb4be">blockfactory::core::BlockInformation</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="aa6ca655452f4245b9952f1b4bc0869d6"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool blockfactory::mex::SimulinkBlockInformation::getUniqueName </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>blockUniqueName</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the unique name of the block instance. </p>
+<p>Retrive from the engine the unique name of the block. A typical example is the scoped name of the block that takes into account its location in the model hierarchy.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">blockUniqueName</td><td>The unique name of the block instance. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True for success, false otherwise. </dd></dl>
+
+<p>Implements <a class="el" href="classblockfactory_1_1core_1_1_block_information.html#aeca932888223f5cf7aeae436dae9c226">blockfactory::core::BlockInformation</a>.</p>
 
 </div>
 </div>
