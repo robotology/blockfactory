@@ -36,6 +36,8 @@ public:
     CoderBlockInformation();
     ~CoderBlockInformation() override;
 
+    bool getUniqueName(std::string& blockUniqueName) const override;
+
     // BLOCK OPTIONS METHODS
     // =====================
 
@@ -72,6 +74,7 @@ public:
     // METHODS OUTSIDE THE INTERFACE
     // =============================
 
+    bool setUniqueBlockName(const std::string& blockUniqueName);
     bool storeRTWParameters(const core::Parameters& parameters);
     bool setInputPort(const core::Port::Info& portInfo, void* signalAddress);
     bool setOutputPort(const core::Port::Info& portInfo, void* signalAddress);
