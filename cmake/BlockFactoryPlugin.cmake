@@ -83,7 +83,7 @@ function(install_blockfactory_plugin)
     include(GNUInstallDirs)
 
     if(WIN32)
-        message(STATUS "Remember to add \"${CMAKE_INSTALL_PREFIX}\${CMAKE_INSTALL_BINDIR}\blockfactory\""
+        message(STATUS "Remember to add \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/blockfactory/\""
                        " to BLOCKFACTORY_PLUGIN_PATH environment variable")
     else()
         message(STATUS "Remember to add \"${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/blockfactory\""
