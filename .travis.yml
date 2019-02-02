@@ -89,13 +89,15 @@ stage_deploy:
     - export GH_REPO_ORG=${TRAVIS_REPO_SLUG%*/*}
     - export GH_REPO_NAME=${TRAVIS_REPO_SLUG#*/*}
     - export GH_REPO_REF="github.com/$GH_REPO_ORG/$GH_REPO_NAME.git"
-    # Select the deploy folder
-    - if [ "$TRAVIS_BRANCH" = "master" ] ; then DEPLOY_FOLDER=$GH_PAGES_ROOTDIR ; fi
-    - if [ "$TRAVIS_BRANCH" = "devel" ] ; then DEPLOY_FOLDER=$GH_PAGES_ROOTDIR/devel ; fi
     # Check if the gh-pages branch exists and clone it
     - cd $TRAVIS_BUILD_DIR
     - git ls-remote --heads --exit-code https://$GH_REPO_REF gh-pages || travis_terminate 1
     - git clone -b gh-pages https://$GH_REPO_REF $GH_PAGES_ROOTDIR
+    # Select the deploy folder
+    - if [ "$TRAVIS_BRANCH" = "master" ] ; then DEPLOY_FOLDER=$GH_PAGES_ROOTDIR ; fi
+    - if [ "$TRAVIS_BRANCH" = "devel" ] ; then DEPLOY_FOLDER=$GH_PAGES_ROOTDIR/devel ; fi
+    # Create the deploy folder if it does not exist
+    - mkdir -p $DEPLOY_FOLDER
     # Push only the current branch
     - cd $GH_PAGES_ROOTDIR
     - git config push.default simple
