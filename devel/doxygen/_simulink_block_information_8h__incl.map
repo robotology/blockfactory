@@ -1,0 +1,6 @@
+<map id="/home/travis/build/robotology/blockfactory/sources/Simulink/include/BlockFactory/Simulink/SimulinkBlockInformation.h" name="/home/travis/build/robotology/blockfactory/sources/Simulink/include/BlockFactory/Simulink/SimulinkBlockInformation.h">
+<area shape="rect" id="node2" href="$_block_information_8h.html" title="BlockFactory/Core/BlockInformation.h" alt="" coords="240,139,499,165"/>
+<area shape="rect" id="node3" href="$_port_8h.html" title="BlockFactory/Core/Port.h" alt="" coords="31,213,209,240"/>
+<area shape="rect" id="node10" href="$_parameter_8h.html" title="BlockFactory/Core/Parameter.h" alt="" coords="573,139,792,165"/>
+<area shape="rect" id="node11" href="$_signal_8h.html" title="BlockFactory/Core/Signal.h" alt="" coords="25,139,215,165"/>
+</map>
