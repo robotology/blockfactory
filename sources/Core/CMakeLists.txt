@@ -4,7 +4,6 @@
 
 set(CORE_SRC
     src/Block.cpp
-    src/BlockInformation.cpp
     src/Log.cpp
     src/Parameter.cpp
     src/Parameters.cpp

@@ -27,8 +27,9 @@ namespace blockfactory {
         using OutputPortsInfo = std::vector<Port::Info>;
         using InputSignalPtr = std::shared_ptr<const blockfactory::core::Signal>;
         using OutputSignalPtr = std::shared_ptr<blockfactory::core::Signal>;
-        // List of possible key for defining block options:
-        extern const std::string BlockOptionPrioritizeOrder;
+
+        // List of possible keys for defining block options:
+        const std::string BlockOptionPrioritizeOrder = "wbt.BlockOptionPrioritizeOrder";
     } // namespace core
 } // namespace blockfactory
 
