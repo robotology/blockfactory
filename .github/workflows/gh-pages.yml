@@ -1,0 +1,89 @@
+name: GitHub Pages
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  docs:
+    name: "Deploy"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y doxygen doxygen-doc graphviz python3-wheel python3-setuptools
+          pip3 install --user Pygments mkdocs mkdocs-material
+          echo "::set-env name=PATH::$HOME/.local/bin:$PATH"
+          env
+
+      - name: Export local deployment folder
+        run: |
+          GH_PAGES_ROOTDIR=$HOME/gh-pages
+          echo "::set-env name=GH_PAGES_ROOTDIR::$GH_PAGES_ROOTDIR"
+
+      - name: Export remote link
+        run: |
+          GH_REPO_REF="github.com/robotology/blockfactory.git"
+          echo "::set-env name=GH_REPO_REF::$GH_REPO_REF"
+
+      - name: Check remote
+        run: git ls-remote --heads --exit-code https://$GH_REPO_REF gh-pages
+
+      - name: Clone and configure remote
+        run: |
+          git clone -b gh-pages https://$GH_REPO_REF $GH_PAGES_ROOTDIR
+          cd $GH_PAGES_ROOTDIR
+          touch $GH_PAGES_ROOTDIR/.nojekyll
+
+      - name: Enable documentation target
+        run: |
+          mkdir -p build && cd build
+          cmake .. -DBUILD_DOCS:BOOL=TRUE -DPython_ADDITIONAL_VERSIONS=3.6
+
+      - name: Configure [master] deployment
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "::set-env name=DEPLOY_FOLDER::$GH_PAGES_ROOTDIR"
+
+      - name: Configure [devel] deployment
+        if: github.ref != 'refs/heads/master'
+        run: |
+          echo "::set-env name=DEPLOY_FOLDER::$GH_PAGES_ROOTDIR/devel"
+
+      - name: Doxygen
+        run: |
+          cd build
+          make dox
+          rm -rf $DEPLOY_FOLDER/doxygen
+          mv doc/doxygen/html $DEPLOY_FOLDER/doxygen
+
+      - name: Mkdocs
+        run: |
+          cd build
+          make mkdocs
+          rm -rf $DEPLOY_FOLDER/mkdocs
+          mv doc/mkdocs $DEPLOY_FOLDER/mkdocs
+
+      - name: Deploy
+        if: |
+          github.repository == 'robotology/blockfactory' &&
+          github.event_name != 'pull_request' &&
+          (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/devel')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd $GH_PAGES_ROOTDIR
+          git config push.default simple
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/robotology/blockfactory.git
+          git add --all
+          git commit -m "Automatic docs deployment"
+          git diff
+          git log
+          git show
+          git push origin gh-pages
