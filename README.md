@@ -31,3 +31,17 @@ Despite its roots in robotics, now BlockFactory is very generic! You can use it 
 - [Documentation](https://robotology.github.io/blockfactory/doxygen/)
 - [Tutorial](https://robotology.github.io/blockfactory/mkdocs/tutorial_intro/)
 
+### Citing this work
+
+Please cite the following publication if you are using either BlockFactory or derived projects for your own research:
+
+```
+@article{FerigoControllers2020,
+	title = {A generic synchronous dataflow architecture to rapidly prototype and deploy robot controllers},
+	author = {Ferigo, Diego and Traversaro, Silvio and Romano, Francesco and Pucci, Daniele},
+	url = {https://journals.sagepub.com/doi/10.1177/1729881420921625},
+	doi = {10.1177/1729881420921625},
+	journal = {International Journal of Advanced Robotic Systems},
+	year = {2020},
+}
+```
