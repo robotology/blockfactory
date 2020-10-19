@@ -1,3 +1,8 @@
+cmake-build*/
+build/
+install/
+.vscode/
+.idea/
 *.d
 *.slo
 *.lo
@@ -31,4 +36,3 @@ slprj
 *.tmw
 *.dmr
 *.mk
-
