@@ -22,13 +22,13 @@
 #ifndef bfError
 #define bfError                                                 \
     blockfactory::core::Log::getSingleton().getLogStringStream( \
-        blockfactory::core::Log::Type::ERROR, __FILE__, __LINE__, __FUNCTION__)
+        blockfactory::core::Log::Type::LOG_TYPE_ERROR, __FILE__, __LINE__, __FUNCTION__)
 #endif
 
 #ifndef bfWarning
 #define bfWarning                                               \
     blockfactory::core::Log::getSingleton().getLogStringStream( \
-        blockfactory::core::Log::Type::WARNING, __FILE__, __LINE__, __FUNCTION__)
+        blockfactory::core::Log::Type::LOG_TYPE_ERROR, __FILE__, __LINE__, __FUNCTION__)
 #endif
 
 namespace blockfactory {
@@ -47,8 +47,8 @@ class blockfactory::core::Log
 public:
     enum class Type
     {
-        ERROR,
-        WARNING
+        LOG_TYPE_ERROR,
+        LOG_TYPE_WARNING
     };
 
     enum class Verbosity

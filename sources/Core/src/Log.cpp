@@ -43,24 +43,24 @@ std::stringstream& Log::getLogStringStream(const Log::Type& type,
     switch (pImpl->verbosity) {
         case Log::Verbosity::RELEASE:
             switch (type) {
-                case Log::Type::ERROR:
+                case Log::Type::LOG_TYPE_ERROR:
                     pImpl->errorsSStream.emplace_back(new std::stringstream);
                     return *pImpl->errorsSStream.back();
-                case Log::Type::WARNING:
+                case Log::Type::LOG_TYPE_WARNING:
                     pImpl->warningsSStream.emplace_back(new std::stringstream);
                     return *pImpl->warningsSStream.back();
             }
             break;
         case Log::Verbosity::DEBUG:
             switch (type) {
-                case Log::Type::ERROR: {
+                case Log::Type::LOG_TYPE_ERROR: {
                     pImpl->errorsSStream.emplace_back(new std::stringstream);
                     auto& ss = *pImpl->errorsSStream.back();
                     ss << std::endl
                        << file << "@" << function << ":" << std::to_string(line) << std::endl;
                     return ss;
                 }
-                case Log::Type::WARNING: {
+                case Log::Type::LOG_TYPE_WARNING: {
                     pImpl->warningsSStream.emplace_back(new std::stringstream);
                     auto& ss = *pImpl->warningsSStream.back();
                     ss << std::endl
