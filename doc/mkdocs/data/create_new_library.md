@@ -165,7 +165,7 @@ include(GNUInstallDirs)
 if(UNIX AND NOT APPLE)
     get_filename_component(LINKER_BIN ${CMAKE_LINKER} NAME)
     if(${LINKER_BIN} STREQUAL "ld")
-        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--unresolved-symbols=report-all")
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--unresolved-symbols=report-all")
     endif()
 endif()
 
