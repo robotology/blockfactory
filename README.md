@@ -45,3 +45,11 @@ Please cite the following publication if you are using either BlockFactory or de
 	year = {2020},
 }
 ```
+
+### Maintainers
+This repository is maintained by:
+
+| | |
+|:---:|:---:|
+| [<img src="https://github.com/traversaro.png" width="40">](https://github.com/traversaro) | [@traversaro](https://github.com/traversaro) |
+
