@@ -77,14 +77,7 @@ endif()
 # Handle compiler warnings
 include(TargetCompileWarnings)
 option(ENABLE_WARNINGS "Enable verbose warnings" TRUE)
-
-if(NOT DEFINED TREAT_WARNINGS_AS_ERRORS)
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        set(TREAT_WARNINGS_AS_ERRORS TRUE)
-    else()
-        set(TREAT_WARNINGS_AS_ERRORS FALSE)
-    endif()
-endif()
+option(TREAT_WARNINGS_AS_ERRORS "Treat warnings as errors" FALSE)
 
 if(MSVC)
     # Export all symbols in Windows
