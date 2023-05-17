@@ -1,6 +1,7 @@
 # BlockFactory
 
-[![Build Status (Linux/macOS) (master)](https://img.shields.io/travis/com/robotology/blockfactory/master.svg?logo=travis&label=master)](https://travis-ci.com/robotology/blockfactory)
+[![CI](https://github.com/robotology/blockfactory/workflows/CI/badge.svg)](https://github.com/robotology/blockfactory/actions) 
+[![GitHub Pages](https://github.com/robotology/blockfactory/workflows/GitHub%20Pages/badge.svg)](https://github.com/robotology/blockfactory/actions) 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/25547902678b4d92804d40712035ec29)](https://app.codacy.com/app/diegoferigo/blockfactory?utm_source=github.com&utm_medium=referral&utm_content=robotology/blockfactory&utm_campaign=Badge_Grade_Dashboard)
 [![License](https://img.shields.io/badge/license-LGPL-19c2d8.svg)](https://github.com/robotology/blockfactory/blob/master/LICENSE)
 

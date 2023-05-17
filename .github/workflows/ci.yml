@@ -1,0 +1,166 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  linux:
+    name: "[${{ matrix.os }}]@[${{ matrix.generator }}]@[${{ matrix.build_type }}]@[${{ matrix.compiler }}]"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build_type:
+          - Debug
+          - Release
+        os:
+          - ubuntu-latest
+        generator:
+          - Ninja
+          - Unix Makefiles
+        compiler:
+          - gcc7
+          - clang6
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Build Docker Image
+        run: |
+          docker build --build-arg from=ubuntu:bionic --rm -t blockfactory/ci .ci
+
+      # Workaround to export environment variables that persist in next steps
+      # https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+      - name: Setup Environment
+        run: |
+          case ${{ matrix.compiler }} in
+           gcc7) CC=gcc ; CXX=g++ ;;
+           gcc8) CC=gcc-8 ; CXX=g++-8 ;;
+           clang6) CC=clang; CXX=clang++ ;;
+           clang7) CC=clang-7; CXX=clang++-7 ;;
+           clang8) CC=clang-8; CXX=clang++-8 ;;
+           *) echo "Compiler not supported" && exit 1 ;;
+          esac
+          echo "::set-env name=CC::$CC"
+          echo "::set-env name=CXX::$CXX"
+          env
+
+      - name: Run Docker Image
+        run: |
+          docker run -d -i --rm --name ci \
+            -v $GITHUB_WORKSPACE:/github \
+            -w /github \
+            -e CC=$CC -e CXX=$CXX \
+            blockfactory/ci bash
+
+      - name: Configure
+        run: |
+          mkdir -p build
+          docker exec -i -w /github/build ci sh -c '\
+            cmake .. \
+              -G"${{ matrix.generator }}" \
+              -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+              -DTREAT_WARNINGS_AS_ERRORS:BOOL=ON \
+              -DBUILD_TESTING:BOOL=ON'
+
+      - name: Build
+        run: docker exec -i -w /github ci cmake --build build
+
+      - name: Install
+        run: docker exec -i -w /github ci cmake --build build --target install
+
+      - name: Test
+        run: |
+          docker exec -i -w /github/build ci ctest --output-on-failure
+
+      - name: Valgrind test
+        run: docker exec -i -w /github/build ci ctest -T memcheck --output-on-failure
+
+      - name: Valgrind log on failure
+        if: failure()
+        run: |
+          cd build
+          for log in $(ls Testing/Temporary/MemoryChecker.*.log) ; do
+              echo
+              echo "$log"
+              echo
+              cat $log
+          done
+
+  windows-and-macos:
+    name: "[${{ matrix.os }}]@[${{ matrix.generator }}]@[${{ matrix.build_type }}]"
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build_type:
+          - Debug
+          - Release
+        os:
+          - windows-latest
+          - macOS-latest
+        generator:
+          - Ninja
+          - Xcode
+          - Visual Studio 16 2019
+        exclude:
+          - os: windows-latest
+            generator: Xcode
+          - os: macOS-latest
+            generator: Visual Studio 16 2019
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install Ninja [windows]
+        if: matrix.os == 'windows-latest'
+        run: choco install ninja
+
+      - name: Install Ninja [macOS]
+        if: matrix.os == 'macOS-latest'
+        run: brew install ninja
+
+      - name: Configure VS
+        if: matrix.generator == 'Visual Studio 16 2019'
+        shell: bash
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. \
+            -A x64 \
+            -G"${{ matrix.generator }}" \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/install \
+            -DBUILD_TESTING:BOOL=ON
+
+      - name: Configure
+        if: matrix.generator != 'Visual Studio 16 2019'
+        shell: bash
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. \
+            -G"${{ matrix.generator }}" \
+            -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+            -DCMAKE_INSTALL_PREFIX:PATH=${GITHUB_WORKSPACE}/install \
+            -DTREAT_WARNINGS_AS_ERRORS:BOOL=ON \
+            -DBUILD_TESTING:BOOL=ON
+
+      - name: Build
+        shell: bash
+        run: cmake --build build --config ${{ matrix.build_type }}
+
+      - name: Install
+        if: matrix.generator != 'Visual Studio 16 2019'
+        shell: bash
+        run: cmake --build build --target install
+
+      - name: Install VS
+        if: matrix.generator == 'Visual Studio 16 2019'
+        shell: bash
+        run: cmake --build build --target INSTALL
+
+      - name: Test
+        shell: bash
+        run: |
+          cd build
+          ctest --output-on-failure
