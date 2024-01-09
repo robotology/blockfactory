@@ -8,6 +8,7 @@
 
 #include "BlockFactory/Core/FactorySingleton.h"
 
+#include <cstdint>
 #include <map>
 #include <string>
 #include <vector>

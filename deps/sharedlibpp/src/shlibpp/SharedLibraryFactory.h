@@ -10,6 +10,7 @@
 #define SHAREDLIBPP_SHAREDLIBRARYFACTORY_H
 
 #include <shlibpp/api.h>
+#include <cstdint>
 #include <string>
 
 namespace shlibpp {
