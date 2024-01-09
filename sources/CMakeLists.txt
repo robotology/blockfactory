@@ -9,6 +9,8 @@ if(USES_MATLAB)
     add_subdirectory(Simulink)
 endif()
 
+add_subdirectory(Tools)
+
 # ========================
 # MAIN BLOCKFACTORY TARGET
 # ========================
@@ -16,7 +18,7 @@ endif()
 # Dummy target
 add_library(BlockFactory INTERFACE)
 
-set(BLOCKFACTORY_DEPENDENCIES BlockFactoryCore BlockFactorySimulinkCoder)
+set(BLOCKFACTORY_DEPENDENCIES BlockFactoryCore BlockFactorySimulinkCoder BlockFactoryTools)
 if (USES_MATLAB)
     list(APPEND BLOCKFACTORY_DEPENDENCIES BlockFactorySimulink)
 endif()

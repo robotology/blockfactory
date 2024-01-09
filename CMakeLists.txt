@@ -3,7 +3,7 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 cmake_minimum_required(VERSION 3.5)
-project(blockfactory LANGUAGES CXX VERSION 0.8)
+project(blockfactory LANGUAGES CXX VERSION 0.8.2)
 
 if(BUILD_DOCS)
     add_subdirectory(doc)
@@ -44,7 +44,7 @@ if(UNIX AND NOT APPLE)
     if("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
         get_filename_component(LINKER_BIN ${CMAKE_LINKER} NAME)
             if("${LINKER_BIN}" STREQUAL "ld")
-                set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--unresolved-symbols=report-all")
+                set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--unresolved-symbols=report-all")
             endif()
     endif()
 endif()
@@ -101,9 +101,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}")
 
 find_package(Matlab COMPONENTS
-    MX_LIBRARY
     ENG_LIBRARY
-    MAIN_PROGRAM
     SIMULINK)
 
 if(NOT USES_MATLAB)

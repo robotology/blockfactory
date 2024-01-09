@@ -11,7 +11,8 @@ matlab_add_mex(
         src/SimulinkBlockInformationImpl.cpp
         include/BlockFactory/Simulink/Private/SimulinkBlockInformationImpl.h
         src/BlockFactory.cpp
-    LINK_TO BlockFactory::Core shlibpp::shlibpp mxpp)
+    NO_IMPLICIT_LINK_TO_MATLAB_LIBRARIES
+    LINK_TO ${Matlab_MEX_LIBRARY} ${Matlab_MX_LIBRARY} BlockFactory::Core shlibpp::shlibpp mxpp)
 add_library(BlockFactory::Simulink ALIAS Simulink)
 
 target_compile_warnings(Simulink
