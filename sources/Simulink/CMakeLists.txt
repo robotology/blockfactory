@@ -3,7 +3,8 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 # Compile S-Function
-matlab_add_mex(
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24")
+  matlab_add_mex(
     NAME Simulink
     OUTPUT_NAME BlockFactory
     SRC src/SimulinkBlockInformation.cpp
@@ -13,6 +14,17 @@ matlab_add_mex(
         src/BlockFactory.cpp
     NO_IMPLICIT_LINK_TO_MATLAB_LIBRARIES
     LINK_TO ${Matlab_MEX_LIBRARY} ${Matlab_MX_LIBRARY} BlockFactory::Core shlibpp::shlibpp mxpp)
+else()
+   matlab_add_mex(
+    NAME Simulink
+    OUTPUT_NAME BlockFactory
+    SRC src/SimulinkBlockInformation.cpp
+        include/BlockFactory/Simulink/SimulinkBlockInformation.h
+        src/SimulinkBlockInformationImpl.cpp
+        include/BlockFactory/Simulink/Private/SimulinkBlockInformationImpl.h
+        src/BlockFactory.cpp
+    LINK_TO ${Matlab_MEX_LIBRARY} ${Matlab_MX_LIBRARY} BlockFactory::Core shlibpp::shlibpp mxpp)
+endif()
 add_library(BlockFactory::Simulink ALIAS Simulink)
 
 target_compile_warnings(Simulink
