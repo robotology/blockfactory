@@ -45,7 +45,7 @@ jobs:
         mkdir -p build
         cd build    
         cmake -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-              -DTREAT_WARNINGS_AS_ERRORS:BOOL=OFF -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install -DBUILD_TESTING:BOOL=ON ..
+              -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install -DBUILD_TESTING:BOOL=ON ..
 
     - name: Build
       shell: bash -l {0}
