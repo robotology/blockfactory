@@ -1,0 +1,10 @@
+name: blockfactorydev
+channels:
+  - conda-forge
+  - robotology
+dependencies:
+  - cmake
+  - compilers
+  - make
+  - ninja
+  - pkg-config
