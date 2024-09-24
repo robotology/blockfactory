@@ -202,9 +202,10 @@
     %endif
     %%assign width = LibBlockInputSignalWidth(i)
     %assign address = LibBlockInputSignalAddr(i, "", "", 0)
+    // The const_cast is a workaround to solve https://github.com/robotology/blockfactory/issues/81
     blockInfo->setInputPort(
         {%<i>, {%<rows>, %<cols>}, blockfactory::core::Port::DataType::DOUBLE},
-        static_cast<void*>(%<address>));
+        const_cast<void*>(static_cast<const void*>(%<address>)));
     %endforeach
 
     // Outputs
