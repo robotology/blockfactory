@@ -1,0 +1,60 @@
+name: C++ CI Workflow with dependencies installed via conda
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  schedule:
+  # * is a special character in YAML so you have to quote this string
+  # Execute a "nightly" build at 2 AM UTC 
+  - cron:  '0 2 * * *'
+
+jobs:
+  build:
+    name: '[${{ matrix.os }}@${{ matrix.build_type }}@conda]'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build_type: [Release]
+        os: [ubuntu-latest, windows-2019, macos-12]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: mamba-org/setup-micromamba@v1
+      with:
+        environment-file: ci_env.yml
+
+    - name: Configure VS Toolchain (Windows)
+      if: contains(matrix.os, 'windows')
+      uses: ilammy/msvc-dev-cmd@v1.12.1
+
+    - name: Setup compilation env variables (Windows)
+      if: contains(matrix.os, 'windows')
+      shell: bash -l {0}
+      run: |
+        bash_vc_install=${VCToolsInstallDir//\\//}
+        compiler_path=${bash_vc_install}bin/Hostx64/x64/cl.exe
+        echo "CC=${compiler_path}" >> $GITHUB_ENV
+        echo "CXX=${compiler_path}" >> $GITHUB_ENV
+
+    - name: Configure
+      shell: bash -l {0}
+      run: |
+        mkdir -p build
+        cd build    
+        cmake -GNinja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+              -DCMAKE_INSTALL_PREFIX=${GITHUB_WORKSPACE}/install -DBUILD_TESTING:BOOL=ON ..
+
+    - name: Build
+      shell: bash -l {0}
+      run: |
+        cd build
+        cmake --build . --config ${{ matrix.build_type }} 
+
+    - name: Test
+      shell: bash -l {0}
+      run: |
+        cd build
+        ctest --output-on-failure -C ${{ matrix.build_type }} .
