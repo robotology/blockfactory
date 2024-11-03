@@ -2,7 +2,7 @@
 # This software may be modified and distributed under the terms of the
 # GNU Lesser General Public License v2.1 or any later version.
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16...3.31)
 project(blockfactory LANGUAGES CXX VERSION 0.8.5)
 
 if(BUILD_DOCS)
@@ -108,6 +108,18 @@ endif()
 
 # Handle unit tests support
 option(BUILD_TESTING "Create tests using CMake" OFF)
+
+option(BLOCKFACTORY_USES_SYSTEM_SHLIBPP "If ON, find shlibpp with find_package(shlibpp)" OFF)
+if(BLOCKFACTORY_USES_SYSTEM_SHLIBPP)
+    find_package(shlibpp REQUIRED)
+else()
+    include(FetchContent)
+    FetchContent_Declare(
+        shlibpp
+        URL https://github.com/ami-iit/shlibpp/archive/refs/tags/v0.0.2.zip
+    )
+    FetchContent_MakeAvailable(shlibpp)
+endif()
 
 add_subdirectory(deps)
 add_subdirectory(sources)

@@ -6,8 +6,6 @@ if(USES_MATLAB)
     add_subdirectory(mxpp)
 endif()
 
-add_subdirectory(sharedlibpp)
-
 if(BUILD_TESTING)
     add_subdirectory(catch)
 endif()

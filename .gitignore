@@ -31,4 +31,5 @@ slprj
 *.tmw
 *.dmr
 *.mk
-
+.build
+.pixi
