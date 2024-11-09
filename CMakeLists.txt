@@ -122,6 +122,7 @@ else()
 endif()
 
 add_subdirectory(deps)
+include(InstallBasicPackageFiles)
 add_subdirectory(sources)
 
 if(USES_MATLAB)
