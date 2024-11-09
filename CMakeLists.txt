@@ -3,7 +3,7 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 cmake_minimum_required(VERSION 3.16...3.31)
-project(blockfactory LANGUAGES CXX VERSION 0.8.5)
+project(blockfactory LANGUAGES CXX VERSION 1.0.0)
 
 if(BUILD_DOCS)
     add_subdirectory(doc)
@@ -109,19 +109,20 @@ endif()
 # Handle unit tests support
 option(BUILD_TESTING "Create tests using CMake" OFF)
 
-option(BLOCKFACTORY_USES_SYSTEM_SHLIBPP "If ON, find shlibpp with find_package(shlibpp)" OFF)
-if(BLOCKFACTORY_USES_SYSTEM_SHLIBPP)
-    find_package(shlibpp REQUIRED)
+option(BLOCKFACTORY_USES_SYSTEM_SHAREDLIBPP "If ON, find sharedlibpp with find_package(sharedlibpp)" OFF)
+if(BLOCKFACTORY_USES_SYSTEM_SHAREDLIBPP)
+    find_package(sharedlibpp REQUIRED)
 else()
     include(FetchContent)
     FetchContent_Declare(
-        shlibpp
-        URL https://github.com/ami-iit/shlibpp/archive/refs/tags/v0.0.2.zip
+        sharedlibpp
+        URL https://github.com/ami-iit/sharedlibpp/archive/refs/tags/v0.0.3.zip
     )
-    FetchContent_MakeAvailable(shlibpp)
+    FetchContent_MakeAvailable(sharedlibpp)
 endif()
 
 add_subdirectory(deps)
+include(InstallBasicPackageFiles)
 add_subdirectory(sources)
 
 if(USES_MATLAB)

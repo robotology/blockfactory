@@ -13,7 +13,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.24")
         include/BlockFactory/Simulink/Private/SimulinkBlockInformationImpl.h
         src/BlockFactory.cpp
     NO_IMPLICIT_LINK_TO_MATLAB_LIBRARIES
-    LINK_TO ${Matlab_MEX_LIBRARY} ${Matlab_MX_LIBRARY} BlockFactory::Core shlibpp::shlibpp mxpp)
+    LINK_TO ${Matlab_MEX_LIBRARY} ${Matlab_MX_LIBRARY} BlockFactory::Core sharedlibpp::sharedlibpp mxpp)
 else()
    matlab_add_mex(
     NAME Simulink
@@ -23,7 +23,7 @@ else()
         src/SimulinkBlockInformationImpl.cpp
         include/BlockFactory/Simulink/Private/SimulinkBlockInformationImpl.h
         src/BlockFactory.cpp
-    LINK_TO ${Matlab_MEX_LIBRARY} ${Matlab_MX_LIBRARY} BlockFactory::Core shlibpp::shlibpp mxpp)
+    LINK_TO ${Matlab_MEX_LIBRARY} ${Matlab_MX_LIBRARY} BlockFactory::Core sharedlibpp::sharedlibpp mxpp)
 endif()
 add_library(BlockFactory::Simulink ALIAS Simulink)
 
@@ -50,6 +50,6 @@ install_basic_package_files(BlockFactorySimulink
     COMPATIBILITY AnyNewerVersion
     EXPORT BlockFactorySimulinkExport
     FIRST_TARGET Simulink
-    DEPENDENCIES BlockFactoryCore mxpp shlibpp
+    DEPENDENCIES BlockFactoryCore mxpp sharedlibpp
     NAMESPACE BlockFactory::
     NO_CHECK_REQUIRED_COMPONENTS_MACRO)

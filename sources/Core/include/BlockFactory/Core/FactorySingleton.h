@@ -10,8 +10,8 @@
 #define BLOCKFACTORY_CORE_FACTORYSINGLETON_H
 
 #include "BlockFactory/Core/Log.h"
-#include "shlibpp/SharedLibrary.h"
-#include "shlibpp/SharedLibraryClass.h"
+#include "sharedlibpp/SharedLibrary.h"
+#include "sharedlibpp/SharedLibraryClass.h"
 
 #include <memory>
 
@@ -23,9 +23,9 @@ namespace blockfactory {
 } // namespace blockfactory
 
 /**
- * @brief Class for interfacing with shlibpp plugin library
+ * @brief Class for interfacing with sharedlibpp plugin library
  *
- * This helper class ease the integration of shlibpp within the BlockFactory framework. It is
+ * This helper class ease the integration of sharedlibpp within the BlockFactory framework. It is
  * implemented with a singleton pattern.
  *
  * It can handle multiple plugin libraries together and provides support of destructing the related
@@ -41,7 +41,7 @@ private:
 #endif
 
 public:
-    using ClassFactory = shlibpp::SharedLibraryClassFactory<blockfactory::core::Block>;
+    using ClassFactory = sharedlibpp::SharedLibraryClassFactory<blockfactory::core::Block>;
     using ClassFactoryPtr = std::shared_ptr<ClassFactory>;
 
     /// @brief Name of the factory associated to the class specified during its registration

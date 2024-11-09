@@ -27,7 +27,7 @@ set(CORE_PRIVATE_HDR
 add_library(Core ${CORE_SRC} ${CORE_PUBLIC_HDR} ${CORE_PRIVATE_HDR})
 add_library(BlockFactory::Core ALIAS Core)
 
-target_link_libraries(Core PUBLIC shlibpp::shlibpp)
+target_link_libraries(Core PUBLIC sharedlibpp::sharedlibpp)
 
 target_include_directories(Core PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -55,6 +55,6 @@ install_basic_package_files(BlockFactoryCore
     COMPATIBILITY AnyNewerVersion
     EXPORT BlockFactoryCoreExport
     FIRST_TARGET Core
-    DEPENDENCIES shlibpp
+    DEPENDENCIES sharedlibpp
     NAMESPACE BlockFactory::
     NO_CHECK_REQUIRED_COMPONENTS_MACRO)
