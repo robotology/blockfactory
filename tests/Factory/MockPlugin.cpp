@@ -9,7 +9,7 @@
 #include "MockPlugin.h"
 #include <BlockFactory/Core/Parameter.h>
 
-#include <shlibpp/SharedLibraryClassApi.h>
+#include <sharedlibpp/SharedLibraryClassApi.h>
 
 mock::MockBlock::MockBlock()
 {

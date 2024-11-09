@@ -58,8 +58,8 @@ Example:
 #define BLOCKFACTORY_CORE_FACTORYSINGLETON_H
 
 #include "BlockFactory/Core/Log.h"
-#include "shlibpp/SharedLibrary.h"
-#include "shlibpp/SharedLibraryClass.h"
+#include "sharedlibpp/SharedLibrary.h"
+#include "sharedlibpp/SharedLibraryClass.h"
 
 #include <memory>
 

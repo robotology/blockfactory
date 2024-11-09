@@ -198,7 +198,7 @@ void AutogenerationExampleModelClass::initialize()
         // TODO: find a better way to handle them.
         {
             // Create a new class. This object will be destroyed at the end of the scope.
-            shlibpp::SharedLibraryClass<blockfactory::core::Block> blockPtr(*factory);
+            sharedlibpp::SharedLibraryClass<blockfactory::core::Block> blockPtr(*factory);
             auto tmpCoderBlockInfo = std::unique_ptr<blockfactory::coder::CoderBlockInformation>(
                 new blockfactory::coder::CoderBlockInformation);
             tmpCoderBlockInfo->storeRTWParameters(params);
