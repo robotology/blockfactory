@@ -110,7 +110,7 @@ static void mdlInitializeSizes(SimStruct* S)
 
     // Allocate the block from the factory. Since this object is supposed to be deleted
     // by the end of this function scope, SharedLibraryClass can be used and provides RAII.
-    shlibpp::SharedLibraryClass<blockfactory::core::Block> block(*factory);
+    sharedlibpp::SharedLibraryClass<blockfactory::core::Block> block(*factory);
 
     // Notify errors
     if (!block.isValid()) {

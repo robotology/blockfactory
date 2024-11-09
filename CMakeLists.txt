@@ -3,7 +3,7 @@
 # GNU Lesser General Public License v2.1 or any later version.
 
 cmake_minimum_required(VERSION 3.16...3.31)
-project(blockfactory LANGUAGES CXX VERSION 1.0.0)
+project(blockfactory LANGUAGES CXX VERSION 1.0.1)
 
 if(BUILD_DOCS)
     add_subdirectory(doc)
