@@ -5,7 +5,3 @@
 if(USES_MATLAB)
     add_subdirectory(mxpp)
 endif()
-
-if(BUILD_TESTING)
-    add_subdirectory(catch)
-endif()

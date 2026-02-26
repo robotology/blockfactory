@@ -109,11 +109,12 @@ endif()
 # Handle unit tests support
 option(BUILD_TESTING "Create tests using CMake" OFF)
 
+include(FetchContent)
+
 option(BLOCKFACTORY_USES_SYSTEM_SHAREDLIBPP "If ON, find sharedlibpp with find_package(sharedlibpp)" OFF)
 if(BLOCKFACTORY_USES_SYSTEM_SHAREDLIBPP)
     find_package(sharedlibpp REQUIRED)
 else()
-    include(FetchContent)
     FetchContent_Declare(
         sharedlibpp
         URL https://github.com/ami-iit/sharedlibpp/archive/refs/tags/v0.0.3.zip
@@ -130,7 +131,13 @@ if(USES_MATLAB)
 endif()
 
 if(BUILD_TESTING)
-    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/cmake)
+    FetchContent_Declare(
+        catch2
+        URL https://github.com/catchorg/Catch2/archive/refs/tags/v2.13.10.zip
+    )
+    FetchContent_MakeAvailable(catch2)
+
+    list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
     include(UnitTesting)
 
     add_subdirectory(tests)
