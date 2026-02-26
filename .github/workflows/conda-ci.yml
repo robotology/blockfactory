@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         build_type: [Release]
-        os: [ubuntu-latest, windows-2019, macos-13]
+        os: [ubuntu-latest, windows-2022]
       fail-fast: false
 
     steps:
@@ -58,3 +58,5 @@ jobs:
       run: |
         cd build
         ctest --output-on-failure -C ${{ matrix.build_type }} .
+
+
